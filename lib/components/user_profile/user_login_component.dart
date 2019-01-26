@@ -7,11 +7,19 @@ import 'package:flutter_firebase_ui/login_view.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/user_profile/user_profile_component.dart';
 
+class UserLoginFullscreenComponent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Prisijunkite"),
+      ),
+      body: UserLoginComponent(),
+    );
+  }
+}
+
 class UserLoginComponent extends StatefulWidget {
-  UserLoginComponent({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _UserLoginComponentState createState() => new _UserLoginComponentState();
 }

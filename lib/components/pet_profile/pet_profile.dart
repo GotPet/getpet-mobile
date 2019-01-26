@@ -1,6 +1,8 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
+import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/pets.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:getpet/pets_service.dart';
@@ -13,6 +15,8 @@ class PetProfileComponent extends StatelessWidget {
     @required this.pet,
   })  : assert(pet != null),
         super(key: key);
+
+  final _authenticationManager = AuthenticationManager();
 
   @override
   Widget build(BuildContext context) {
@@ -137,11 +141,21 @@ class PetProfileComponent extends StatelessWidget {
           label: Text("GetPet"),
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
-          onPressed: () => Navigator.push(
+          onPressed: () async {
+            if (await _authenticationManager.isLoggedIn()) {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => ShelterPetComponent(pet: pet)),
-              ),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => UserLoginFullscreenComponent()),
+              );
+            }
+          },
         ),
         visible: pet.isInFavorites(),
       ),
