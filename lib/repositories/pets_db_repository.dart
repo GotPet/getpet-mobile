@@ -269,9 +269,13 @@ ORDER BY
     return _mapToPets(petsMap);
   }
 
-  Future<int> deletePet(Pet pet) async {
-    return await (await db)
-        .delete(_tablePets, where: "$_columnPetId = ?", whereArgs: [pet.id]);
+  Future deletePet(Pet pet) async {
+    return await (await db).rawQuery("""
+    DELETE FROM
+      $_tablePets
+    WHERE
+      $_columnPetId = ${pet.id};
+    """);
   }
 
   Future<List<Pet>> getDislikedPetsOrderedByRandom() async {

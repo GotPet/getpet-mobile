@@ -7,6 +7,8 @@ import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 
 class PetProfileComponent extends StatelessWidget {
+  final petsService = PetsService();
+
   final Pet pet;
 
   PetProfileComponent({
@@ -66,8 +68,10 @@ class PetProfileComponent extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  await PetsService().deletePet(pet);
-                                  Navigator.of(context).pop();
+                                  await petsService.deletePet(pet);
+                                  final navigator = Navigator.of(context);
+                                  navigator.pop();
+                                  navigator.pop();
                                 },
                               ),
                             ],
@@ -172,9 +176,7 @@ class PetPhotosCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     var photos = pet
         .allPhotos()
-        .map(
-          (photo) => NetworkImage(photo)
-        )
+        .map((photo) => NetworkImage(photo))
         .toList(growable: false);
     return new Carousel(
       images: photos,
