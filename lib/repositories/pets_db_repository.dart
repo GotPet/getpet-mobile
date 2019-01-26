@@ -128,6 +128,19 @@ CREATE INDEX `$_indexPetChoicesChoice` ON `$_tablePetChoices` (`$_columnPetChoic
     return await batch.commit(noResult: true);
   }
 
+  Future removePetsWithoutChoice() async {
+    return await (await db).rawQuery(""" 
+DELETE FROM 
+  $_tablePets 
+WHERE $_columnPetId IN (
+  SELECT $_columnPetId
+  FROM $_tablePets 
+  LEFT JOIN $_tablePetChoices ON $_tablePets.$_columnPetId = $_tablePetChoices.$_columnPetChoicesPetId 
+  WHERE $_tablePetChoices.$_columnPetChoicesPetId IS NULL
+);
+""");
+  }
+
   Future insertPets(List<Pet> pets, {onConflictReplace: true}) async {
     var shelters = pets.map((p) => p.shelter).toSet().toList(growable: false);
     await this.insertShelters(shelters);

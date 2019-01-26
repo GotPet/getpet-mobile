@@ -1,8 +1,8 @@
+import 'package:getpet/components/api/pets_api_service.dart';
 import 'package:getpet/pets.dart';
+import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:convert';
 
 class PetsService {
   static final PetsService _singleton = new PetsService._internal();
@@ -13,6 +13,14 @@ class PetsService {
 
   PetsService._internal();
 
+  Future<String> fetchApiToken(String idToken) async {
+    final apiToken = await PetsApiService().authenticate(idToken);
+
+    await AppPreferences().setApiToken(apiToken);
+
+    return apiToken;
+  }
+
   Future<List<Pet>> getFavoritePets() async {
     return await PetsDBRepository().getPetsFavorites();
   }
@@ -21,41 +29,21 @@ class PetsService {
     final favoritePetIds = await PetsDBRepository().getFavoritePetIds();
     final dislikedPetIds = await PetsDBRepository().getDislikedPetIds();
 
-    final response = await http.post(
-      'https://www.getpet.lt/api/v1/pets/generate/',
-      body: json.encode(
-        {
-          "liked_pets": favoritePetIds,
-          "disliked_pets": dislikedPetIds,
-        },
-      ),
-      headers: {
-        'content-type': 'application/json',
-        'charset': 'utf-8',
-      },
+    final dislikedPets =
+        await PetsDBRepository().getDislikedPetsOrderedByRandom();
+
+    var pets = await PetsApiService()
+        .generatePetsToSwipe(favoritePetIds, dislikedPetIds);
+
+    await PetsDBRepository().removePetsWithoutChoice();
+    await PetsDBRepository().insertPets(
+      pets,
+      onConflictReplace: true,
     );
 
-    if (response.statusCode == 200) {
-      List<Pet> pets = json
-          .decode(utf8.decode(response.bodyBytes))
-          .map<Pet>((model) => Pet.fromJson(model))
-          .toList();
+    pets.addAll(dislikedPets);
 
-      final dislikedPets =
-          await PetsDBRepository().getDislikedPetsOrderedByRandom();
-
-      await PetsDBRepository().insertPets(
-        pets,
-        onConflictReplace: true,
-      );
-
-      pets.addAll(dislikedPets);
-
-      return pets;
-    } else {
-      // If that call was not successful, throw an error.
-      throw Exception('Failed to load post');
-    }
+    return pets;
   }
 
   Future likePet(Pet pet) async {

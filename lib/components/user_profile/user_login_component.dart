@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
 import 'package:flutter_firebase_ui/login_view.dart';
+import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/user_profile/user_profile_component.dart';
 
 class UserLoginComponent extends StatefulWidget {
@@ -16,7 +17,6 @@ class UserLoginComponent extends StatefulWidget {
 }
 
 class _UserLoginComponentState extends State<UserLoginComponent> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   StreamSubscription<FirebaseUser> _listener;
 
   FirebaseUser _currentUser;
@@ -30,6 +30,7 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
   @override
   void dispose() {
     _listener.cancel();
+    _listener = null;
     super.dispose();
   }
 
@@ -65,13 +66,15 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
   }
 
   void _checkCurrentUser() async {
-    _currentUser = await _auth.currentUser();
-    _currentUser?.getIdToken(refresh: true);
+    _currentUser = await AuthenticationManager().getCurrentUser();
+    setState(() {});
 
-    _listener = _auth.onAuthStateChanged.listen((FirebaseUser user) {
-      setState(() {
-        _currentUser = user;
-      });
-    });
+    _listener = AuthenticationManager().listenForUser((FirebaseUser user) {
+      if (_listener != null) {
+        setState(() {
+          _currentUser = user;
+        });
+      }
+    }, onError: (ex) => print(ex));
   }
 }
