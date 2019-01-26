@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
@@ -64,10 +63,7 @@ class ListViewFavoritePets extends StatelessWidget {
                     child: CircleAvatar(
                       key: Key(pet.profilePhoto),
                       backgroundColor: Colors.transparent,
-                      backgroundImage: AdvancedNetworkImage(
-                        pet.profilePhoto,
-                        useDiskCache: true,
-                      ),
+                      backgroundImage: NetworkImage(pet.profilePhoto),
                       radius: 36,
                     ),
                   ),

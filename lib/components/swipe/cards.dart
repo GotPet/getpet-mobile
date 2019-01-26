@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/components/swipe/matches.dart';
 import 'package:getpet/pets.dart';
@@ -384,11 +383,8 @@ class PetCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            Image(
-              image: AdvancedNetworkImage(
-                pet.profilePhoto,
-                useDiskCache: true,
-              ),
+            Image.network(
+              pet.profilePhoto,
               fit: BoxFit.cover,
             ),
             Positioned(

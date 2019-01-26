@@ -4,7 +4,6 @@ import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/pets.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:getpet/pets_service.dart';
 
 class PetProfileComponent extends StatelessWidget {
@@ -176,10 +175,7 @@ class PetPhotosCarousel extends StatelessWidget {
     var photos = pet
         .allPhotos()
         .map(
-          (photo) => AdvancedNetworkImage(
-                photo,
-                useDiskCache: true,
-              ),
+          (photo) => NetworkImage(photo)
         )
         .toList(growable: false);
     return new Carousel(

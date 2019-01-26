@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,9 +33,8 @@ class ShelterPetComponent extends StatelessWidget {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AdvancedNetworkImage(
+                      image: NetworkImage(
                         pet.profilePhoto,
-                        useDiskCache: true,
                       ),
                     ),
                   ),
