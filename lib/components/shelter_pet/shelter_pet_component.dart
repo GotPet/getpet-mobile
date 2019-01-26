@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:getpet/pets.dart';
+import 'package:getpet/pets_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShelterPetComponent extends StatelessWidget {
@@ -14,6 +15,8 @@ class ShelterPetComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PetsService().shelterPet(pet);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(pet.name),

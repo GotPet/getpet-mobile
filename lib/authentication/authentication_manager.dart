@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/preferences/app_preferences.dart';
 
 class AuthenticationManager {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -14,6 +16,19 @@ class AuthenticationManager {
   }
 
   AuthenticationManager._internal();
+
+  final _appPreferences = AppPreferences();
+
+  Future<bool> isLoggedIn() async {
+    final apiToken = await _appPreferences.getApiToken();
+    if (apiToken == null) {
+      return false;
+    }
+
+    final currentUser = await getCurrentUser();
+
+    return currentUser != null;
+  }
 
   Future<FirebaseUser> getCurrentUser() async {
     return await _auth.currentUser();
@@ -51,5 +66,10 @@ class AuthenticationManager {
       onDone: onDone,
       cancelOnError: cancelOnError,
     );
+  }
+
+  Future logout() async {
+    await signOutProviders();
+    await _appPreferences.removeApiToken();
   }
 }

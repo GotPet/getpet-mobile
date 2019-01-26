@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
+import 'package:getpet/authentication/authentication_manager.dart';
 
 class UserProfileComponent extends StatelessWidget {
   final FirebaseUser user;
@@ -54,6 +54,6 @@ class UserProfileComponent extends StatelessWidget {
   }
 
   void _logout() {
-    signOutProviders();
+    AuthenticationManager().logout();
   }
 }

@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'package:getpet/pets.dart';
-import 'package:http/http.dart' as http;
+import 'package:getpet/preferences/app_preferences.dart';
+import 'package:dio/dio.dart';
 
 class PetsApiService {
   static final PetsApiService _singleton = new PetsApiService._internal();
@@ -9,55 +9,74 @@ class PetsApiService {
     return _singleton;
   }
 
-  PetsApiService._internal();
+  final Dio dio = Dio(Options(
+    baseUrl: "https://www.getpet.lt/api/",
+  ));
+
+  PetsApiService._internal() {
+    dio.interceptor.request.onSend = (Options options) async {
+      final apiToken = await AppPreferences().getApiToken();
+
+      if (apiToken != null) {
+        options.headers["Authorization"] = "Token $apiToken";
+      }
+
+      return options;
+    };
+  }
 
   Future<String> authenticate(String idToken) async {
-    final response = await http.post(
-      'https://www.getpet.lt/api/v1/authentication/firebase/connect/',
-      body: json.encode(
-        {
-          "id_token": idToken,
-        },
-      ),
-      headers: {
-        'content-type': 'application/json',
-        'charset': 'utf-8',
+    final response = await dio.post(
+      '/v1/authentication/firebase/connect/',
+      data: {
+        "id_token": idToken,
       },
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var apiTokenRaw = json.decode(utf8.decode(response.bodyBytes));
-
-      return apiTokenRaw['key'];
-    }
-
-    throw response.body;
+    return response.data['key'];
   }
 
   Future<List<Pet>> generatePetsToSwipe(
     List<int> favoritePetIds,
     List<int> dislikedPetIds,
   ) async {
-    final response = await http.post(
-      'https://www.getpet.lt/api/v1/pets/generate/',
-      body: json.encode(
-        {
-          "liked_pets": favoritePetIds,
-          "disliked_pets": dislikedPetIds,
-        },
-      ),
-      headers: {
-        'content-type': 'application/json',
-        'charset': 'utf-8',
+    final response = await dio.post(
+      '/v1/pets/generate/',
+      data: {
+        "liked_pets": favoritePetIds,
+        "disliked_pets": dislikedPetIds,
       },
     );
 
-    if (response.statusCode == 200) {
-      return json
-          .decode(utf8.decode(response.bodyBytes))
-          .map<Pet>((model) => Pet.fromJson(model))
-          .toList();
-    }
-    throw Exception('Failed to load post');
+    return response.data.map<Pet>((model) => Pet.fromJson(model)).toList();
+  }
+
+  Future likePet(Pet pet) async {
+    await dio.put(
+      '/v1/pets/pet/choice/',
+      data: {
+        "pet": pet.id,
+        "is_favorite": true,
+      },
+    );
+  }
+
+  Future dislikePet(Pet pet) async {
+    await dio.put(
+      '/v1/pets/pet/choice/',
+      data: {
+        "pet": pet.id,
+        "is_favorite": false,
+      },
+    );
+  }
+
+  Future shelterPet(Pet pet) async {
+    await dio.put(
+      "/v1/pets/pet/shelter/",
+      data: {
+        "pet": pet.id,
+      },
+    );
   }
 }

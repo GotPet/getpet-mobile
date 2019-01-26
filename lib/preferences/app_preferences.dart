@@ -29,6 +29,12 @@ class AppPreferences {
     return await prefs.setString(_KEY_API_TOKEN, apiToken);
   }
 
+  Future<String> getApiToken() async {
+    var prefs = await sharedPreferences;
+
+    return prefs.getString(_KEY_API_TOKEN);
+  }
+
   Future removeApiToken() async {
     var prefs = await sharedPreferences;
 

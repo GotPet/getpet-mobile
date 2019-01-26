@@ -1,3 +1,4 @@
+import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/api/pets_api_service.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/preferences/app_preferences.dart';
@@ -13,30 +14,35 @@ class PetsService {
 
   PetsService._internal();
 
-  Future<String> fetchApiToken(String idToken) async {
-    final apiToken = await PetsApiService().authenticate(idToken);
+  final _petsDBRepository = PetsDBRepository();
+  final _petsApiService = PetsApiService();
+  final _appPreferences = AppPreferences();
+  final _authenticationManager = AuthenticationManager();
 
-    await AppPreferences().setApiToken(apiToken);
+  Future<String> fetchApiToken(String idToken) async {
+    final apiToken = await _petsApiService.authenticate(idToken);
+
+    await _appPreferences.setApiToken(apiToken);
 
     return apiToken;
   }
 
   Future<List<Pet>> getFavoritePets() async {
-    return await PetsDBRepository().getPetsFavorites();
+    return await _petsDBRepository.getPetsFavorites();
   }
 
   Future<List<Pet>> getPetsToSwipe() async {
-    final favoritePetIds = await PetsDBRepository().getFavoritePetIds();
-    final dislikedPetIds = await PetsDBRepository().getDislikedPetIds();
+    final favoritePetIds = await _petsDBRepository.getFavoritePetIds();
+    final dislikedPetIds = await _petsDBRepository.getDislikedPetIds();
 
     final dislikedPets =
-        await PetsDBRepository().getDislikedPetsOrderedByRandom();
+        await _petsDBRepository.getDislikedPetsOrderedByRandom();
 
-    var pets = await PetsApiService()
-        .generatePetsToSwipe(favoritePetIds, dislikedPetIds);
+    var pets = await _petsApiService.generatePetsToSwipe(
+        favoritePetIds, dislikedPetIds);
 
-    await PetsDBRepository().removePetsWithoutChoice();
-    await PetsDBRepository().insertPets(
+    await _petsDBRepository.removePetsWithoutChoice();
+    await _petsDBRepository.insertPets(
       pets,
       onConflictReplace: true,
     );
@@ -47,10 +53,26 @@ class PetsService {
   }
 
   Future likePet(Pet pet) async {
-    await PetsDBRepository().insertPetChoice(pet, Decision.like);
+    await _petsDBRepository.insertPetChoice(pet, Decision.like);
+
+    if (await _authenticationManager.isLoggedIn()) {
+      await _petsApiService.likePet(pet);
+    }
   }
 
   Future dislikePet(Pet pet) async {
-    return await PetsDBRepository().insertPetChoice(pet, Decision.nope);
+    await _petsDBRepository.insertPetChoice(pet, Decision.nope);
+
+    if (await _authenticationManager.isLoggedIn()) {
+      await _petsApiService.dislikePet(pet);
+    }
+  }
+
+  Future shelterPet(Pet pet) async {
+    await _petsDBRepository.insertPetChoice(pet, Decision.superLike);
+
+    if (await _authenticationManager.isLoggedIn()) {
+      await _petsApiService.shelterPet(pet);
+    }
   }
 }
