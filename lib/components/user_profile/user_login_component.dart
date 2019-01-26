@@ -25,6 +25,8 @@ class UserLoginComponent extends StatefulWidget {
 }
 
 class _UserLoginComponentState extends State<UserLoginComponent> {
+  final _authenticationManager = AuthenticationManager();
+
   StreamSubscription<FirebaseUser> _listener;
 
   FirebaseUser _currentUser;
@@ -74,15 +76,21 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
   }
 
   void _checkCurrentUser() async {
-    _currentUser = await AuthenticationManager().getCurrentUser();
+    _currentUser = await _authenticationManager.getCurrentUser();
     setState(() {});
 
-    _listener = AuthenticationManager().listenForUser((FirebaseUser user) {
+    _listener = _authenticationManager.listenForUser((FirebaseUser user) {
       if (_listener != null) {
         setState(() {
           _currentUser = user;
         });
       }
-    }, onError: (ex) => print(ex));
+    }, onError: (ex) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(ex.toString()),
+        ),
+      );
+    });
   }
 }

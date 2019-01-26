@@ -1,7 +1,6 @@
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/api/pets_api_service.dart';
 import 'package:getpet/pets.dart';
-import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
 import 'dart:async';
 
@@ -16,16 +15,7 @@ class PetsService {
 
   final _petsDBRepository = PetsDBRepository();
   final _petsApiService = PetsApiService();
-  final _appPreferences = AppPreferences();
   final _authenticationManager = AuthenticationManager();
-
-  Future<String> fetchApiToken(String idToken) async {
-    final apiToken = await _petsApiService.authenticate(idToken);
-
-    await _appPreferences.setApiToken(apiToken);
-
-    return apiToken;
-  }
 
   Future<List<Pet>> getFavoritePets() async {
     return await _petsDBRepository.getPetsFavorites();
@@ -78,6 +68,5 @@ class PetsService {
 
   Future deletePet(Pet pet) async {
     await PetsDBRepository().deletePet(pet);
-
   }
 }

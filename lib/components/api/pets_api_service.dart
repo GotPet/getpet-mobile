@@ -1,3 +1,4 @@
+import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/preferences/app_preferences.dart';
 import 'package:dio/dio.dart';
@@ -9,25 +10,51 @@ class PetsApiService {
     return _singleton;
   }
 
+  static const _baseApiUrl = "https://www.getpet.lt/api/";
+
+  static const _authenticateUrl =
+      "https://www.getpet.lt/api/v1/authentication/firebase/connect/";
+
+  final Dio rawDio = Dio();
   final Dio dio = Dio(Options(
-    baseUrl: "https://www.getpet.lt/api/",
+    baseUrl: _baseApiUrl,
   ));
+
+  final _appPreferences = AppPreferences();
+  final _authenticationManager = AuthenticationManager();
 
   PetsApiService._internal() {
     dio.interceptor.request.onSend = (Options options) async {
-      final apiToken = await AppPreferences().getApiToken();
+      final apiToken = await _appPreferences.getApiToken();
 
       if (apiToken != null) {
-        options.headers["Authorization"] = "Token $apiToken";
+        _addHeaderApiToken(options.headers, apiToken);
+      } else if (await _authenticationManager.isLoggedIn()) {
+        try {
+          dio.interceptor.request.lock();
+          final idToken = await _authenticationManager.getIdToken();
+          if (idToken != null) {
+            final apiToken = await authenticate(idToken);
+            await _appPreferences.setApiToken(apiToken);
+
+            _addHeaderApiToken(options.headers, apiToken);
+          }
+        } finally {
+          dio.interceptor.request.unlock();
+        }
       }
 
       return options;
     };
   }
 
+  static _addHeaderApiToken(Map<String, dynamic> headers, String apiToken) {
+    headers["Authorization"] = "Token $apiToken";
+  }
+
   Future<String> authenticate(String idToken) async {
-    final response = await dio.post(
-      '/v1/authentication/firebase/connect/',
+    final response = await rawDio.post(
+      _authenticateUrl,
       data: {
         "id_token": idToken,
       },

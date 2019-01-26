@@ -142,6 +142,8 @@ class PetProfileComponent extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           onPressed: () async {
+            var isLoggedIn = await _authenticationManager.isLoggedIn();
+            print("isLoggedIn: $isLoggedIn");
             if (await _authenticationManager.isLoggedIn()) {
               Navigator.push(
                 context,

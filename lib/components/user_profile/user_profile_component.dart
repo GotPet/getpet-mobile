@@ -53,7 +53,7 @@ class UserProfileComponent extends StatelessWidget {
     }
   }
 
-  void _logout() {
-    AuthenticationManager().logout();
+  _logout() async {
+    await AuthenticationManager().logout();
   }
 }

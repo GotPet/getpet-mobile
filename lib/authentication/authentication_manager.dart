@@ -20,31 +20,17 @@ class AuthenticationManager {
   final _appPreferences = AppPreferences();
 
   Future<bool> isLoggedIn() async {
-    final apiToken = await _appPreferences.getApiToken();
-    if (apiToken == null) {
-      return false;
-    }
-
-    final currentUser = await getCurrentUser();
-
-    return currentUser != null;
+    return (await getCurrentUser()) != null;
   }
 
   Future<FirebaseUser> getCurrentUser() async {
     return await _auth.currentUser();
   }
 
-  Future<FirebaseUser> getCurrentUserWithRefresh() async {
+  Future<String> getIdToken() async {
     final currentUser = await getCurrentUser();
 
-    if (currentUser == null) {
-      return null;
-    }
-
-    final idToken = await currentUser.getIdToken(refresh: true);
-    await PetsService().fetchApiToken(idToken);
-
-    return await _auth.currentUser();
+    return await currentUser?.getIdToken(refresh: true);
   }
 
   StreamSubscription<FirebaseUser> listenForUser(
@@ -53,15 +39,7 @@ class AuthenticationManager {
       void onDone(),
       bool cancelOnError}) {
     return _auth.onAuthStateChanged.listen(
-      (FirebaseUser user) async {
-        try {
-          await getCurrentUserWithRefresh();
-        } catch (ex) {
-          print(ex);
-        }
-
-        onData(user);
-      },
+      onData,
       onError: onError,
       onDone: onDone,
       cancelOnError: cancelOnError,
