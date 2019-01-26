@@ -34,7 +34,7 @@ class PetsApiService {
           dio.interceptor.request.lock();
           final idToken = await _authenticationManager.getIdToken();
           if (idToken != null) {
-            final apiToken = await authenticate(idToken);
+            final apiToken = await _authenticate(idToken);
             await _appPreferences.setApiToken(apiToken);
 
             _addHeaderApiToken(options.headers, apiToken);
@@ -52,7 +52,7 @@ class PetsApiService {
     headers["Authorization"] = "Token $apiToken";
   }
 
-  Future<String> authenticate(String idToken) async {
+  Future<String> _authenticate(String idToken) async {
     final response = await rawDio.post(
       _authenticateUrl,
       data: {
