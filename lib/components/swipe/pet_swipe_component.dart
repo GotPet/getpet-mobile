@@ -76,7 +76,7 @@ class _PetSwipeWidgetState extends State<PetSwipeWidget> {
 
   _PetSwipeWidgetState(
     this.pets,
-  ) {
+  ) : assert(pets != null) {
     if (_matchEngine == null) {
       _matchEngine = new MatchEngine(
         matches: pets.map((p) => PetMatch(pet: p)).toList(),

@@ -63,6 +63,7 @@ class ListViewFavoritePets extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: CircleAvatar(
                       key: Key(pet.profilePhoto),
+                      backgroundColor: Colors.transparent,
                       backgroundImage: AdvancedNetworkImage(
                         pet.profilePhoto,
                         useDiskCache: true,

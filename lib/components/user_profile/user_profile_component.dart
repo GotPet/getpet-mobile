@@ -16,6 +16,7 @@ class UserProfileComponent extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: CircleAvatar(
                 radius: 64,
+                backgroundColor: Colors.transparent,
                 backgroundImage: getUserProfilePhotoProvider(),
               ),
             ),
