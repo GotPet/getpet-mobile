@@ -14,6 +14,7 @@ class PetSwipeComponent extends StatefulWidget {
 
 class _PetSwipeComponentState extends State<PetSwipeComponent>
     with AutomaticKeepAliveClientMixin {
+  final _petsToSwipeFuture = PetsService().getPetsToSwipe();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
       alignment: Alignment.center,
       padding: const EdgeInsets.all(16.0),
       child: new FutureBuilder(
-        future: PetsService().getPetsToSwipe(),
+        future: _petsToSwipeFuture,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) print(snapshot.error);
 
@@ -54,7 +55,7 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
   bool get wantKeepAlive => true;
 }
 
-class PetSwipeWidget extends StatelessWidget {
+class PetSwipeWidget extends StatefulWidget {
   final List<Pet> pets;
 
   PetSwipeWidget({
@@ -64,16 +65,33 @@ class PetSwipeWidget extends StatelessWidget {
         super(key: key);
 
   @override
+  _PetSwipeWidgetState createState() {
+    return _PetSwipeWidgetState(pets);
+  }
+}
+
+class _PetSwipeWidgetState extends State<PetSwipeWidget> {
+  final List<Pet> pets;
+  MatchEngine _matchEngine;
+
+  _PetSwipeWidgetState(
+    this.pets,
+  ) {
+    if (_matchEngine == null) {
+      _matchEngine = new MatchEngine(
+        matches: pets.map((p) => PetMatch(pet: p)).toList(),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var matchEngine = new MatchEngine(
-      matches: pets.map((p) => PetMatch(pet: p)).toList(),
-    );
     return Scaffold(
       body: Column(
         children: <Widget>[
           Expanded(
             child: CardStack(
-              matchEngine: matchEngine,
+              matchEngine: _matchEngine,
             ),
           ),
           Padding(
@@ -85,7 +103,7 @@ class PetSwipeWidget extends StatelessWidget {
                   icon: Icons.clear,
                   iconColor: Colors.red,
                   onPressed: () {
-                    matchEngine.currentMatch.nope();
+                    _matchEngine.currentMatch.nope();
                   },
                 ),
                 Padding(
@@ -102,7 +120,7 @@ class PetSwipeWidget extends StatelessWidget {
                   icon: Icons.favorite,
                   iconColor: Colors.green,
                   onPressed: () {
-                    matchEngine.currentMatch.like();
+                    _matchEngine.currentMatch.like();
                   },
                 ),
               ],
