@@ -43,7 +43,7 @@ class PetsService {
   }
 
   Future likePet(Pet pet) async {
-    await _petsDBRepository.insertPetChoice(pet, Decision.like);
+    await _petsDBRepository.insertPetChoice(pet, PetDecision.like);
 
     if (await _authenticationManager.isLoggedIn()) {
       await _petsApiService.likePet(pet);
@@ -51,7 +51,7 @@ class PetsService {
   }
 
   Future dislikePet(Pet pet) async {
-    await _petsDBRepository.insertPetChoice(pet, Decision.nope);
+    await _petsDBRepository.insertPetChoice(pet, PetDecision.dislike);
 
     if (await _authenticationManager.isLoggedIn()) {
       await _petsApiService.dislikePet(pet);
@@ -59,7 +59,7 @@ class PetsService {
   }
 
   Future shelterPet(Pet pet) async {
-    await _petsDBRepository.insertPetChoice(pet, Decision.superLike);
+    await _petsDBRepository.insertPetChoice(pet, PetDecision.getPet);
 
     if (await _authenticationManager.isLoggedIn()) {
       await _petsApiService.shelterPet(pet);

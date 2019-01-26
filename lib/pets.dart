@@ -117,49 +117,8 @@ class Pet extends Equatable {
   }
 }
 
-class PetMatch extends ChangeNotifier {
-  final Pet pet;
-  Decision decision = Decision.undecided;
-
-  PetMatch({
-    this.pet,
-  });
-
-  void like() {
-    if (decision == Decision.undecided) {
-      decision = Decision.like;
-      PetsService().dislikePet(pet);
-
-      notifyListeners();
-    }
-  }
-
-  void nope() {
-    if (decision == Decision.undecided) {
-      decision = Decision.nope;
-      PetsService().likePet(pet);
-
-      notifyListeners();
-    }
-  }
-
-  void reset() {
-    if (decision != Decision.undecided) {
-      decision = Decision.undecided;
-      notifyListeners();
-    }
-  }
-}
-
 enum PetDecision {
   dislike,
   like,
   getPet,
-}
-
-enum Decision {
-  undecided,
-  nope,
-  like,
-  superLike,
 }

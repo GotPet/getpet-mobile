@@ -21,7 +21,10 @@ dependencies:
   url_launcher: ^4.1.0+1
   flutter_firebase_ui: ^0.0.13
   shared_preferences: ^0.5.0
-
+  swipe_card:
+    git:
+      url: https://github.com/Knupper/swipe-cards.git
+      ref: task_fix_out_of_range_exception_for_lists_with_1_element
   flutter:
     sdk: flutter
 

@@ -170,16 +170,16 @@ WHERE $_columnPetId IN (
     await batch.commit(noResult: true);
   }
 
-  Future insertPetChoice(Pet pet, Decision decision) async {
+  Future insertPetChoice(Pet pet, PetDecision decision) async {
     var decisionNumber;
     switch (decision) {
-      case Decision.nope:
+      case PetDecision.dislike:
         decisionNumber = _petDecisionNumDislike;
         break;
-      case Decision.like:
+      case PetDecision.like:
         decisionNumber = _petDecisionNumLike;
         break;
-      case Decision.superLike:
+      case PetDecision.getPet:
         decisionNumber = _petDecisionNumGetPet;
         break;
       default:
