@@ -108,6 +108,13 @@ class Pet extends Equatable {
     allPhotos.addAll(photos.map((p) => p.photo));
     return allPhotos;
   }
+
+  bool isInFavorites() {
+    if (decision == null || decision == PetDecision.dislike) {
+      return false;
+    }
+    return true;
+  }
 }
 
 class PetMatch extends ChangeNotifier {

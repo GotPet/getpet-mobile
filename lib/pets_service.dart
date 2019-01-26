@@ -75,4 +75,9 @@ class PetsService {
       await _petsApiService.shelterPet(pet);
     }
   }
+
+  Future deletePet(Pet pet) async {
+    await PetsDBRepository().deletePet(pet);
+
+  }
 }

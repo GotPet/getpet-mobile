@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
 import 'package:getpet/pets.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
-import 'package:getpet/repositories/pets_db_repository.dart';
+import 'package:getpet/pets_service.dart';
 
 class PetProfileComponent extends StatelessWidget {
   final Pet pet;
@@ -31,44 +31,47 @@ class PetProfileComponent extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.clear),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext buildContext) {
-                        return AlertDialog(
-                          title: Text("Pašalinti gyvūną iš sąrašo?"),
-                          content: Text(
-                              "Šis veiksmas pašalins gyvūną iš gyvūnų sąrašo."),
-                          actions: <Widget>[
-                            new FlatButton(
-                              child: new Text(
-                                "Atšaukti",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
+              Visibility(
+                visible: pet.isInFavorites(),
+                child: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext buildContext) {
+                          return AlertDialog(
+                            title: Text("Pašalinti gyvūną iš sąrašo?"),
+                            content: Text(
+                                "Šis veiksmas pašalins gyvūną iš gyvūnų sąrašo."),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text(
+                                  "Atšaukti",
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            new FlatButton(
-                              child: new Text(
-                                "Panaikinti",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
+                              new FlatButton(
+                                child: new Text(
+                                  "Panaikinti",
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
+                                onPressed: () async {
+                                  await PetsService().deletePet(pet);
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              onPressed: () async {
-                                print(await PetsDBRepository().deletePet(pet));
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                },
+                            ],
+                          );
+                        });
+                  },
+                ),
               ),
             ],
           ),
@@ -124,19 +127,23 @@ class PetProfileComponent extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: new FloatingActionButton.extended(
-        icon: Image.asset(
-          "assets/ic_home.png",
-          color: Colors.white,
-          width: 24,
+      floatingActionButton: Visibility(
+        child: new FloatingActionButton.extended(
+          icon: Image.asset(
+            "assets/ic_home.png",
+            color: Colors.white,
+            width: 24,
+          ),
+          label: Text("GetPet"),
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Colors.white,
+          onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => ShelterPetComponent(pet: pet)),
+              ),
         ),
-        label: Text("GetPet"),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => ShelterPetComponent(pet: pet)),
-            ),
+        visible: pet.isInFavorites(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
