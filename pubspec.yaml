@@ -23,6 +23,8 @@ dependencies:
   firebase_core: ^0.3.0
   firebase_performance: ^0.0.8+1
   firebase_analytics: ^1.2.0
+  sentry: ^2.2.0
+  device_info: ^0.4.0
   swipe_card:
     git:
       url: git://github.com/Knupper/swipe-cards.git
