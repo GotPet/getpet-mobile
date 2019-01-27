@@ -71,6 +71,7 @@ flutter:
   - assets/no_pets.png
   - assets/two_logos.png
   - assets/anonymous_avatar.jpg
+  - assets/get_pet_logo.png
   - assets/onboarding/
 
   # An image asset can refer to one or more resolution-specific "variants", see
