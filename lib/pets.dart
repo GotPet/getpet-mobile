@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:getpet/pets_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 
