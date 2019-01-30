@@ -45,9 +45,9 @@ class PetProfileComponent extends StatelessWidget {
                         context: context,
                         builder: (BuildContext buildContext) {
                           return AlertDialog(
-                            title: Text("Pašalinti gyvūną iš sąrašo?"),
+                            title: Text("Ištrinti gyvūną iš sąrašo?"),
                             content: Text(
-                                "Šis veiksmas pašalins gyvūną iš gyvūnų sąrašo."),
+                                "Šis veiksmas ištrins gyvūną iš favoritų sąrašo."),
                             actions: <Widget>[
                               new FlatButton(
                                 child: new Text(
@@ -62,7 +62,7 @@ class PetProfileComponent extends StatelessWidget {
                               ),
                               new FlatButton(
                                 child: new Text(
-                                  "Panaikinti",
+                                  "Ištrinti",
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                   ),
