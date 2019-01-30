@@ -51,7 +51,7 @@ class ListViewFavoritePets extends StatelessWidget {
 
     var shelterPets =
         pets.where((pet) => pet.decision == PetDecision.getPet).toList();
-    if (shelterPets.length > 0) {
+    if (shelterPets.isNotEmpty) {
       cells.add(LabelItem("Mano norai paimti gyvūnus"));
       cells.addAll(shelterPets);
     }
