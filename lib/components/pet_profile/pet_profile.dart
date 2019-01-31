@@ -68,7 +68,7 @@ class PetProfileComponent extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  await petsService.deletePet(pet);
+                                  await petsService.dislikePet(pet);
                                   final navigator = Navigator.of(context);
                                   navigator.pop();
                                   navigator.pop();
