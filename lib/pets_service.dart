@@ -1,5 +1,5 @@
 import 'package:getpet/authentication/authentication_manager.dart';
-import 'package:getpet/components/api/pets_api_service.dart';
+import 'package:getpet/api/pets_api_service.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
 import 'dart:async';
