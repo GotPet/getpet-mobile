@@ -182,6 +182,7 @@ class PetPhotosCarousel extends StatelessWidget {
       images: photos,
       moveIndicatorFromBottom: 300,
       dotBgColor: Colors.transparent,
+      autoplay: false,
     );
   }
 }
