@@ -17,8 +17,8 @@ class PetsService {
   final _petsApiService = PetsApiService();
   final _authenticationManager = AuthenticationManager();
 
-  Future<List<Pet>> getFavoritePets() async {
-    return await _petsDBRepository.getPetsFavorites();
+  Stream<List<Pet>> getFavoritePets() {
+    return _petsDBRepository.getPetsFavorites();
   }
 
   Future<List<Pet>> getPetsToSwipe() async {

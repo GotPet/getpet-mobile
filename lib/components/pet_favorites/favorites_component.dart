@@ -10,8 +10,8 @@ class FavoritePetsComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<Pet>>(
-        future: PetsService().getFavoritePets(),
+      body: StreamBuilder<List<Pet>>(
+        stream: PetsService().getFavoritePets(),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
 

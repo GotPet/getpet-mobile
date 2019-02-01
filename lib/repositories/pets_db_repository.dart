@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:getpet/pets.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:streamqflite/streamqflite.dart';
 
 class PetsDBRepository {
-  static Database _db;
+  static StreamDatabase _db;
 
   static final PetsDBRepository _instance = new PetsDBRepository.internal();
 
@@ -42,16 +43,7 @@ class PetsDBRepository {
 
   PetsDBRepository.internal();
 
-  Future<Database> get db async {
-    if (_db != null) {
-      return _db;
-    }
-    _db = await initDb();
-
-    return _db;
-  }
-
-  initDb() async {
+  Future initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'getpet-pets.db');
 
@@ -62,7 +54,7 @@ class PetsDBRepository {
       version: 1,
       onCreate: _onCreate,
     );
-    return db;
+    _db = StreamDatabase(db);
   }
 
   Future _onCreate(Database db, int newVersion) async {
@@ -111,7 +103,7 @@ CREATE INDEX `$_indexPetChoicesChoice` ON `$_tablePetChoices` (`$_columnPetChoic
   }
 
   Future insertShelters(List<Shelter> shelters) async {
-    var batch = (await db).batch();
+    var batch = _db.batch();
 
     shelters.forEach(
       (shelter) => batch.insert(
@@ -129,7 +121,7 @@ CREATE INDEX `$_indexPetChoicesChoice` ON `$_tablePetChoices` (`$_columnPetChoic
   }
 
   Future removePetsWithoutChoice() async {
-    return await (await db).rawQuery(""" 
+    return await _db.rawQuery(""" 
 DELETE FROM 
   $_tablePets 
 WHERE $_columnPetId IN (
@@ -145,7 +137,7 @@ WHERE $_columnPetId IN (
     var shelters = pets.map((p) => p.shelter).toSet().toList(growable: false);
     await this.insertShelters(shelters);
 
-    var batch = (await db).batch();
+    var batch = _db.batch();
 
     pets.forEach(
       (pet) => batch.insert(
@@ -186,7 +178,7 @@ WHERE $_columnPetId IN (
         decisionNumber = null;
     }
     if (decisionNumber != null) {
-      (await db).insert(
+      _db.insert(
         _tablePetChoices,
         {
           _columnPetChoicesPetId: pet.id,
@@ -248,8 +240,8 @@ WHERE $_columnPetId IN (
     return listOfMaps.map((m) => _mapToPet(m)).toList(growable: false);
   }
 
-  Future<List<Pet>> getPetsFavorites() async {
-    var petsMap = await (await db).rawQuery(""" 
+  Stream<List<Pet>> getPetsFavorites() {
+    return _db.createRawQuery([_tablePets, _tablePetChoices], """ 
 SELECT 
   $_tablePets.*,
   $_tableShelters.*,
@@ -264,13 +256,11 @@ FROM
 WHERE $_tablePets.$_columnPetAvailable = 1 
 ORDER BY 
   $_tablePetChoices.$_columnPetChoicesCreatedAt DESC;
-    """);
-
-    return _mapToPets(petsMap);
+    """).asyncMap((query) => query()).map((rows) => _mapToPets(rows));
   }
 
   Future<List<Pet>> getDislikedPetsOrderedByRandom() async {
-    var petsMap = await (await db).rawQuery(""" 
+    var petsMap = await _db.rawQuery(""" 
 SELECT 
   $_tablePets.*,
   $_tableShelters.*,
@@ -287,7 +277,7 @@ ORDER BY RANDOM();
   }
 
   Future<List<int>> getFavoritePetIds() async {
-    var petsMap = await (await db).rawQuery(""" 
+    var petsMap = await _db.rawQuery(""" 
 SELECT 
   $_tablePets.$_columnPetId
 FROM 
@@ -304,7 +294,7 @@ FROM
   }
 
   Future<List<int>> getDislikedPetIds() async {
-    var petsMap = await (await db).rawQuery(""" 
+    var petsMap = await _db.rawQuery(""" 
 SELECT 
   $_tablePets.$_columnPetId
 FROM 
