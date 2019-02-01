@@ -18,12 +18,14 @@ class CrashReporting {
   final _deviceInfo = DeviceInfoPlugin();
   SentryClient _sentry;
 
-  Future init() async {
+  Future<CrashReporting> init() async {
     final platformData = await _getPlatformData();
     _sentry = new SentryClient(
       dsn: dsn,
       environmentAttributes: Event(extra: platformData),
     );
+
+    return this;
   }
 
   /// Reports [error] along with its [stackTrace] to Sentry.io.

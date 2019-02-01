@@ -8,7 +8,7 @@ import 'package:getpet/utils/crash_reporting.dart';
 import 'package:getpet/utils/debug_utils.dart';
 
 Future<Null> main() async {
-  CrashReporting crashReporting = await CrashReporting().init();
+  final CrashReporting crashReporting = await CrashReporting().init();
 
   FlutterError.onError = (FlutterErrorDetails details) async {
     if (isInDebugMode) {
