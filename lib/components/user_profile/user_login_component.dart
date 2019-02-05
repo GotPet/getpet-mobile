@@ -6,6 +6,7 @@ import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
 import 'package:flutter_firebase_ui/login_view.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/user_profile/user_profile_component.dart';
+import 'package:getpet/widgets/privacy_policy_button.dart';
 
 class UserLoginFullscreenComponent extends StatelessWidget {
   @override
@@ -68,6 +69,7 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
                   passwordCheck: false,
                 ),
               ),
+              PrivacyPolicyButton()
             ],
           ));
     } else {

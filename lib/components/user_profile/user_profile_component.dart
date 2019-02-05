@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
+import 'package:getpet/widgets/privacy_policy_button.dart';
 
 class UserProfileComponent extends StatelessWidget {
   final FirebaseUser user;
@@ -38,6 +39,7 @@ class UserProfileComponent extends StatelessWidget {
                 onPressed: _logout,
               ),
             ),
+            PrivacyPolicyButton()
           ],
         ),
       );
