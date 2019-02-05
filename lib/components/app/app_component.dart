@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/home/home_component.dart';
+import 'package:getpet/localization/firebase_localization_delete.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
 
 class AppComponent extends StatefulWidget {
@@ -28,6 +29,9 @@ class _AppComponentState extends State<AppComponent> {
               fontSize: 14.0, color: Color.fromARGB(0xFF, 0x66, 0x66, 0x66)),
         ),
       ),
+      localizationsDelegates: [
+        FirebaseLocalization.delegate,
+      ],
       debugShowCheckedModeBanner: false,
       supportedLocales: const <Locale>[Locale('lt', 'LT'), Locale('en', 'US')],
     );
