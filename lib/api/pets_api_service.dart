@@ -39,6 +39,8 @@ class PetsApiService {
 
             _addHeaderApiToken(options.headers, apiToken);
           }
+        } catch (ex) {
+          print(ex);
         } finally {
           dio.interceptor.request.unlock();
         }
