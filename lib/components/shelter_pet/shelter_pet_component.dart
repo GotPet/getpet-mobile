@@ -73,15 +73,26 @@ class ShelterPetComponent extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8, bottom: 8),
                     child: Text(
                       pet.shelter.phone,
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                   onTap: callShelter,
                 ),
                 InkWell(
-                  child: Text(
-                    pet.shelter.email,
-                    style: TextStyle(fontSize: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    child: Text(
+                      pet.shelter.email,
+                      style: TextStyle(
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
+                    ),
                   ),
                   onTap: emailShelter,
                 )
