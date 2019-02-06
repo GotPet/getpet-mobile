@@ -50,8 +50,12 @@ class UserProfileComponent extends StatelessWidget {
         "assets/anonymous_avatar.jpg",
       );
     } else {
+      var photoUrl = user.photoUrl;
+
+      photoUrl = photoUrl.replaceAll("/s96-c/", "/s300-c/");
+      photoUrl += "?height=300";
       return NetworkImage(
-        user.photoUrl,
+        photoUrl,
       );
     }
   }
