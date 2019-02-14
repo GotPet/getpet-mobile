@@ -9,7 +9,7 @@ GetPet promotes social responsibility, seeks to create an emotionally healthier 
 ## Getting Started
 
 1. Create `lib/dsn.dart` file locally and add following code (no need to change for debug builds):
-```
+```dart
 const String dsn = "MY_SENTRY_KEY";
 ```
 2. Start flutter project on Android or iOS. 
