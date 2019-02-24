@@ -16,7 +16,7 @@ class PetsApiService {
       "https://www.getpet.lt/api/v1/authentication/firebase/connect/";
 
   final Dio rawDio = Dio();
-  final Dio dio = Dio(Options(
+  final Dio dio = Dio(BaseOptions(
     baseUrl: _baseApiUrl,
   ));
 
@@ -24,14 +24,15 @@ class PetsApiService {
   final _authenticationManager = AuthenticationManager();
 
   PetsApiService._internal() {
-    dio.interceptor.request.onSend = (Options options) async {
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       final apiToken = await _appPreferences.getApiToken();
 
       if (apiToken != null) {
         _addHeaderApiToken(options.headers, apiToken);
       } else if (await _authenticationManager.isLoggedIn()) {
         try {
-          dio.interceptor.request.lock();
+          dio.interceptors.requestLock.lock();
           final idToken = await _authenticationManager.getIdToken();
           if (idToken != null) {
             final apiToken = await _authenticate(idToken);
@@ -42,12 +43,18 @@ class PetsApiService {
         } catch (ex) {
           print(ex);
         } finally {
-          dio.interceptor.request.unlock();
+          dio.interceptors.requestLock.unlock();
         }
       }
 
       return options;
-    };
+    }, onResponse: (Response response) {
+      // Do something with response data
+      return response; // continue
+    }, onError: (DioError e) {
+      // Do something with response error
+      return e; //continue
+    }));
   }
 
   static _addHeaderApiToken(Map<String, dynamic> headers, String apiToken) {
