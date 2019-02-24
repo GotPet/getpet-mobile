@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/home/home_component.dart';
-import 'package:getpet/localization/firebase_localization_delete.dart';
+import 'package:getpet/localization/app_localization.dart';
+import 'package:getpet/localization/firebase_localization.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppComponent extends StatefulWidget {
   @override
@@ -18,7 +20,8 @@ class _AppComponentState extends State<AppComponent> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "GetPet",
+      onGenerateTitle: (BuildContext context) =>
+          AppLocalizations.of(context).appTitle,
       home: HomeComponent(),
       theme: ThemeData(
         primaryColor: Color.fromARGB(0xFF, 0xDD, 0x61, 0x72),
@@ -29,11 +32,17 @@ class _AppComponentState extends State<AppComponent> {
               fontSize: 14.0, color: Color.fromARGB(0xFF, 0x66, 0x66, 0x66)),
         ),
       ),
-      localizationsDelegates: [
-        FirebaseLocalization.delegate,
-      ],
       debugShowCheckedModeBanner: false,
-      supportedLocales: const <Locale>[Locale('lt', 'LT'), Locale('en', 'US')],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        FirebaseLocalization.delegate,
+        AppLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('lt', 'LT'),
+        const Locale('en', 'US'),
+      ],
     );
   }
 }

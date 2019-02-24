@@ -13,17 +13,19 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  flutter_localizations:
+    sdk: flutter
   json_annotation: ^2.0.0
   carousel_pro: ^0.0.13
   dio: ^1.0.14
-  sqflite: ^1.0.0
+  sqflite: ^1.1.1
   streamqflite: ^1.0.0
   equatable: ^0.1.8
-  url_launcher: ^4.1.0+1
-  shared_preferences: ^0.5.0
-  firebase_core: ^0.3.0
-  firebase_performance: ^0.0.8+1
-  firebase_analytics: ^1.2.0
+  url_launcher: ^5.0.1
+  shared_preferences: ^0.5.1+1
+  firebase_core: ^0.3.1
+  firebase_performance: ^0.1.0+3
+  firebase_analytics: ^2.0.2+1
   sentry: ^2.2.0
   device_info: ^0.4.0
   swipe_card:
