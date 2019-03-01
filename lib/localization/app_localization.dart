@@ -14,6 +14,14 @@ class AppLocalizations {
   }
 
   String get appTitle => "GetPet";
+
+  String get callShelter => "Skambinti į prieglaudą";
+
+  String get errorUnableToCallShelter =>
+      "Nepavyko atidaryti skambinimo programos. Surinkite prieglaudos numerį ir susisiekite.";
+
+  String get errorUnableToEmailShelter =>
+      "Nepavyko atidaryti el. pašto programos. Išsiųskite elektroninį laišką prieglaudai ir susisiekite.";
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
