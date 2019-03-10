@@ -1,6 +1,5 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
@@ -186,7 +185,7 @@ class PetPhotosCarousel extends StatelessWidget {
                     constraints,
                   ),
             )
-            .map((photo) => AdvancedNetworkImage(photo))
+            .map((photo) => NetworkImage(photo))
             .toList(growable: false);
 
         return new Carousel(
