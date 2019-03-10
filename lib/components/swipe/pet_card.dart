@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/pets.dart';
+import 'package:getpet/utils/image_utils.dart';
 
 class PetCard extends StatelessWidget {
   final Pet pet;
@@ -20,9 +21,13 @@ class PetCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              Image.network(
-                pet.profilePhoto,
-                fit: BoxFit.cover,
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return Image.network(
+                    getSizedImageUrlFromConstraints(pet.profilePhoto, constraints),
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
               Align(
                 alignment: Alignment.bottomLeft,

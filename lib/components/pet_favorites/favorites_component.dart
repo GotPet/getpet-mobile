@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/label.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
@@ -98,7 +99,8 @@ class _PetListCell extends StatelessWidget {
               child: CircleAvatar(
                 key: Key(pet.profilePhoto),
                 backgroundColor: Colors.transparent,
-                backgroundImage: NetworkImage(pet.profilePhoto),
+                backgroundImage:
+                    NetworkImage(getSizedImageUrl(pet.profilePhoto, 72, 72)),
                 radius: 36,
               ),
             ),

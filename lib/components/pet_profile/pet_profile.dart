@@ -5,6 +5,7 @@ import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/utils/image_utils.dart';
 
 class PetProfileComponent extends StatelessWidget {
   final petsService = PetsService();
@@ -174,15 +175,25 @@ class PetPhotosCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var photos = pet
-        .allPhotos()
-        .map((photo) => NetworkImage(photo))
-        .toList(growable: false);
-    return new Carousel(
-      images: photos,
-      moveIndicatorFromBottom: 300,
-      dotBgColor: Colors.transparent,
-      autoplay: false,
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final photos = pet
+            .allPhotos()
+            .map((photo) => NetworkImage(
+                  getSizedImageUrlFromConstraints(
+                    photo,
+                    constraints,
+                  ),
+                ))
+            .toList(growable: false);
+
+        return new Carousel(
+          images: photos,
+          moveIndicatorFromBottom: 300,
+          dotBgColor: Colors.transparent,
+          autoplay: false,
+        );
+      },
     );
   }
 }
