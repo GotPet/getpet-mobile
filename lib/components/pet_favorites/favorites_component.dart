@@ -6,6 +6,7 @@ import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/label.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 class FavoritePetsComponent extends StatelessWidget {
   @override
@@ -99,8 +100,10 @@ class _PetListCell extends StatelessWidget {
               child: CircleAvatar(
                 key: Key(pet.profilePhoto),
                 backgroundColor: Colors.transparent,
-                backgroundImage:
-                    NetworkImage(getSizedImageUrl(pet.profilePhoto, 72, 72)),
+                backgroundImage: AdvancedNetworkImage(
+                  getSizedImageUrl(pet.profilePhoto, 72, 72),
+                  useDiskCache: true,
+                ),
                 radius: 36,
               ),
             ),
