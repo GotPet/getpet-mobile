@@ -27,7 +27,7 @@ dependencies:
   url_launcher: ^5.0.1
   shared_preferences: ^0.5.1+1
   firebase_core: ^0.3.1
-  firebase_analytics: ^2.0.2+1
+  firebase_analytics: ^2.1.1+3
   sentry: ^2.2.0
   device_info: ^0.4.0
   # We don't use twitter login, but flutter_firebase_ui has dependency for it
