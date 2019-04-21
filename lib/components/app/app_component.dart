@@ -4,8 +4,6 @@ import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/localization/firebase_localization.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AppComponent extends StatefulWidget {
   @override
@@ -13,8 +11,6 @@ class AppComponent extends StatefulWidget {
 }
 
 class _AppComponentState extends State<AppComponent> {
-  final analytics = FirebaseAnalytics();
-
   @override
   Future deactivate() async {
     await PetsDBRepository().dispose();
@@ -46,9 +42,6 @@ class _AppComponentState extends State<AppComponent> {
       supportedLocales: [
         const Locale('lt', 'LT'),
         const Locale('en', 'US'),
-      ],
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
       ],
     );
   }
