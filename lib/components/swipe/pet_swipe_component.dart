@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:getpet/components/swipe/pet_engine.dart';
+import 'package:getpet/components/swipe/swiping_cards.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/components/swipe/pet_card.dart';
@@ -16,6 +18,8 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
     with AutomaticKeepAliveClientMixin {
   final _petsToSwipeFuture = PetsService().getPetsToSwipe();
 
+  PetEngine engine;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -26,13 +30,24 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
       child: new FutureBuilder(
         future: _petsToSwipeFuture,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
+          if (snapshot.hasError) {
+            print(snapshot.error);
+          }
 
           if (snapshot.hasData) {
             List<Pet> pets = snapshot.data;
             if (pets.isNotEmpty) {
-              return PetSwipeWidget(
-                pets: pets,
+              engine = PetEngine(pets);
+              return Column(
+                children: [
+                  Expanded(
+                    child: SwipingCards(
+                      engine: engine,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  _buildButtonRow(),
+                ],
               );
             } else {
               return EmptyStateWidget(
@@ -53,131 +68,43 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
 
   @override
   bool get wantKeepAlive => true;
-}
 
-class PetSwipeWidget extends StatefulWidget {
-  final List<Pet> pets;
-
-  PetSwipeWidget({
-    Key key,
-    this.pets,
-  })  : assert(pets != null),
-        super(key: key);
-
-  @override
-  _PetSwipeWidgetState createState() {
-    return _PetSwipeWidgetState(pets);
-  }
-}
-
-class _PetSwipeWidgetState extends State<PetSwipeWidget> {
-  final List<Pet> pets;
-  final deck = CardsDeck();
-  final petsService = PetsService();
-
-  _PetSwipeWidgetState(
-    this.pets,
-  ) : assert(pets != null);
-
-  // The deck helps manage the cards as they are swiped out.
-  int _topCardNumber = 0;
-
-  initState() {
-    super.initState();
-    deck.addBottom(_createNewCard(0));
-    deck.addBottom(_createNewCard(1));
-  }
-
-  SwipeCard _createNewCard(int position) {
-    if (position < pets.length) {
-      final pet = pets[position];
-      return new SwipeCard(
-        child: PetCard(key: Key("PetCard: ${pet.id}"), pet: pet),
-        onSwipe: (int direction) {
-          if (direction == SwipeCard.leftSwipe) {
-            petsService.dislikePet(pet);
-          } else {
-            petsService.likePet(pet);
-          }
-          advanceCard();
-        },
-        onAnimationDone: () {
-          addNewCardToBottom();
-        },
-      );
-    } else {
-      return SwipeCard(
-        child: EmptyStateWidget(
-          assetImage: "assets/no_pets.png",
-          emptyText:
-              "O ne!\nGyvūnų sąrašas jau baigėsi.\nPatikrink pamėgtų gyvūnų sąrašą!",
+  Widget _buildButtonRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        FloatingActionButton(
+          onPressed: () => engine.notifier.skipCurrent(),
+          heroTag: "fab_dislike",
+          child: Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
         ),
-        onSwipe: (int direction) {
-          advanceCard();
-        },
-        onAnimationDone: () {
-          addNewCardToBottom();
-        },
-      );
-    }
-  }
-
-  advanceCard() {
-    setState(() {
-      ++_topCardNumber;
-    });
-  }
-
-  addNewCardToBottom() {
-    setState(() {
-      deck.addBottom(_createNewCard(_topCardNumber + 1));
-    });
-  }
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Stack(
-              alignment: Alignment.center,
-              children: deck.topTwoCards(),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: FloatingActionButton(
+            onPressed: () {
+              if (engine.skipped.isNotEmpty) engine.notifier.undo();
+            },
+            child: Icon(
+              Icons.replay,
+              color: Colors.yellow[700],
             ),
+            heroTag: "fab_undo",
+            mini: true,
           ),
-          Visibility(
-            visible: false,
-//            visible: _topCardNumber < pets.length,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new RoundIconButton.large(
-                    icon: Icons.clear,
-                    iconColor: Colors.red,
-                    onPressed: () {
-//                    _matchEngine.currentMatch.nope();
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: new RoundIconButton.small(
-                      icon: Icons.refresh,
-                      iconColor: Colors.orange,
-                      onPressed: () {},
-                    ),
-                  ),
-                  new RoundIconButton.large(
-                    icon: Icons.favorite,
-                    iconColor: Colors.green,
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
+        ),
+        FloatingActionButton(
+          onPressed: () => engine.notifier.likeCurrent(),
+          child: Icon(
+            Icons.favorite,
+            color: Colors.green,
           ),
-        ],
-      ),
+          heroTag: "fab_like",
+        ),
+      ],
     );
   }
 }
