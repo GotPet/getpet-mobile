@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/pet_profile/pet_profile.dart';
+import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
@@ -27,8 +28,7 @@ class FavoritePetsComponent extends StatelessWidget {
             } else {
               return EmptyStateWidget(
                 assetImage: "assets/no_pets.png",
-                emptyText:
-                    "Neturite pamėgtų gyvūnų,\nlaikas išssirinkti draugą!",
+                emptyText: AppLocalizations.of(context).emptyFavoritesList,
               );
             }
           } else {
@@ -54,11 +54,11 @@ class ListViewFavoritePets extends StatelessWidget {
     var shelterPets =
         pets.where((pet) => pet.decision == PetDecision.getPet).toList();
     if (shelterPets.isNotEmpty) {
-      cells.add(LabelItem("Mano norai paimti gyvūnus"));
+      cells.add(LabelItem(AppLocalizations.of(context).myGetPetRequests));
       cells.addAll(shelterPets);
     }
 
-    cells.add(LabelItem("Mano pasirinkti gyvūnai"));
+    cells.add(LabelItem(AppLocalizations.of(context).myFavoritePets));
     cells.addAll(pets);
 
     return ListView.builder(

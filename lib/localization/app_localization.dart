@@ -15,6 +15,36 @@ class AppLocalizations {
 
   String get appTitle => "GetPet";
 
+  // Onboarding
+  String get onboarding1Title => "Labas!";
+
+  String get onboarding1Text =>
+      "Nori būti mūsų draugu?\nSusipažink su programėle!";
+
+  String get onboarding2Title => "Susižavėjai?";
+
+  String get onboarding2Text =>
+      "Nuslink patikusio gyvūno\nnuotrauką dešinėn - taip pridėsi\nją į mėgstamiausių sąrašą.";
+
+  String get onboarding3Title => "Deja, ne šį kartą?";
+
+  String get onboarding3Text => "Jei nesusižavėjai,\nnuslink nuotrauką kairėn.";
+
+  String get onboarding4Title => "Susipažinkim!";
+
+  String get onboarding4Text =>
+      "Paspausk ant gyvūno nuotraukos\nir perskaityk jo istoriją.";
+
+  String get onboarding5Title => "Priglausk!";
+
+  String get onboarding5Text =>
+      "Paspausk „GetPet“ ir sužinok,\nkur rasi savo draugą.";
+
+  String get onboardingFinish => "Baigti";
+
+  String get onboardingNext => "Kitas";
+
+  // Shelter pet
   String get callShelter => "Skambinti į prieglaudą";
 
   String get pushAndContact =>
@@ -25,6 +55,33 @@ class AppLocalizations {
 
   String get errorUnableToEmailShelter =>
       "Nepavyko atidaryti el. pašto programos. Išsiųskite elektroninį laišką prieglaudai ir susisiekite.";
+
+  // Swipe pets
+  String get noMorePetsToSwipe =>
+      "O ne!\nSąrašas baigėsi.\nPatikrink savo simpatijas!";
+
+  // Favorites list
+  String get myGetPetRequests => "Išrinktieji";
+
+  String get myFavoritePets => "Simpatijos";
+
+  String get emptyFavoritesList =>
+      "Mėgstamiausių gyvūnų sąrašas tuščias,\nlaikas susirasti simpatiją!";
+
+  // Pet profile
+  String get myStory => "Mano istorija";
+
+  String get deletePet => "Šalinti gyvūną iš sąrašo";
+
+  // Pet remove dialog
+  String get petRemoveDialogMessage =>
+      "Ar nori pašalinti gyvūną iš mėgstamiausių sąrašo?";
+
+  String get petRemoveDialogTitle => "Ištrinti";
+
+  String get petRemoveDialogCancel => "Atšaukti";
+
+  String get petRemoveDialogOk => "Taip";
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

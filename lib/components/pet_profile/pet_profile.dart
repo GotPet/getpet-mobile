@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
+import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
@@ -46,13 +47,18 @@ class PetProfileComponent extends StatelessWidget {
                         context: context,
                         builder: (BuildContext buildContext) {
                           return AlertDialog(
-                            title: Text("Ištrinti gyvūną iš sąrašo?"),
+                            title: Text(
+                              AppLocalizations.of(context).petRemoveDialogTitle,
+                            ),
                             content: Text(
-                                "Šis veiksmas ištrins gyvūną iš favoritų sąrašo."),
+                              AppLocalizations.of(context)
+                                  .petRemoveDialogMessage,
+                            ),
                             actions: <Widget>[
                               new FlatButton(
                                 child: new Text(
-                                  "Atšaukti",
+                                  AppLocalizations.of(context)
+                                      .petRemoveDialogCancel,
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                   ),
@@ -63,7 +69,8 @@ class PetProfileComponent extends StatelessWidget {
                               ),
                               new FlatButton(
                                 child: new Text(
-                                  "Ištrinti",
+                                  AppLocalizations.of(context)
+                                      .petRemoveDialogOk,
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                   ),
@@ -110,7 +117,7 @@ class PetProfileComponent extends StatelessWidget {
                       bottom: 8,
                     ),
                     child: Text(
-                      "MANO ISTORIJA",
+                      AppLocalizations.of(context).myStory,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -142,7 +149,7 @@ class PetProfileComponent extends StatelessWidget {
             color: Colors.white,
             width: 24,
           ),
-          label: Text("GetPet"),
+          label: Text(AppLocalizations.of(context).appTitle),
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           onPressed: () async {

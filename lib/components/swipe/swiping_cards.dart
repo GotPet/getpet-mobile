@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/components/swipe/pet_engine.dart';
+import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/widgets/empty_state.dart';
 
@@ -51,8 +52,7 @@ class _SwipingCardsState extends State<SwipingCards>
     if (widget.engine.currentList.isEmpty) {
       return EmptyStateWidget(
         assetImage: "assets/no_pets.png",
-        emptyText:
-            "O ne!\nGyvūnų sąrašas jau baigėsi.\nPatikrink pamėgtų gyvūnų sąrašą!",
+        emptyText: AppLocalizations.of(context).noMorePetsToSwipe,
       );
     }
     return Stack(

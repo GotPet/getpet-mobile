@@ -50,6 +50,9 @@ class AppPreferences {
   Future<bool> isOnboardingPassed() async {
     var prefs = await sharedPreferences;
 
-    return prefs.getBool(_KEY_ONBOARDING_PASSED) ?? false;
+    if (prefs.containsKey(_KEY_ONBOARDING_PASSED)) {
+      return prefs.getBool(_KEY_ONBOARDING_PASSED);
+    }
+    return false;
   }
 }

@@ -1,48 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/onboarding/onboarding_step_component.dart';
+import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/widgets/dots_indicator.dart';
 
+class OnboardingComponent extends StatefulWidget {
+  @override
+  _OnboardingComponentState createState() => _OnboardingComponentState();
+}
+
 class _OnboardingComponentState extends State<OnboardingComponent> {
   final _controller = new PageController();
-  final List<Widget> _pages = [
-    OnboardingStepComponent(
-      assetName: "assets/onboarding/onboarding_one.png",
-      title: "Labas!",
-      description: "Nori būti mūsų draugas?\nSusipažink su programėle!",
-    ),
-    OnboardingStepComponent(
-      assetName: "assets/onboarding/onboarding_two.png",
-      title: "Jei susižavėjai,",
-      description:
-          "nuslink patikusio gyvūno\nnuotrauką dešinėn - taip pridėsi\nją į mėgiamiausių sąrašą.",
-    ),
-    OnboardingStepComponent(
-      assetName: "assets/onboarding/onboarding_three.png",
-      title: "Deja, ne šį kartą?",
-      description: "Jei nesusižavėjai,\nnuslink nuotrauką kairėn.",
-    ),
-    OnboardingStepComponent(
-      assetName: "assets/onboarding/onboarding_four.png",
-      title: "Susipažinkim!",
-      description: "Paspausk ant gyvūno nuotraukos\nir perskaityk jo istoriją.",
-    ),
-    OnboardingStepComponent(
-      assetName: "assets/onboarding/onboarding_five.png",
-      title: "Priglausk!",
-      description: "Paspausk „GetPet“ ir sužinok,\nkur rasi savo draugą.",
-    ),
-  ];
   int page = 0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    bool isDone = page == _pages.length - 1;
+    final pages = [
+      OnboardingStepComponent(
+        assetName: "assets/onboarding/onboarding_one.png",
+        title: AppLocalizations.of(context).onboarding1Title,
+        description: AppLocalizations.of(context).onboarding1Text,
+      ),
+      OnboardingStepComponent(
+        assetName: "assets/onboarding/onboarding_two.png",
+        title: AppLocalizations.of(context).onboarding2Title,
+        description: AppLocalizations.of(context).onboarding2Text,
+      ),
+      OnboardingStepComponent(
+        assetName: "assets/onboarding/onboarding_three.png",
+        title: AppLocalizations.of(context).onboarding3Title,
+        description: AppLocalizations.of(context).onboarding3Text,
+      ),
+      OnboardingStepComponent(
+        assetName: "assets/onboarding/onboarding_four.png",
+        title: AppLocalizations.of(context).onboarding4Title,
+        description: AppLocalizations.of(context).onboarding4Text,
+      ),
+      OnboardingStepComponent(
+        assetName: "assets/onboarding/onboarding_five.png",
+        title: AppLocalizations.of(context).onboarding5Title,
+        description: AppLocalizations.of(context).onboarding5Text,
+      ),
+    ];
+
+    bool isDone = page == pages.length - 1;
     return new Scaffold(
         backgroundColor: Colors.transparent,
         body: new Stack(
@@ -51,9 +52,9 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
               child: new PageView.builder(
                 physics: new AlwaysScrollableScrollPhysics(),
                 controller: _controller,
-                itemCount: _pages.length,
+                itemCount: pages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _pages[index % _pages.length];
+                  return pages[index % pages.length];
                 },
                 onPageChanged: (int p) {
                   setState(() {
@@ -74,7 +75,13 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
                   actions: <Widget>[
                     FlatButton(
                       child: Text(
-                        isDone ? 'PABAIGTI' : 'KITAS',
+                        isDone
+                            ? AppLocalizations.of(context)
+                                .onboardingFinish
+                                .toUpperCase()
+                            : AppLocalizations.of(context)
+                                .onboardingNext
+                                .toUpperCase(),
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () => advancePageOrFinish(isDone),
@@ -94,7 +101,7 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
                       padding: const EdgeInsets.all(8),
                       child: new DotsIndicator(
                         controller: _controller,
-                        itemCount: _pages.length,
+                        itemCount: pages.length,
                         onPageSelected: (int page) {
                           _controller.animateToPage(
                             page,
@@ -117,7 +124,13 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
                           child: new Material(
                             child: MaterialButton(
                               child: Text(
-                                isDone ? 'PABAIGTI' : 'KITAS',
+                                isDone
+                                    ? AppLocalizations.of(context)
+                                        .onboardingFinish
+                                        .toUpperCase()
+                                    : AppLocalizations.of(context)
+                                        .onboardingNext
+                                        .toUpperCase(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .button
@@ -152,9 +165,4 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     }
   }
-}
-
-class OnboardingComponent extends StatefulWidget {
-  @override
-  _OnboardingComponentState createState() => _OnboardingComponentState();
 }

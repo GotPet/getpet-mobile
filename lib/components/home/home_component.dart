@@ -3,6 +3,7 @@ import 'package:getpet/components/onboarding/onboarding_component.dart';
 import 'package:getpet/components/pet_favorites/favorites_component.dart';
 import 'package:getpet/components/swipe/pet_swipe_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
+import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/preferences/app_preferences.dart';
 
 class HomeComponent extends StatelessWidget {
@@ -28,7 +29,7 @@ class HomeComponent extends StatelessWidget {
               Tab(icon: Icon(Icons.favorite)),
             ],
           ),
-          title: Text("GetPet"),
+          title: Text(AppLocalizations.of(context).appTitle),
         ),
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
@@ -45,6 +46,7 @@ class HomeComponent extends StatelessWidget {
       final isOnboardingPassed = await AppPreferences().isOnboardingPassed();
 
       if (!isOnboardingPassed) {
+        await AppPreferences().setOnboardingPassed();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => OnboardingComponent()),
