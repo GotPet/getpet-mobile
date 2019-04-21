@@ -71,6 +71,18 @@ class ShelterPetComponent extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context).pushAndContact,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
                     InkWell(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8, bottom: 8),
