@@ -82,6 +82,15 @@ class AppLocalizations {
   String get petRemoveDialogCancel => "Atšaukti";
 
   String get petRemoveDialogOk => "Taip";
+
+  // User profile
+  String get loginTitle => "Prisijunkite";
+
+  String get logout => "Atsijungti";
+
+  String get privacyPolicy => "Privatumo politika";
+
+  String get userGuide => "Instrukcija";
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

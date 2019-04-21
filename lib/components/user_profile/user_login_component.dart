@@ -6,14 +6,16 @@ import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
 import 'package:flutter_firebase_ui/login_view.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/user_profile/user_profile_component.dart';
+import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/widgets/privacy_policy_button.dart';
+import 'package:getpet/widgets/user_guide_button.dart';
 
 class UserLoginFullscreenComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Prisijunkite"),
+        title: Text(AppLocalizations.of(context).loginTitle),
       ),
       body: UserLoginComponent(),
     );
@@ -69,7 +71,14 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
                   passwordCheck: false,
                 ),
               ),
-              PrivacyPolicyButton()
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UserGuideButton(),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+                child: PrivacyPolicyButton(),
+              ),
             ],
           ));
     } else {
