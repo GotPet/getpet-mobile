@@ -30,11 +30,6 @@ dependencies:
   firebase_analytics: ^2.0.2+1
   sentry: ^2.2.0
   device_info: ^0.4.0
-  swipe_card:
-    git:
-      url: git://github.com/Knupper/swipe-cards.git
-      ref: task_fix_out_of_range_exception_for_lists_with_1_element
-
   # We don't use twitter login, but flutter_firebase_ui has dependency for it
   # and iOS unable build due to this. Use flutter_firebase_ui fork without twitter login
   flutter_firebase_ui:
@@ -42,8 +37,6 @@ dependencies:
       url: git://github.com/vycius/flutter_plugins.git
       path: packages/flutter_firebase_ui
       ref: twitter-login-removed
-
-
 
 dev_dependencies:
   flutter_test:
@@ -71,13 +64,13 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - assets/dog_photo.jpg
-  - assets/ic_home.png
-  - assets/no_pets.png
-  - assets/two_logos.png
-  - assets/anonymous_avatar.jpg
-  - assets/get_pet_logo.png
-  - assets/onboarding/
+    - assets/dog_photo.jpg
+    - assets/ic_home.png
+    - assets/no_pets.png
+    - assets/two_logos.png
+    - assets/anonymous_avatar.jpg
+    - assets/get_pet_logo.png
+    - assets/onboarding/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
