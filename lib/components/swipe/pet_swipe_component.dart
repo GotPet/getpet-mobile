@@ -40,6 +40,7 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
                 children: [
                   Expanded(
                     child: SwipingCards(
+                      key: ValueKey("SwipingCards: ${engine.hashCode}"),
                       engine: engine,
                     ),
                   ),

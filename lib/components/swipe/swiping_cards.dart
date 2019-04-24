@@ -10,9 +10,9 @@ import 'pet_card.dart';
 
 // Adapter from https://github.com/SpokenBanana/pawdoption/blob/master/lib/widgets/swiping_cards.dart
 class SwipingCards extends StatefulWidget {
-  SwipingCards({this.engine});
-
   final PetEngine engine;
+
+  const SwipingCards({Key key, this.engine}) : super(key: key);
 
   @override
   _SwipingCardsState createState() => _SwipingCardsState();
