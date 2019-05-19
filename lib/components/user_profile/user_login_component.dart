@@ -69,6 +69,7 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
                     ProvidersTypes.facebook,
                   ],
                   passwordCheck: false,
+                  padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
                 ),
               ),
               Padding(
