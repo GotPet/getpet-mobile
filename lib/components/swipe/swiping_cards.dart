@@ -49,6 +49,7 @@ class _SwipingCardsState extends State<SwipingCards>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (widget.engine.currentList.isEmpty) {
       return EmptyStateWidget(
         assetImage: "assets/no_pets.png",
