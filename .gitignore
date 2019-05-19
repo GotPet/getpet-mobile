@@ -32,6 +32,9 @@ android/key.json
 build/
 
 # Android related
+**/android/KeyStore
+**/android/key.properties
+
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
 **/android/captures/
