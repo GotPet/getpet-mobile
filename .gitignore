@@ -1,4 +1,5 @@
 lib/dsn.dart
+android/key.json
 
 # Miscellaneous
 *.class

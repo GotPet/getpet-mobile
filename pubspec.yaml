@@ -26,17 +26,11 @@ dependencies:
   flutter_advanced_networkimage: ^0.4.15
   url_launcher: ^5.0.2
   shared_preferences: ^0.5.2
-  firebase_core: ^0.3.4
-  firebase_analytics: ^2.1.1+3
+  firebase_core: ^0.4.0+1
+  firebase_analytics: ^3.0.1
   sentry: ^2.2.0
   device_info: ^0.4.0
-  # We don't use twitter login, but flutter_firebase_ui has dependency for it
-  # and iOS unable build due to this. Use flutter_firebase_ui fork without twitter login
-  flutter_firebase_ui:
-    git:
-      url: git://github.com/vycius/flutter_plugins.git
-      path: packages/flutter_firebase_ui
-      ref: twitter-login-removed
+  firebase_ui: ^1.0.4
 
 dev_dependencies:
   flutter_test:

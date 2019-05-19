@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:firebase_ui/l10n/localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_ui/l10n/localization.dart';
 
 class FirebaseLocalization extends FFULocalizations {
   FirebaseLocalization(Locale locale) : super(locale);
