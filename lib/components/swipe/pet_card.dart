@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
