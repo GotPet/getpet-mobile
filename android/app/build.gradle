@@ -69,6 +69,7 @@ android {
             applicationIdSuffix '.debug'
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             useProguard true
 
