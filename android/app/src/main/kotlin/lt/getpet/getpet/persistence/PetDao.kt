@@ -11,7 +11,7 @@ interface PetDao {
 
     @Query("SELECT Pets.id FROM Pets INNER JOIN PetChoices ON Pets.id = PetChoices.pet_id " +
             "AND PetChoices.status = 2")
-    fun getPetIdsWithRquests(): List<Long>
+    fun getPetIdsWithRequests(): List<Long>
 
     @Query("SELECT Pets.id FROM Pets INNER JOIN PetChoices ON Pets.id = PetChoices.pet_id " +
             "AND PetChoices.status = 0")
