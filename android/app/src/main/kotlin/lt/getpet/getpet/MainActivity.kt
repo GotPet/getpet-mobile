@@ -25,25 +25,31 @@ class MainActivity : FlutterActivity() {
 
             if (call.method == "getLegacyPets") {
                 thread {
-                    val db = Room.databaseBuilder(
-                            applicationContext,
-                            PetsDatabase::class.java,
-                            "Pets.db"
-                    ).addMigrations(Migrations.MIGRATION_3_4)
-                            .fallbackToDestructiveMigration()
-                            .build()
+                    var db: PetsDatabase? = null
 
-                    val petsDao = db.petsDao()
-                    val linkedPetIds = petsDao.getLikedPetIds()
-                    val petIdsWithRequest = petsDao.getPetIdsWithRequests()
+                    try {
+                        db = Room.databaseBuilder(
+                                applicationContext,
+                                PetsDatabase::class.java,
+                                "Pets.db"
+                        ).addMigrations(Migrations.MIGRATION_3_4)
+                                .fallbackToDestructiveMigration()
+                                .build()
 
-                    runOnUiThread {
-                        result.success(
-                                mapOf(
-                                        "linkedPetIds" to linkedPetIds,
-                                        "petIdsWithRequest" to petIdsWithRequest
-                                )
-                        )
+                        val petsDao = db.petsDao()
+                        val linkedPetIds = petsDao.getLikedPetIds()
+                        val petIdsWithRequest = petsDao.getPetIdsWithRequests()
+
+                        runOnUiThread {
+                            result.success(
+                                    mapOf(
+                                            "linkedPetIds" to linkedPetIds,
+                                            "petIdsWithRequest" to petIdsWithRequest
+                                    )
+                            )
+                        }
+                    } finally {
+                        db?.close()
                     }
                 }
             } else {
