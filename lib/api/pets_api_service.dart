@@ -115,4 +115,26 @@ class PetsApiService {
       },
     );
   }
+
+  Future<List<Pet>> getPets(List<int> petIds) async {
+    if (petIds.isNotEmpty) {
+      final petIdsCommaSeparated = petIds.join(',');
+      var petsUrl = "/v1/pets/?pet_ids=$petIdsCommaSeparated";
+
+      List<Pet> allPets = [];
+      while (petsUrl != null) {
+        final response = await dio.get(petsUrl);
+
+        final pets =
+            response.data['results'].map<Pet>((model) => Pet.fromJson(model));
+
+        allPets.addAll(pets);
+
+        petsUrl = response.data['next'];
+      }
+
+      return allPets;
+    }
+    return [];
+  }
 }

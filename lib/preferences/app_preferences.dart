@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppPreferences {
   static const _KEY_API_TOKEN = "GETPET_API_TOKEN";
   static const _KEY_ONBOARDING_PASSED = "ONBOARDING_PASSED";
+  static const _KEY_LEGACY_PETS_MIGRATED = "LEGACY_PETS_MIGRATED";
 
   static final AppPreferences _singleton = new AppPreferences._internal();
 
@@ -54,5 +55,20 @@ class AppPreferences {
       return prefs.getBool(_KEY_ONBOARDING_PASSED);
     }
     return false;
+  }
+
+  Future<bool> isLegacyPetsMigrated() async {
+    var prefs = await sharedPreferences;
+
+    if (prefs.containsKey(_KEY_LEGACY_PETS_MIGRATED)) {
+      return prefs.getBool(_KEY_LEGACY_PETS_MIGRATED);
+    }
+    return false;
+  }
+
+  Future setLegacyPetsMigrated() async {
+    var prefs = await sharedPreferences;
+
+    return await prefs.setBool(_KEY_LEGACY_PETS_MIGRATED, true);
   }
 }

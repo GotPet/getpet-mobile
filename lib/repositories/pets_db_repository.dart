@@ -134,6 +134,10 @@ WHERE $_columnPetId IN (
   }
 
   Future insertPets(List<Pet> pets, {onConflictReplace: true}) async {
+    if (pets.isEmpty) {
+      return [];
+    }
+
     var shelters = pets.map((p) => p.shelter).toSet().toList(growable: false);
     await this.insertShelters(shelters);
 
