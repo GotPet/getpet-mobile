@@ -105,10 +105,7 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
 
     _listener = _authenticationManager.listenForUser((FirebaseUser user) {
       if (_listener != null) {
-        print("Inside listener");
         if (user != null && widget.popOnLoginIn) {
-          print("Inside listener popping");
-
           Navigator.pop(context, true);
         }
 
