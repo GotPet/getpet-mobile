@@ -83,7 +83,9 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
             ],
           ));
     } else {
-      return UserProfileComponent(user: _currentUser);
+      return Center(
+        child: UserProfileComponent(user: _currentUser),
+      );
     }
   }
 
