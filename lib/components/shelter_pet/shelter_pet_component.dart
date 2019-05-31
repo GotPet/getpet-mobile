@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
@@ -12,6 +13,39 @@ class ShelterPetComponent extends StatelessWidget {
     @required this.pet,
   })  : assert(pet != null),
         super(key: key);
+
+  Future callShelter(BuildContext context) async {
+    var url = 'tel:${pet.shelter.phone}';
+    if (await canLaunch(url)) {
+      await Analytics().logShelterCall(pet);
+
+      return await launch(url);
+    } else {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context).errorUnableToCallShelter,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future emailShelter(BuildContext context) async {
+    var url = 'mailto:${pet.shelter.email}';
+    if (await canLaunch(url)) {
+      await Analytics().logShelterEmail(pet);
+      await launch(url);
+    } else {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context).errorUnableToEmailShelter,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,19 +131,7 @@ class ShelterPetComponent extends StatelessWidget {
                           ),
                         ),
                         onTap: () async {
-                          var url = 'tel:${pet.shelter.phone}';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            Scaffold.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  AppLocalizations.of(context)
-                                      .errorUnableToCallShelter,
-                                ),
-                              ),
-                            );
-                          }
+                          await callShelter(context);
                         },
                       ),
                       InkWell(
@@ -125,19 +147,7 @@ class ShelterPetComponent extends StatelessWidget {
                           ),
                         ),
                         onTap: () async {
-                          var url = 'mailto:${pet.shelter.email}';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            Scaffold.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  AppLocalizations.of(context)
-                                      .errorUnableToEmailShelter,
-                                ),
-                              ),
-                            );
-                          }
+                          await emailShelter(context);
                         },
                       )
                     ],
@@ -156,18 +166,7 @@ class ShelterPetComponent extends StatelessWidget {
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Colors.white,
             onPressed: () async {
-              var url = 'tel:${pet.shelter.phone}';
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).errorUnableToCallShelter,
-                    ),
-                  ),
-                );
-              }
+              await callShelter(context);
             },
           );
         },

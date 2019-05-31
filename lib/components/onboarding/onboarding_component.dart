@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/components/onboarding/onboarding_step_component.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/preferences/app_preferences.dart';
@@ -158,11 +159,19 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
 
   advancePageOrFinish(bool isDone) async {
     if (isDone) {
+      await Analytics().logOnboardingComplete();
       await AppPreferences().setOnboardingPassed();
       Navigator.pop(context);
     } else {
       _controller.animateToPage(page + 1,
           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    Analytics().logOnboardingBegin();
   }
 }
