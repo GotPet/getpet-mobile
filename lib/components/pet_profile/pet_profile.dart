@@ -21,6 +21,27 @@ class PetProfileComponent extends StatelessWidget {
 
   final _authenticationManager = AuthenticationManager();
 
+  Future launchShelterPetComponent(BuildContext context) async {
+    return await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ShelterPetComponent(pet: pet)),
+    );
+  }
+
+  Future launchUserLoginComponent(BuildContext context) async {
+    final isLoggedIn = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (_) => UserLoginFullscreenComponent(
+                popOnLoginIn: true,
+              )),
+    );
+
+    if (isLoggedIn == true) {
+      await launchShelterPetComponent(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,17 +175,9 @@ class PetProfileComponent extends StatelessWidget {
           foregroundColor: Colors.white,
           onPressed: () async {
             if (await _authenticationManager.isLoggedIn()) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => ShelterPetComponent(pet: pet)),
-              );
+              await launchShelterPetComponent(context);
             } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => UserLoginFullscreenComponent()),
-              );
+              await launchUserLoginComponent(context);
             }
           },
         ),

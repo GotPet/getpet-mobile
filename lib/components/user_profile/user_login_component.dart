@@ -11,20 +11,30 @@ import 'package:getpet/widgets/privacy_policy_button.dart';
 import 'package:getpet/widgets/user_guide_button.dart';
 
 class UserLoginFullscreenComponent extends StatelessWidget {
+  final bool popOnLoginIn;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).loginTitle),
       ),
-      body: UserLoginComponent(),
+      body: UserLoginComponent(
+        popOnLoginIn: this.popOnLoginIn,
+      ),
     );
   }
+
+  UserLoginFullscreenComponent({this.popOnLoginIn = false});
 }
 
 class UserLoginComponent extends StatefulWidget {
+  final bool popOnLoginIn;
+
   @override
   _UserLoginComponentState createState() => new _UserLoginComponentState();
+
+  UserLoginComponent({this.popOnLoginIn = false});
 }
 
 class _UserLoginComponentState extends State<UserLoginComponent> {
@@ -95,6 +105,13 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
 
     _listener = _authenticationManager.listenForUser((FirebaseUser user) {
       if (_listener != null) {
+        print("Inside listener");
+        if (user != null && widget.popOnLoginIn) {
+          print("Inside listener popping");
+
+          Navigator.pop(context, true);
+        }
+
         setState(() {
           _currentUser = user;
         });
