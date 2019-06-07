@@ -3,6 +3,8 @@
 -optimizations !code/allocation/variable
 -keepattributes *Annotation*
 
+-keep class lt.getpet.getpet.** { *; }
+
 # Flutter Wrapper
 -keep class io.flutter.app.** { *; }
 -keep class io.flutter.plugin.**  { *; }
@@ -27,6 +29,7 @@
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
 # Okio
 -keep class sun.misc.Unsafe { *; }
+-dontnote sun.misc.Unsafe
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
@@ -43,5 +46,4 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -keep class org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement { *; }
 
-# Auth
 -keep class io.flutter.plugins.**  { *; }
