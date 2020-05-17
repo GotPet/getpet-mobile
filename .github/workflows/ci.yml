@@ -1,0 +1,23 @@
+name: Test GetPet mobile application
+on: [push, pull_request]
+jobs:
+  test:
+    name: Test GetPet mobile application
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.x'
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: dart --version
+      - run: flutter --version
+
+      - run: flutter pub get
+      - run: flutter build appbundle
