@@ -16,6 +16,7 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY_BASE64 }}
 
+      - run: ls -l android/app
 
       - uses: subosito/flutter-action@v1
         with:
