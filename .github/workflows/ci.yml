@@ -14,9 +14,7 @@ jobs:
 
       - run: echo $SIGNING_KEY_BASE64 | base64 -d > android/app/key.jks
         env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY_BASE64 }}
-
-      - run: ls -l android/app
+          SIGNING_KEY_BASE64: ${{ secrets.SIGNING_KEY_BASE64 }}
 
       - uses: subosito/flutter-action@v1
         with:
