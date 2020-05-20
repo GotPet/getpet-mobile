@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui/login_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_ui/flutter_firebase_ui.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/user_profile/user_profile_component.dart';
 import 'package:getpet/localization/app_localization.dart';
-import 'package:getpet/widgets/privacy_policy_button.dart';
-import 'package:getpet/widgets/user_guide_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserLoginFullscreenComponent extends StatelessWidget {
   final bool popOnLoginIn;
@@ -83,12 +83,51 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: UserGuideButton(),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
-                child: PrivacyPolicyButton(),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 32),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text:
+                          "${AppLocalizations.of(context).loginConditionsDescription}\n",
+                    ),
+                    TextSpan(
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      text: AppLocalizations.of(context).privacyPolicy,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          final url =
+                              'https://www.getpet.lt/static/pdf/privatumo-politika.pdf';
+                          if (await canLaunch(url)) {
+                            await launch(
+                              url,
+                            );
+                          }
+                        },
+                    ),
+                    TextSpan(text: " ${AppLocalizations.of(context).and} "),
+                    TextSpan(
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      text: AppLocalizations.of(context).fairUseRules,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          final url =
+                              'https://www.getpet.lt/static/pdf/saziningo-naudojimosi-taisykles-vartotojams.pdf';
+                          if (await canLaunch(url)) {
+                            await launch(
+                              url,
+                            );
+                          }
+                        },
+                    ),
+                  ]),
+                ),
               ),
             ],
           ));

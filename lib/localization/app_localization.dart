@@ -86,9 +86,16 @@ class AppLocalizations {
   // User profile
   String get loginTitle => "Prisijunkite";
 
+  String get loginConditionsDescription =>
+      "Prisijungdami Jūs patvirtinate, kad sutinkate su GetPet";
+
+  String get fairUseRules => "Sąžiningo naudojimosi taisyklėmis";
+
   String get logout => "Atsijungti";
 
   String get privacyPolicy => "Privatumo politika";
+
+  String get and => "ir";
 
   String get userGuide => "Instrukcija";
 }
