@@ -22,7 +22,7 @@ class HomeComponent extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.info_outline),
+              icon: Icon(Icons.help_outline),
               tooltip: AppLocalizations.of(context).userGuide,
               onPressed: () {
                 Navigator.push(
