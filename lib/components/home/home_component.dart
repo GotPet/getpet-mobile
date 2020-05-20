@@ -15,6 +15,11 @@ class HomeComponent extends StatelessWidget {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
+          title: Image.asset(
+            'assets/get_pet_logo.png',
+            fit: BoxFit.cover,
+            height: 30,
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.info_outline),
@@ -42,7 +47,6 @@ class HomeComponent extends StatelessWidget {
               Tab(icon: Icon(Icons.favorite)),
             ],
           ),
-          title: Text(AppLocalizations.of(context).appTitle),
         ),
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
