@@ -15,6 +15,18 @@ class HomeComponent extends StatelessWidget {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(Icons.info_outline),
+              tooltip: AppLocalizations.of(context).userGuide,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => OnboardingComponent()),
+                );
+              },
+            ),
+          ],
           bottom: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.account_circle)),
