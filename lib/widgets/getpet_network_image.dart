@@ -25,6 +25,7 @@ class GetPetNetworkImage extends StatelessWidget {
         useDiskCache: useDiskCache,
         header: {
           'accept': 'image/webp,image/*;q=0.8',
+          'sec-fetch-dest': 'image',
         },
       ),
       printError: true,
