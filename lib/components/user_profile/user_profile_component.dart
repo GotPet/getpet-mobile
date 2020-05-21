@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/widgets/conditions_rich_text.dart';
+import 'package:getpet/widgets/getpet_network_image.dart';
 
 class UserProfileComponent extends StatelessWidget {
   final FirebaseUser user;
@@ -20,11 +21,10 @@ class UserProfileComponent extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 24, bottom: 16),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: FadeInImage(
+                    child: Container(
                       width: 128,
                       height: 128,
-                      placeholder: AssetImage('assets/loading.gif'),
-                      image: getUserProfilePhotoProvider(),
+                      child: getUserProfilePhotoProvider(),
                     ),
                   ),
                 ),
@@ -65,20 +65,21 @@ class UserProfileComponent extends StatelessWidget {
         ),
       );
 
-  ImageProvider getUserProfilePhotoProvider() {
-    if (user.photoUrl == null) {
-      return AssetImage(
-        "assets/anonymous_avatar.jpg",
-      );
-    } else {
-      var photoUrl = user.photoUrl;
+  Widget getUserProfilePhotoProvider() {
+    final anonymousImage = Image.asset("assets/anonymous_avatar.jpg");
 
-      photoUrl = photoUrl.replaceAll("/s96-c/", "/s300-c/");
+    if (user.photoUrl != null) {
+      var photoUrl = user.photoUrl.replaceFirst("/s96-c/", "/s300-c/");
       photoUrl += "?height=300";
-      return NetworkImage(
-        photoUrl,
+
+      return GetPetNetworkImage(
+        url: photoUrl,
+        useDiskCache: true,
+        placeholder: anonymousImage,
       );
     }
+
+    return anonymousImage;
   }
 
   _logout() async {

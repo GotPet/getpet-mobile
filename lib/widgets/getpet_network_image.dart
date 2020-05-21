@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
@@ -6,14 +5,20 @@ import 'package:flutter_advanced_networkimage/transition.dart';
 class GetPetNetworkImage extends StatelessWidget {
   final String url;
   final bool useDiskCache;
+  final Widget placeholder;
 
   const GetPetNetworkImage(
-      {Key key, @required this.url, this.useDiskCache: true})
+      {Key key, @required this.url, this.placeholder, this.useDiskCache: true})
       : assert(url != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var placeholder = this.placeholder;
+    if (placeholder == null) {
+      placeholder = Placeholder(color: Theme.of(context).primaryColor);
+    }
+
     return TransitionToImage(
       image: AdvancedNetworkImage(
         url,
@@ -21,7 +26,7 @@ class GetPetNetworkImage extends StatelessWidget {
       ),
       printError: true,
       fit: BoxFit.cover,
-      placeholder: Placeholder(color: Theme.of(context).primaryColor,),
+      placeholder: placeholder,
       enableRefresh: true,
     );
   }
