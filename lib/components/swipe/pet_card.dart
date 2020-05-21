@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:getpet/utils/screen_utils.dart';
 
 class PetCard extends StatelessWidget {
   final Pet pet;
@@ -22,10 +23,15 @@ class PetCard extends StatelessWidget {
           children: <Widget>[
             LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
+                final screenWidth = getScreenWidth(context);
+
                 return Image(
                   image: AdvancedNetworkImage(
-                    getSizedImageUrlFromConstraints(
-                        pet.profilePhoto, constraints),
+                    getSizedImageUrl(
+                      pet.profilePhoto,
+                      screenWidth,
+                      ceilToHundreds: true,
+                    ),
                   ),
                   fit: BoxFit.cover,
                 );

@@ -7,6 +7,7 @@ import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
+import 'package:getpet/utils/screen_utils.dart';
 
 class PetProfileComponent extends StatelessWidget {
   final petsService = PetsService();
@@ -197,13 +198,16 @@ class PetPhotosCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        final screenWidth = getScreenWidth(context);
+
         final photos = pet
             .allPhotos()
             .map(
-              (photo) => getSizedImageUrlFromConstraints(
-                    photo,
-                    constraints,
-                  ),
+              (photo) => getSizedImageUrl(
+                photo,
+                screenWidth,
+                ceilToHundreds: true,
+              ),
             )
             .map((photo) => NetworkImage(photo))
             .toList(growable: false);

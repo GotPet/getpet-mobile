@@ -101,7 +101,7 @@ class _PetListCell extends StatelessWidget {
                 key: Key(pet.profilePhoto),
                 backgroundColor: Colors.transparent,
                 backgroundImage: AdvancedNetworkImage(
-                  getSizedImageUrl(pet.profilePhoto, 72, 72),
+                  getSizedImageUrl(pet.profilePhoto, 72, height: 72),
                   useDiskCache: true,
                 ),
                 radius: 36,
