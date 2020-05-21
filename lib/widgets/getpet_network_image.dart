@@ -23,6 +23,9 @@ class GetPetNetworkImage extends StatelessWidget {
       image: AdvancedNetworkImage(
         url,
         useDiskCache: useDiskCache,
+        header: {
+          'accept': 'image/webp,image/*;q=0.8',
+        },
       ),
       printError: true,
       fit: BoxFit.cover,
