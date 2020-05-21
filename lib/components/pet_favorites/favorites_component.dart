@@ -97,10 +97,11 @@ class _PetListCell extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Container(
-                width: 72,
-                height: 72,
-                child: ClipOval(
+              child: ClipOval(
+                child: Container(
+                  width: 72,
+                  height: 72,
+                  color: Theme.of(context).primaryColor,
                   child: GetPetNetworkImage(
                     url: getSizedImageUrl(pet.profilePhoto, 72, height: 72),
                     useDiskCache: true,
