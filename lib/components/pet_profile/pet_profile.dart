@@ -8,6 +8,7 @@ import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/utils/screen_utils.dart';
+import 'package:getpet/widgets/getpet_network_image.dart';
 
 class PetProfileComponent extends StatelessWidget {
   final petsService = PetsService();
@@ -209,7 +210,7 @@ class PetPhotosCarousel extends StatelessWidget {
                 ceilToHundreds: true,
               ),
             )
-            .map((photo) => NetworkImage(photo))
+            .map((photo) => GetPetNetworkImage(url: photo))
             .toList(growable: false);
 
         return new Carousel(

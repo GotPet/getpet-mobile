@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/utils/image_utils.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:getpet/utils/screen_utils.dart';
+import 'package:getpet/widgets/getpet_network_image.dart';
 
 class PetCard extends StatelessWidget {
   final Pet pet;
@@ -24,16 +24,14 @@ class PetCard extends StatelessWidget {
             LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 final screenWidth = getScreenWidth(context);
+                final imageUrl = getSizedImageUrl(
+                  pet.profilePhoto,
+                  screenWidth,
+                  ceilToHundreds: true,
+                );
 
-                return Image(
-                  image: AdvancedNetworkImage(
-                    getSizedImageUrl(
-                      pet.profilePhoto,
-                      screenWidth,
-                      ceilToHundreds: true,
-                    ),
-                  ),
-                  fit: BoxFit.cover,
+                return GetPetNetworkImage(
+                  url: imageUrl,
                 );
               },
             ),

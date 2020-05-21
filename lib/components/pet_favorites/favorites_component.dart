@@ -5,9 +5,9 @@ import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/widgets/empty_state.dart';
+import 'package:getpet/widgets/getpet_network_image.dart';
 import 'package:getpet/widgets/label.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 
 class FavoritePetsComponent extends StatelessWidget {
   @override
@@ -97,14 +97,15 @@ class _PetListCell extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: CircleAvatar(
-                key: Key(pet.profilePhoto),
-                backgroundColor: Colors.transparent,
-                backgroundImage: AdvancedNetworkImage(
-                  getSizedImageUrl(pet.profilePhoto, 72, height: 72),
-                  useDiskCache: true,
+              child: Container(
+                width: 72,
+                height: 72,
+                child: ClipOval(
+                  child: GetPetNetworkImage(
+                    url: getSizedImageUrl(pet.profilePhoto, 72, height: 72),
+                    useDiskCache: true,
+                  ),
                 ),
-                radius: 36,
               ),
             ),
             Flexible(
