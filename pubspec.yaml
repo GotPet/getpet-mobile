@@ -10,7 +10,7 @@ description: GetPet mobile application
 version: 2.0.2+20002
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   flutter:

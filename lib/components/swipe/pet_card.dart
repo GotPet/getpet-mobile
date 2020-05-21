@@ -30,8 +30,11 @@ class PetCard extends StatelessWidget {
                   ceilToHundreds: true,
                 );
 
-                return GetPetNetworkImage(
-                  url: imageUrl,
+                return Hero(
+                  tag: "pet-${pet.id}-photo-image-cover",
+                  child: GetPetNetworkImage(
+                    url: imageUrl,
+                  ),
                 );
               },
             ),

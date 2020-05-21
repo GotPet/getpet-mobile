@@ -9,6 +9,7 @@ import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/utils/screen_utils.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
+import 'package:getpet/utils/container_utils.dart';
 
 class PetProfileComponent extends StatelessWidget {
   final petsService = PetsService();
@@ -210,7 +211,7 @@ class PetPhotosCarousel extends StatelessWidget {
                 ceilToHundreds: true,
               ),
             )
-            .map((photo) => GetPetNetworkImage(url: photo))
+            .mapIndexed(_createImageWidget)
             .toList(growable: false);
 
         return new Carousel(
@@ -221,5 +222,20 @@ class PetPhotosCarousel extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _createImageWidget(String url, int index) {
+    final image = GetPetNetworkImage(
+      url: url,
+    );
+
+    if (index == 0) {
+      return Hero(
+        tag: "pet-${pet.id}-photo-image-cover",
+        child: image,
+      );
+    }
+
+    return image;
   }
 }
