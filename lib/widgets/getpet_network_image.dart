@@ -7,9 +7,12 @@ class GetPetNetworkImage extends StatelessWidget {
   final bool useDiskCache;
   final Widget placeholder;
 
-  const GetPetNetworkImage(
-      {Key key, @required this.url, this.placeholder, this.useDiskCache: true})
-      : assert(url != null),
+  const GetPetNetworkImage({
+    Key key,
+    @required this.url,
+    this.placeholder,
+    this.useDiskCache: false,
+  })  : assert(url != null),
         super(key: key);
 
   @override
