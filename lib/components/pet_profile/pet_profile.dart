@@ -55,7 +55,30 @@ class PetProfileComponent extends StatelessWidget {
             pinned: true,
             primary: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(pet.name),
+              title: Text(
+                pet.name,
+                style: TextStyle(
+                    inherit: true,
+                    shadows: [
+                      Shadow( // bottomLeft
+                          offset: Offset(-0.5, -0.5),
+                          color: Colors.black54
+                      ),
+                      Shadow( // bottomRight
+                          offset: Offset(0.5, -0.5),
+                          color: Colors.black54
+                      ),
+                      Shadow( // topRight
+                          offset: Offset(0.5, 0.5),
+                          color: Colors.black54
+                      ),
+                      Shadow( // topLeft
+                          offset: Offset(-0.5, 0.5),
+                          color: Colors.black54
+                      ),
+                    ]
+                ),
+              ),
               centerTitle: false,
               background: PetPhotosCarousel(
                 pet: pet,
@@ -216,7 +239,9 @@ class PetPhotosCarousel extends StatelessWidget {
 
         return new Carousel(
           images: photos,
-          moveIndicatorFromBottom: 300,
+          dotPosition: DotPosition.topCenter,
+          indicatorBgPadding: 45,
+          overlayShadow: true,
           dotBgColor: Colors.transparent,
           autoplay: false,
         );
