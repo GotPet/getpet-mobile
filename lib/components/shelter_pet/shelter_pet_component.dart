@@ -52,6 +52,14 @@ class ShelterPetComponent extends StatelessWidget {
     PetsService().shelterPet(pet);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/get_pet_logo.png',
+          fit: BoxFit.cover,
+          height: 30,
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Builder(
           builder: (BuildContext context) {
