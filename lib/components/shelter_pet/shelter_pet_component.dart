@@ -3,6 +3,9 @@ import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/utils/image_utils.dart';
+import 'package:getpet/utils/screen_utils.dart';
+import 'package:getpet/widgets/getpet_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShelterPetComponent extends StatelessWidget {
@@ -63,21 +66,31 @@ class ShelterPetComponent extends StatelessWidget {
       body: SafeArea(
         child: Builder(
           builder: (BuildContext context) {
+            final screenWidth = getScreenWidth(context);
+            final imageUrl = getSizedImageUrl(
+              pet.profilePhoto,
+              screenWidth,
+              ceilToHundreds: true,
+            );
+
             return Container(
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              pet.profilePhoto,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            width: 160,
+                            height: 160,
+                            child: Hero(
+                              tag: "pet-${pet.id}-photo-image-cover",
+                              child: GetPetNetworkImage(
+                                url: imageUrl,
+                              ),
                             ),
                           ),
                         ),
