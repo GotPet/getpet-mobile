@@ -52,7 +52,6 @@ class PetProfileComponent extends StatelessWidget {
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
-          print(scrollNotification);
           if (pet.isInFavorites()) {
             final dynamic tooltip = tooltipKey.currentState;
             tooltip.ensureTooltipVisible();
