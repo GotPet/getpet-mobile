@@ -48,7 +48,7 @@ class AppLocalizations {
   String get callShelter => "Skambinti į prieglaudą";
 
   String get pushAndContact =>
-      "Spausk ir susisiek su prieglaudos atstovu.\nPaminėk, kad kreipiesi per GetPet ir susitark dėl pasimatymo!";
+      "Spausk ir susisiek su prieglaudos atstovu.\nPaminėk, kad kreipiesi per GetPet ir susitark dėl pasimatymo!\n\nKai gyvūną priglausi į savo šeimą, GetPet paskirs tau asmeninį mentorių sklandžiai draugystės pradžiai.";
 
   String get errorUnableToCallShelter =>
       "Nepavyko atidaryti skambinimo programos. Surinkite prieglaudos numerį ir susisiekite.";

@@ -121,6 +121,7 @@ class ShelterPetComponent extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 16, bottom: 8),
                         child: Text(
                           pet.shelter.name,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
