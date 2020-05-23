@@ -60,6 +60,8 @@ class AppLocalizations {
   String get noMorePetsToSwipe =>
       "O ne!\nSąrašas baigėsi.\nPatikrink savo simpatijas!";
 
+  String get errorLoadingPets => "Klaida kraunant gyvūnus";
+
   // Favorites list
   String get myGetPetRequests => "Išrinktieji";
 
@@ -100,6 +102,9 @@ class AppLocalizations {
   String get and => "ir";
 
   String get userGuide => "Instrukcija";
+
+  // General
+  String get retryOnError => "Bandyti dar kartą";
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

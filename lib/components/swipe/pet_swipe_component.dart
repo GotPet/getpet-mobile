@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:getpet/components/swipe/pet_engine.dart';
 import 'package:getpet/components/swipe/swiping_cards.dart';
@@ -5,6 +6,7 @@ import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/widgets/empty_state.dart';
+import 'package:getpet/widgets/error_state.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
 
 class PetSwipeComponent extends StatefulWidget {
@@ -14,7 +16,7 @@ class PetSwipeComponent extends StatefulWidget {
 
 class _PetSwipeComponentState extends State<PetSwipeComponent>
     with AutomaticKeepAliveClientMixin {
-  final _petsToSwipeFuture = PetsService().getPetsToSwipe();
+  AsyncMemoizer _memoizer = AsyncMemoizer();
 
   PetEngine engine;
 
@@ -26,10 +28,21 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
       alignment: Alignment.center,
       padding: const EdgeInsets.all(16.0),
       child: new FutureBuilder(
-        future: _petsToSwipeFuture,
+        future: _fetchPetsToSwipe(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Center(child: AppProgressIndicator());
+          }
+
           if (snapshot.hasError) {
             print(snapshot.error);
+
+            return ErrorStateWidget(
+              errorText: AppLocalizations.of(context).errorLoadingPets,
+              retryCallback: () => setState(() {
+                _memoizer = AsyncMemoizer();
+              }),
+            );
           }
 
           if (snapshot.hasData) {
@@ -48,20 +61,22 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
                   _buildButtonRow(),
                 ],
               );
-            } else {
-              return EmptyStateWidget(
-                assetImage: "assets/no_pets.png",
-                emptyText: AppLocalizations.of(context).noMorePetsToSwipe,
-              );
             }
-          } else {
-            return Center(
-              child: AppProgressIndicator(),
-            );
           }
+
+          return EmptyStateWidget(
+            assetImage: "assets/no_pets.png",
+            emptyText: AppLocalizations.of(context).noMorePetsToSwipe,
+          );
         },
       ),
     );
+  }
+
+  _fetchPetsToSwipe() async {
+    return this._memoizer.runOnce(() async {
+      return await PetsService().getPetsToSwipe();
+    });
   }
 
   @override
