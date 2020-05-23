@@ -73,6 +73,8 @@ class AppLocalizations {
 
   String get deletePet => "Šalinti gyvūną iš sąrašo";
 
+  String get readyForDate => "Pasiruošęs pasimatymui?";
+
   // Pet remove dialog
   String get petRemoveDialogMessage =>
       "Ar nori pašalinti gyvūną iš mėgstamiausių sąrašo?";
