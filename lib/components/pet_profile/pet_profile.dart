@@ -277,6 +277,7 @@ class FullScreenImagePage extends StatelessWidget {
       body: ZoomableWidget(
         minScale: 1,
         maxScale: 3,
+        zoomSteps: 1,
         child: Container(
           child: GetPetNetworkImage(
             url: url,
