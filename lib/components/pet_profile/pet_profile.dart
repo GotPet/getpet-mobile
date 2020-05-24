@@ -57,7 +57,6 @@ class PetProfileComponent extends StatelessWidget {
             pinned: true,
             snap: true,
             floating: true,
-            title: Text(pet.name),
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 fit: StackFit.expand,
