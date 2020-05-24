@@ -191,11 +191,8 @@ class PetProfileComponent extends StatelessWidget {
         child: IntrinsicHeight(
           child: Column(
             children: <Widget>[
-              Visibility(
-                child: TooltipWithArrow(
-                  message: AppLocalizations.of(context).readyForDate,
-                ),
-                visible: true,
+              TooltipWithArrow(
+                message: AppLocalizations.of(context).readyForDate,
               ),
               FloatingActionButton.extended(
                 icon: Image.asset(
