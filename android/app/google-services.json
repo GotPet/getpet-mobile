@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "257660888115-dk9tlkstbtepsp8lopiiu11gpb47tlpr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lt.getpet.getpet",
+            "certificate_hash": "518d7fabda42efc74157a29e7f47e0e55cc2a3fb"
+          }
+        },
+        {
           "client_id": "257660888115-po9bnrm193pudp5lqpof8ao30r6eunad.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -33,20 +41,21 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "257660888115-h7lp6c20r47jkr05hnn5lt0ja0jqbcfh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "257660888115-shuj9tr1qkvb18rtp7c9aq5uvdv2d3nc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "lt.getpet.getpet",
+                "app_store_id": "1450751703"
+              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -77,20 +86,21 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "257660888115-h7lp6c20r47jkr05hnn5lt0ja0jqbcfh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "257660888115-shuj9tr1qkvb18rtp7c9aq5uvdv2d3nc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "lt.getpet.getpet",
+                "app_store_id": "1450751703"
+              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
