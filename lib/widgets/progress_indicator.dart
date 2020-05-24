@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppProgressIndicator extends StatelessWidget {
+  const AppProgressIndicator({
+    Key key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    var baseTheme = Theme.of(context);
-    return Theme(
-      data: baseTheme.copyWith(accentColor: baseTheme.primaryColor),
-      child: new CircularProgressIndicator(),
+    return CircularProgressIndicator(
+      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 }

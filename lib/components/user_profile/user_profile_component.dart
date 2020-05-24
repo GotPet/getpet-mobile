@@ -75,6 +75,7 @@ class UserProfileComponent extends StatelessWidget {
       return GetPetNetworkImage(
         url: photoUrl,
         useDiskCache: true,
+        loadingIndicator: const CircularProgressIndicator(),
         placeholder: anonymousImage,
       );
     }

@@ -34,6 +34,7 @@ class PetCard extends StatelessWidget {
                   tag: "pet-${pet.id}-photo-image-cover",
                   child: GetPetNetworkImage(
                     url: imageUrl,
+                    loadingIndicator: const CircularProgressIndicator(),
                   ),
                 );
               },

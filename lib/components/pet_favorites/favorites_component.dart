@@ -104,6 +104,7 @@ class _PetListCell extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   child: GetPetNetworkImage(
                     url: getSizedImageUrl(pet.profilePhoto, 72, height: 72),
+                    loadingIndicator: const CircularProgressIndicator(),
                     useDiskCache: true,
                   ),
                 ),
