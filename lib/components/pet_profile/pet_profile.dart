@@ -64,7 +64,7 @@ class PetProfileComponent extends StatelessWidget {
                   ),
                   PetCardInformation(
                     pet: pet,
-                    showInfoIcon: false,
+                    iconData: Icons.zoom_out_map,
                   ),
                 ],
               ),
@@ -270,7 +270,6 @@ class FullScreenImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(url);
     return Scaffold(
       appBar: AppBar(
         title: Text(name),

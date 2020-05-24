@@ -40,7 +40,7 @@ class PetCard extends StatelessWidget {
             ),
             PetCardInformation(
               pet: pet,
-              showInfoIcon: true,
+              iconData: Icons.info,
             ),
           ],
         ),
@@ -51,12 +51,12 @@ class PetCard extends StatelessWidget {
 
 class PetCardInformation extends StatelessWidget {
   final Pet pet;
-  final bool showInfoIcon;
+  final IconData iconData;
 
   const PetCardInformation({
     Key key,
     @required this.pet,
-    this.showInfoIcon = true,
+    @required this.iconData,
   })  : assert(pet != null),
         super(key: key);
 
@@ -87,6 +87,7 @@ class PetCardInformation extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       pet.name,
+                      maxLines: 1,
                       style: new TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -104,12 +105,9 @@ class PetCardInformation extends StatelessWidget {
                   ],
                 ),
               ),
-              Visibility(
-                child: Icon(
-                  Icons.info,
-                  color: Colors.white,
-                ),
-                visible: showInfoIcon,
+              Icon(
+                iconData,
+                color: Colors.white,
               ),
             ],
           ),
