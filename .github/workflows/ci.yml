@@ -25,9 +25,15 @@ jobs:
 
       - run: flutter pub get
 
-      - run: |
-          flutter build appbundle
-          flutter build apk
+      - run: flutter build appbundle
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PATH: key.jks
+
+      - run: flutter build apk
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -42,6 +48,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         name: Upload Android app bundle
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         with:
           name: app-release.aab
           path: build/app/outputs/bundle/release/app-release.aab
@@ -50,10 +57,7 @@ jobs:
     name: Publish Android app bundle to Play Store
     runs-on: macos-latest
     needs: build
-    on:
-      push:
-        tags:
-          - v*
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
 
     steps:
       - uses: actions/download-artifact@v2
