@@ -1,8 +1,8 @@
 name: Test GetPet mobile application
 on: [push, pull_request]
 jobs:
-  test:
-    name: Test GetPet mobile application
+  build:
+    name: Build GetPet mobile application
     runs-on: macos-latest
 
     steps:
@@ -45,3 +45,24 @@ jobs:
         with:
           name: app-release.aab
           path: build/app/outputs/bundle/release/app-release.aab
+
+  publish_android:
+    name: Publish Android app bundle to Play Store
+    runs-on: macos-latest
+    needs: build
+    on:
+      push:
+        tags:
+          - v*
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: app-release.aab
+
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: lt.getpet.getpet
+          releaseFile: app-release.aab
+          track: beta
