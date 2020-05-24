@@ -42,24 +42,19 @@ class TooltipShapeBorder extends ShapeBorder {
   ShapeBorder scale(double t) => this;
 }
 
-// https: //stackoverflow.com/questions/58352828/flutter-design-instagram-like-balloons-tooltip-widget
+// https://stackoverflow.com/questions/58352828/flutter-design-instagram-like-balloons-tooltip-widget
 class TooltipWithArrow extends StatelessWidget {
   final String message;
-  final Widget child;
-  final Key tooltipKey;
 
   const TooltipWithArrow({
     Key key,
     @required this.message,
-    @required this.child,
-    this.tooltipKey,
   })  : assert(message != null),
-        assert(child != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
+    return Container(
       decoration: ShapeDecoration(
         color: Colors.red,
         shape: TooltipShapeBorder(arrowArc: 0.5),
@@ -68,11 +63,10 @@ class TooltipWithArrow extends StatelessWidget {
               color: Colors.black26, blurRadius: 4.0, offset: Offset(2, 2))
         ],
       ),
-      key: tooltipKey,
-      padding: EdgeInsets.all(16),
-      textStyle: TextStyle(color: Colors.white),
-      message: message,
-      child: child,
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(message, style: TextStyle(color: Colors.white)),
+      ),
     );
   }
 }
