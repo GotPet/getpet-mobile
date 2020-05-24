@@ -54,9 +54,6 @@ class PetProfileComponent extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 350,
-            pinned: true,
-            snap: true,
-            floating: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 fit: StackFit.expand,
@@ -74,95 +71,27 @@ class PetProfileComponent extends StatelessWidget {
             actions: <Widget>[
               Visibility(
                 visible: pet.isInFavorites(),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext buildContext) {
-                          return AlertDialog(
-                            title: Text(
-                              AppLocalizations.of(context).petRemoveDialogTitle,
-                            ),
-                            content: Text(
-                              AppLocalizations.of(context)
-                                  .petRemoveDialogMessage,
-                            ),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text(
-                                  AppLocalizations.of(context)
-                                      .petRemoveDialogCancel,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              new FlatButton(
-                                child: new Text(
-                                  AppLocalizations.of(context)
-                                      .petRemoveDialogOk,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  await petsService.dislikePet(pet);
-                                  final navigator = Navigator.of(context);
-                                  navigator.pop();
-                                  navigator.pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
+                child: DislikePetActionWidget(
+                  pet: pet,
+                  petsService: petsService,
                 ),
               ),
             ],
           ),
           SliverFillRemaining(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 16,
-                left: 16,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                      bottom: 8,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context).myStory,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
+                child: Text(
+                  pet.description,
+                  style: TextStyle(
+                    fontSize: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                      bottom: 8,
-                    ),
-                    child: Text(
-                      pet.description,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -250,5 +179,70 @@ class PetPhotosCarousel extends StatelessWidget {
     }
 
     return image;
+  }
+}
+
+class DislikePetActionWidget extends StatelessWidget {
+  final Pet pet;
+  final PetsService petsService;
+
+  const DislikePetActionWidget({
+    Key key,
+    @required this.pet,
+    @required this.petsService,
+  })  : assert(pet != null),
+        assert(petsService != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext buildContext) {
+              return AlertDialog(
+                title: Text(
+                  AppLocalizations.of(context).petRemoveDialogTitle,
+                ),
+                content: Text(
+                  AppLocalizations.of(context).petRemoveDialogMessage,
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text(
+                      AppLocalizations.of(context).petRemoveDialogCancel,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text(
+                      AppLocalizations.of(context).petRemoveDialogOk,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await petsService.dislikePet(pet);
+                      final navigator = Navigator.of(context);
+                      navigator.pop();
+                      navigator.pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
