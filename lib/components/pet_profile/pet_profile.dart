@@ -2,6 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
+import 'package:getpet/components/swipe/pet_card.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
@@ -54,41 +55,32 @@ class PetProfileComponent extends StatelessWidget {
           SliverAppBar(
             expandedHeight: 350,
             pinned: true,
-            primary: true,
+            snap: true,
+            floating: true,
+            title: Text(pet.name),
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                pet.name,
-                style: TextStyle(inherit: true, shadows: [
-                  Shadow(
-                      // bottomLeft
-                      offset: Offset(-0.5, -0.5),
-                      color: Colors.black54),
-                  Shadow(
-                      // bottomRight
-                      offset: Offset(0.5, -0.5),
-                      color: Colors.black54),
-                  Shadow(
-                      // topRight
-                      offset: Offset(0.5, 0.5),
-                      color: Colors.black54),
-                  Shadow(
-                      // topLeft
-                      offset: Offset(-0.5, 0.5),
-                      color: Colors.black54),
-                ]),
-              ),
-              centerTitle: false,
-              background: PetPhotosCarousel(
-                pet: pet,
+              background: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  PetPhotosCarousel(
+                    pet: pet,
+                  ),
+                  PetCardInformation(
+                    pet: pet,
+                    showInfoIcon: false,
+                  ),
+                ],
               ),
             ),
             actions: <Widget>[
               Visibility(
                 visible: pet.isInFavorites(),
-                child: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    showDialog(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      showDialog(
                         context: context,
                         builder: (BuildContext buildContext) {
                           return AlertDialog(
@@ -129,8 +121,10 @@ class PetProfileComponent extends StatelessWidget {
                               ),
                             ],
                           );
-                        });
-                  },
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -144,18 +138,6 @@ class PetProfileComponent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 16,
-                      bottom: 8,
-                    ),
-                    child: Text(
-                      pet.shortDescription,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 8,
