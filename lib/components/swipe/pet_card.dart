@@ -61,56 +61,74 @@ class PetCardInformation extends StatelessWidget {
   })  : assert(pet != null),
         super(key: key);
 
+  // https://github.com/flutter/flutter/issues/12463
+  Widget _flightShuttleBuilder(
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
+    return DefaultTextStyle(
+      style: DefaultTextStyle.of(toHeroContext).style,
+      child: toHeroContext.widget,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(0.8),
+      child: Hero(
+        tag: "pet-${pet.id}-card-information",
+        flightShuttleBuilder: _flightShuttleBuilder,
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.8),
+                ],
+              ),
+            ),
+            padding: const EdgeInsets.all(24.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        pet.name,
+                        maxLines: 1,
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26.0,
+                        ),
+                      ),
+                      Text(
+                        pet.shortDescription,
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  iconData,
+                  color: Colors.white,
+                ),
               ],
             ),
-          ),
-          padding: const EdgeInsets.all(24.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Expanded(
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      pet.name,
-                      maxLines: 1,
-                      style: new TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 26.0,
-                      ),
-                    ),
-                    Text(
-                      pet.shortDescription,
-                      maxLines: 2,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                iconData,
-                color: Colors.white,
-              ),
-            ],
           ),
         ),
       ),
