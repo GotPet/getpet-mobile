@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/analytics/analytics.dart';
+import 'package:getpet/components/swipe/pet_card.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
@@ -54,71 +55,54 @@ class ShelterPetComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     PetsService().shelterPet(pet);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/get_pet_logo.png',
-          fit: BoxFit.cover,
-          height: 30,
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Builder(
-          builder: (BuildContext context) {
-            final screenWidth = getScreenWidth(context);
-            final imageUrl = getSizedImageUrl(
-              pet.profilePhoto,
-              screenWidth,
-              ceilToHundreds: true,
-            );
+    final screenWidth = getScreenWidth(context);
+    final imageUrl = getSizedImageUrl(
+      pet.profilePhoto,
+      screenWidth,
+      ceilToHundreds: true,
+    );
 
-            return Container(
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 300,
+            title: Image.asset(
+              'assets/get_pet_logo.png',
+              fit: BoxFit.cover,
+              height: 30,
+            ),
+            centerTitle: true,
+            pinned: true,
+            primary: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  Hero(
+                    tag: "pet-${pet.id}-photo-image-cover",
+                    child: GetPetNetworkImage(
+                      url: imageUrl,
+                      loadingIndicator: const CircularProgressIndicator(),
+                    ),
+                  ),
+                  PetCardInformation(
+                    pet: pet,
+                    iconData: null,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: SafeArea(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Column(
-                    children: <Widget>[
+                    children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            width: 160,
-                            height: 160,
-                            child: Hero(
-                              tag: "pet-${pet.id}-photo-image-cover",
-                              child: GetPetNetworkImage(
-                                url: imageUrl,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 8,
-                        ),
-                        child: Text(
-                          pet.name,
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          pet.shortDescription,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, bottom: 8),
+                        padding: const EdgeInsets.only(bottom: 8),
                         child: Text(
                           pet.shelter.name,
                           textAlign: TextAlign.center,
@@ -176,21 +160,17 @@ class ShelterPetComponent extends StatelessWidget {
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: Builder(
-        builder: (BuildContext context) {
-          return FloatingActionButton.extended(
-            icon: Icon(Icons.phone_in_talk),
-            label: Text(AppLocalizations.of(context).callShelter),
-            backgroundColor: Theme.of(context).primaryColor,
-            foregroundColor: Colors.white,
-            onPressed: () async {
-              await callShelter(context);
-            },
-          );
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.phone_in_talk),
+        label: Text(AppLocalizations.of(context).callShelter),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        onPressed: () async {
+          await callShelter(context);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

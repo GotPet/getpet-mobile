@@ -15,29 +15,25 @@ class PetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = getScreenWidth(context);
+    final imageUrl = getSizedImageUrl(
+      pet.profilePhoto,
+      screenWidth,
+      ceilToHundreds: true,
+    );
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(30),
       child: Card(
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                final screenWidth = getScreenWidth(context);
-                final imageUrl = getSizedImageUrl(
-                  pet.profilePhoto,
-                  screenWidth,
-                  ceilToHundreds: true,
-                );
-
-                return Hero(
-                  tag: "pet-${pet.id}-photo-image-cover",
-                  child: GetPetNetworkImage(
-                    url: imageUrl,
-                    loadingIndicator: const CircularProgressIndicator(),
-                  ),
-                );
-              },
+            Hero(
+              tag: "pet-${pet.id}-photo-image-cover",
+              child: GetPetNetworkImage(
+                url: imageUrl,
+                loadingIndicator: const CircularProgressIndicator(),
+              ),
             ),
             PetCardInformation(
               pet: pet,
@@ -57,7 +53,7 @@ class PetCardInformation extends StatelessWidget {
   const PetCardInformation({
     Key key,
     @required this.pet,
-    @required this.iconData,
+    this.iconData,
   })  : assert(pet != null),
         super(key: key);
 
@@ -123,10 +119,11 @@ class PetCardInformation extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
-                  iconData,
-                  color: Colors.white,
-                ),
+                if (iconData != null)
+                  Icon(
+                    iconData,
+                    color: Colors.white,
+                  ),
               ],
             ),
           ),
