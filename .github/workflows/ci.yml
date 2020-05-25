@@ -25,15 +25,15 @@ jobs:
 
       - run: flutter pub get
 
-      - run: flutter build appbundle
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+      - run: flutter build apk
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PATH: key.jks
 
-      - run: flutter build apk
+      - run: flutter build appbundle
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -52,6 +52,12 @@ jobs:
         with:
           name: app-release.aab
           path: build/app/outputs/bundle/release/app-release.aab
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Proguard mapping.txt
+        with:
+          name: mapping.txt
+          path: build/app/outputs/mapping/release/mapping.txt
 
   build_ios:
     name: Build GetPet iOS version
