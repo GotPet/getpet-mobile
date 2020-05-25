@@ -32,7 +32,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PATH: key.jks
 
-      - run: flutter build appbundle
+      - run: flutter build appbundle -v
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
