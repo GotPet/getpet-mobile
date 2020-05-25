@@ -25,7 +25,7 @@ jobs:
 
       - run: flutter pub get
 
-      - run: flutter build apk
+      - run: flutter build apk -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
