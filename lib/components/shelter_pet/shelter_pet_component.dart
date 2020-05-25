@@ -6,6 +6,7 @@ import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/utils/screen_utils.dart';
+import 'package:getpet/widgets/getpet_app_bar_image.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -67,11 +68,7 @@ class ShelterPetComponent extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 300,
-            title: Image.asset(
-              'assets/get_pet_logo.png',
-              fit: BoxFit.cover,
-              height: 30,
-            ),
+            title: const GetPetAppBarTitleImage(),
             centerTitle: true,
             pinned: true,
             primary: true,

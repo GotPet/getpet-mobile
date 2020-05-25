@@ -6,6 +6,7 @@ import 'package:getpet/components/swipe/pet_swipe_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/preferences/app_preferences.dart';
+import 'package:getpet/widgets/getpet_app_bar_image.dart';
 
 class HomeComponent extends StatelessWidget {
   @override
@@ -15,11 +16,7 @@ class HomeComponent extends StatelessWidget {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
-          title: Image.asset(
-            'assets/get_pet_logo.png',
-            fit: BoxFit.cover,
-            height: 30,
-          ),
+          title: const GetPetAppBarTitleImage(),
           actions: [
             IconButton(
               icon: Icon(Icons.help_outline),
