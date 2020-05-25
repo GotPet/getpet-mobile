@@ -1,4 +1,5 @@
-# GetPet
+# GetPet mobile application
+![getpet-app](https://user-images.githubusercontent.com/3719141/82832984-6b0d4880-9ec5-11ea-88d0-e4a8d4129d56.gif)
 
 GetPet is a mobile application that creates long-lasting friendships by helping homeless animals find their home.
 
@@ -6,20 +7,5 @@ GetPet was born as a social initiative, which brought together a team of talente
 
 GetPet promotes social responsibility, seeks to create an emotionally healthier society and is acting for the animals’ good.
 
-## Getting Started
-
-1. Create `lib/dsn.dart` file locally and add following code (no need to change for debug builds):
-```dart
-const String dsn = "MY_SENTRY_KEY";
-```
-2. Start flutter project on Android or iOS. 
-
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+[![Get it on Google Play](https://user-images.githubusercontent.com/3719141/82834052-99d8ee00-9ec8-11ea-8c54-d3fe77551b8c.png)](https://play.google.com/store/apps/details?id=lt.getpet.getpet&hl=lt&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
+[![Download on App Store](https://user-images.githubusercontent.com/3719141/82834050-98a7c100-9ec8-11ea-9d90-02b86665a891.png)](https://apps.apple.com/lt/app/getpet/id1450751703?mt=8)
