@@ -45,5 +45,3 @@
 -keep class java.lang.ClassValue { *; }
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -keep class org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement { *; }
-
--keep class io.flutter.plugins.**  { *; }
