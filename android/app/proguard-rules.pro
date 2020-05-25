@@ -1,5 +1,6 @@
-# Disable obfuscation
--dontobfuscate
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
 -optimizations !code/allocation/variable
 -keepattributes *Annotation*
 
