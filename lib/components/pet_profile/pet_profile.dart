@@ -80,12 +80,14 @@ class PetProfileComponent extends StatelessWidget {
             ],
           ),
           SliverFillRemaining(
+            fillOverscroll: true,
+            hasScrollBody: false,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 16,
                   right: 16,
-                  bottom: 16,
+                  bottom: 160,
                 ),
                 child: Text(
                   pet.description,

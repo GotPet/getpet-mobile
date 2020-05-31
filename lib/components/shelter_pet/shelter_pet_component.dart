@@ -92,6 +92,8 @@ class ShelterPetComponent extends StatelessWidget {
             ),
           ),
           SliverFillRemaining(
+            fillOverscroll: true,
+            hasScrollBody: false,
             child: SafeArea(
               child: Center(
                 child: Padding(
@@ -152,6 +154,11 @@ class ShelterPetComponent extends StatelessWidget {
                         onTap: () async {
                           await emailShelter(context);
                         },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 72,
+                        ),
                       )
                     ],
                   ),
