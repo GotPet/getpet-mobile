@@ -80,7 +80,7 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
                       ProvidersTypes.facebook,
                     ],
                     passwordCheck: false,
-                    bottomPadding: 0,
+                    bottomPadding: 12,
                   ),
                 ),
               ),
