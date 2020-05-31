@@ -34,6 +34,11 @@ dependencies:
   firebase_ui:
     git:
       url: git://github.com/vycius/firebase_ui.git
+      ref: e447d0c
+
+dependency_overrides:
+  # For firebase_ui
+  firebase_auth: ^0.16.1
 
 dev_dependencies:
   flutter_test:
