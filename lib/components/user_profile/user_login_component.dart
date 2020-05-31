@@ -71,14 +71,17 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
                   child: Image.asset("assets/two_logos.png"),
                 ),
               ),
-              new Expanded(
-                child: new LoginView(
-                  providers: [
-                    ProvidersTypes.google,
-                    ProvidersTypes.facebook,
-                  ],
-                  passwordCheck: false,
+              Expanded(
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
+                  child: LoginView(
+                    providers: [
+                      ProvidersTypes.google,
+                      ProvidersTypes.facebook,
+                    ],
+                    passwordCheck: false,
+                    bottomPadding: 0,
+                  ),
                 ),
               ),
               Padding(

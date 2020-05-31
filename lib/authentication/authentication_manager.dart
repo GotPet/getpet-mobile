@@ -28,8 +28,9 @@ class AuthenticationManager {
 
   Future<String> getIdToken() async {
     final currentUser = await getCurrentUser();
+    final idTokenResult = await currentUser?.getIdToken(refresh: true);
 
-    return await currentUser?.getIdToken(refresh: true);
+    return idTokenResult.token;
   }
 
   StreamSubscription<FirebaseUser> listenForUser(
