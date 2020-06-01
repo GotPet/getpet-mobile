@@ -80,3 +80,9 @@ build/
 /.flutter-plugins-dependencies
 /ios/Flutter/flutter_export_environment.sh
 /ios/Flutter/Flutter.podspec
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
