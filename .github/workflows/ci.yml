@@ -94,7 +94,7 @@ jobs:
           appStoreConnectPrivateKey: AuthKey.p8
           keyID: ${{ env.IOS_APP_STORE_CONNECT_KEY_ID }}
           issuerID: ${{ env.IOS_APP_STORE_CONNECT_ISSUER_ID }}
-          base64P12File: CertificateBase64.p12
+          base64P12File: CertificateBase64.p12.screw
           p12Password: ${{ secrets.IOS_P12_CERTIFICATE_PASSWORD }}
           bundleIdentifier: lt.getpet.getpet
           signType: IOS_APP_STORE
