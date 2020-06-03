@@ -33,7 +33,6 @@ class _AppComponentState extends State<AppComponent> {
               fontSize: 14.0, color: Color.fromARGB(0xFF, 0x66, 0x66, 0x66)),
         ),
       ),
-      debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
