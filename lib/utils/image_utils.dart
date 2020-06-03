@@ -19,9 +19,9 @@ String getSizedImageUrl(String url, int width,
   if (ceilToHundreds) {
     width = _ceilToHundreds(width);
   }
-  width = min(width, 2000);
+  width = min(width, 1500);
 
-  if (height == null || height > 2000) {
+  if (height == null || height > 1500) {
     return url.replaceFirst('/media/', '/w-$width/media/');
   }
 

@@ -4,6 +4,7 @@ import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/routes.dart';
 import 'package:getpet/utils/image_utils.dart';
+import 'package:getpet/utils/screen_utils.dart';
 import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
 import 'package:getpet/widgets/label.dart';
@@ -31,9 +32,7 @@ class FavoritePetsComponent extends StatelessWidget {
             } else {
               return EmptyStateWidget(
                 assetImage: "assets/no_pets.png",
-                emptyText: AppLocalizations
-                    .of(context)
-                    .emptyFavoritesList,
+                emptyText: AppLocalizations.of(context).emptyFavoritesList,
               );
             }
           } else {
@@ -57,17 +56,13 @@ class ListViewFavoritePets extends StatelessWidget {
     List<dynamic> cells = [];
 
     var shelterPets =
-    pets.where((pet) => pet.decision == PetDecision.getPet).toList();
+        pets.where((pet) => pet.decision == PetDecision.getPet).toList();
     if (shelterPets.isNotEmpty) {
-      cells.add(LabelItem(AppLocalizations
-          .of(context)
-          .myGetPetRequests));
+      cells.add(LabelItem(AppLocalizations.of(context).myGetPetRequests));
       cells.addAll(shelterPets);
     }
 
-    cells.add(LabelItem(AppLocalizations
-        .of(context)
-        .myFavoritePets));
+    cells.add(LabelItem(AppLocalizations.of(context).myFavoritePets));
     cells.addAll(pets);
 
     return ListView.builder(
@@ -98,6 +93,7 @@ class _PetListCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageSize = convertLogicalPixelsToPixels(context, 72);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -110,11 +106,13 @@ class _PetListCell extends StatelessWidget {
                 child: Container(
                   width: 72,
                   height: 72,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                   child: GetPetNetworkImage(
-                    url: getSizedImageUrl(pet.profilePhoto, 72, height: 72),
+                    url: getSizedImageUrl(
+                      pet.profilePhoto,
+                      imageSize,
+                      height: imageSize,
+                    ),
                     loadingIndicator: const CircularProgressIndicator(),
                     useDiskCache: true,
                   ),
