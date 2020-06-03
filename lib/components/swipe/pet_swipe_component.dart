@@ -8,6 +8,7 @@ import 'package:getpet/pets_service.dart';
 import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/error_state.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
+import 'dart:developer' as developer;
 
 class PetSwipeComponent extends StatefulWidget {
   @override
@@ -35,7 +36,7 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
           }
 
           if (snapshot.hasError) {
-            print(snapshot.error);
+            developer.log("Error loading pets", error: snapshot.error);
 
             return ErrorStateWidget(
               errorText: AppLocalizations.of(context).errorLoadingPets,

@@ -8,6 +8,7 @@ import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
 import 'package:getpet/widgets/label.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
+import 'dart:developer' as developer;
 
 class FavoritePetsComponent extends StatelessWidget {
   @override
@@ -16,7 +17,9 @@ class FavoritePetsComponent extends StatelessWidget {
       body: StreamBuilder<List<Pet>>(
         stream: PetsService().getFavoritePets(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
+          if (snapshot.hasError) {
+            developer.log("Error loading favorite pets", error: snapshot.error);
+          }
 
           if (snapshot.hasData) {
             var pets = snapshot.data;
@@ -28,7 +31,9 @@ class FavoritePetsComponent extends StatelessWidget {
             } else {
               return EmptyStateWidget(
                 assetImage: "assets/no_pets.png",
-                emptyText: AppLocalizations.of(context).emptyFavoritesList,
+                emptyText: AppLocalizations
+                    .of(context)
+                    .emptyFavoritesList,
               );
             }
           } else {
@@ -52,13 +57,17 @@ class ListViewFavoritePets extends StatelessWidget {
     List<dynamic> cells = [];
 
     var shelterPets =
-        pets.where((pet) => pet.decision == PetDecision.getPet).toList();
+    pets.where((pet) => pet.decision == PetDecision.getPet).toList();
     if (shelterPets.isNotEmpty) {
-      cells.add(LabelItem(AppLocalizations.of(context).myGetPetRequests));
+      cells.add(LabelItem(AppLocalizations
+          .of(context)
+          .myGetPetRequests));
       cells.addAll(shelterPets);
     }
 
-    cells.add(LabelItem(AppLocalizations.of(context).myFavoritePets));
+    cells.add(LabelItem(AppLocalizations
+        .of(context)
+        .myFavoritePets));
     cells.addAll(pets);
 
     return ListView.builder(
@@ -101,7 +110,9 @@ class _PetListCell extends StatelessWidget {
                 child: Container(
                   width: 72,
                   height: 72,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
                   child: GetPetNetworkImage(
                     url: getSizedImageUrl(pet.profilePhoto, 72, height: 72),
                     loadingIndicator: const CircularProgressIndicator(),
