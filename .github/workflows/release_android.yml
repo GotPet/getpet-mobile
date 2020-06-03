@@ -9,6 +9,7 @@ jobs:
     name: Publish Android app bundle to Play Store
     runs-on: macos-latest
 
+    steps:
       - uses: actions/checkout@master
 
       - uses: actions/setup-java@v1
