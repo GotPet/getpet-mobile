@@ -91,7 +91,7 @@ jobs:
       - name: Create Apple Code-signing Certificates
         uses: ngeri/prepare-signing@v1.0.2
         with:
-          appStoreConnectPrivateKey: AuthKey.p8
+          appStoreConnectPrivateKey: AuthKey.p8.screw
           keyID: ${{ env.IOS_APP_STORE_CONNECT_KEY_ID }}
           issuerID: ${{ env.IOS_APP_STORE_CONNECT_ISSUER_ID }}
           base64P12File: CertificateBase64.p12.screw
