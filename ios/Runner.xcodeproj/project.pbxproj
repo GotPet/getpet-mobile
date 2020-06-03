@@ -468,7 +468,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = lt.getpet.getpet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = GetPet;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore lt.getpet.getpet";
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -603,7 +603,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = lt.getpet.getpet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = GetPet;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore lt.getpet.getpet";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -636,7 +636,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = lt.getpet.getpet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = GetPet;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore lt.getpet.getpet";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
