@@ -77,22 +77,21 @@ jobs:
         with:
           token: ${{ secrets.GIT_APPLICATION_SPECIFIC_TOKEN }}
 
-      - run: git clone https://github.com/GotPet/certificates.git
 
       - name: Install provision certificates
         run: (cd ios && fastlane ios certificates)
         env:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
-
-      - run: flutter build ios --release --no-codesign -v
-
-      - name: Publish to AppStore using Fastlane
-        run: (cd ios && fastlane ios release)
-        env:
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          channel: 'stable'
+#
+#      - run: flutter build ios --release --no-codesign -v
+#
+#      - name: Publish to AppStore using Fastlane
+#        run: (cd ios && fastlane ios release)
+#        env:
+#          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
