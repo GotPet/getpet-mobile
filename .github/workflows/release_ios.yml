@@ -34,7 +34,7 @@ jobs:
 
       - run: flutter pub get
 
-      - run: flutter build ios --release --no-codesign -v
+      - run: flutter build ios --release --no-codesign
 
       - name: Publish to AppStore using Fastlane
         uses: maierj/fastlane-action@v1.4.0
