@@ -1,3 +1,4 @@
+import 'package:dio_firebase_performance/dio_firebase_performance.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/preferences/app_preferences.dart';
@@ -55,6 +56,9 @@ class PetsApiService {
       // Do something with response error
       return e; //continue
     }));
+
+    dio.interceptors.add(DioFirebasePerformanceInterceptor());
+    rawDio.interceptors.add(DioFirebasePerformanceInterceptor());
   }
 
   static _addHeaderApiToken(Map<String, dynamic> headers, String apiToken) {
