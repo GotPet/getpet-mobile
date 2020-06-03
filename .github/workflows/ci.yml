@@ -1,76 +1,76 @@
 name: Build and Publish GetPet mobile application
 on: [push, pull_request]
 jobs:
-#  build_android:
-#    name: Build GetPet Android version
-#    runs-on: macos-latest
-#
-#    steps:
-#      - uses: actions/checkout@master
-#
-#      - uses: actions/setup-java@v1
-#        with:
-#          java-version: '14.x'
-#
-#      - run: echo $SIGNING_KEY_BASE64 | base64 -d > android/app/key.jks
-#        env:
-#          SIGNING_KEY_BASE64: ${{ secrets.SIGNING_KEY_BASE64 }}
-#
-#      - uses: subosito/flutter-action@v1
-#        with:
-#          channel: 'stable'
-#
-#      - run: dart --version
-#      - run: flutter --version
-#
-#      - run: flutter pub get
-#
-#      - run: flutter build apk -v
-#        env:
-#          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-#          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-#          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-#          KEY_PATH: key.jks
-#
-#      - run: flutter build appbundle -v
-#        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-#        env:
-#          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-#          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-#          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-#          KEY_PATH: key.jks
-#
-#      - uses: actions/upload-artifact@v2
-#        name: Upload Android APK
-#        with:
-#          name: app-release.apk
-#          path: build/app/outputs/apk/release/app-release.apk
-#
-#      - uses: actions/upload-artifact@v2
-#        name: Upload Android app bundle
-#        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-#        with:
-#          name: app-release.aab
-#          path: build/app/outputs/bundle/release/app-release.aab
-#
-#      - uses: actions/upload-artifact@v2
-#        name: Upload Proguard mapping.txt
-#        with:
-#          name: mapping.txt
-#          path: build/app/outputs/mapping/release/mapping.txt
-#
-#  build_ios:
-#    name: Build GetPet iOS version
-#    runs-on: macos-latest
-#
-#    steps:
-#      - uses: actions/checkout@master
-#
-#      - uses: subosito/flutter-action@v1
-#        with:
-#          channel: 'stable'
-#
-#      - run: flutter build ios --release --no-codesign -v
+  build_android:
+    name: Build GetPet Android version
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.x'
+
+      - run: echo $SIGNING_KEY_BASE64 | base64 -d > android/app/key.jks
+        env:
+          SIGNING_KEY_BASE64: ${{ secrets.SIGNING_KEY_BASE64 }}
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: dart --version
+      - run: flutter --version
+
+      - run: flutter pub get
+
+      - run: flutter build apk -v
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PATH: key.jks
+
+      - run: flutter build appbundle -v
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PATH: key.jks
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Android APK
+        with:
+          name: app-release.apk
+          path: build/app/outputs/apk/release/app-release.apk
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Android app bundle
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Proguard mapping.txt
+        with:
+          name: mapping.txt
+          path: build/app/outputs/mapping/release/mapping.txt
+
+  build_ios:
+    name: Build GetPet iOS version
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: flutter build ios --release --no-codesign -v
 
   publish_ios:
     name: Publish to AppStore
@@ -79,26 +79,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Create App Store Connect private key
-        run: |
-          echo "$IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64" | base64 -d > AuthKey.p8
-          echo "$IOS_P12_CERTIFICATE_BASE64" > CertificateBase64.p12
-          ls -la
-        env:
-          IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64: ${{ secrets.IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 }}
-          IOS_P12_CERTIFICATE_BASE64: ${{ secrets.IOS_P12_CERTIFICATE_BASE64 }}
-
-      - name: Create Apple Code-signing Certificates
-        uses: ngeri/prepare-signing@v1.0.2
-        with:
-          appStoreConnectPrivateKey: AuthKey.p8
-          keyID: ${{ secrets.IOS_APP_STORE_CONNECT_KEY_ID }}
-          issuerID: ${{ secrets.IOS_APP_STORE_CONNECT_ISSUER_ID }}
-          base64P12File: CertificateBase64.p12
-          p12Password: ${{ secrets.IOS_P12_CERTIFICATE_PASSWORD }}
-          bundleIdentifier: lt.getpet.getpet
-          signType: IOS_APP_STORE
-
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
@@ -106,76 +86,74 @@ jobs:
       - run: flutter build ios --release --no-codesign -v
 
       - name: Publish to AppStore using Fastlane
-        run: |
-          cd ios
-          fastlane ios release
+        run: cd ios && fastlane ios release
 
-#  publish_android:
-#    name: Publish Android app bundle to Play Store
-#    runs-on: macos-latest
-#    needs: build_android
-#    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-#
-#    steps:
-#      - uses: actions/download-artifact@v2
-#        name: Download Android app bundle
-#        with:
-#          name: app-release.aab
-#
-#      - uses: actions/download-artifact@v2
-#        name: Download Android APK
-#        with:
-#          name: app-release.apk
-#
-#      - uses: actions/download-artifact@v2
-#        name: Download Proguard mapping
-#        with:
-#          name: mapping.txt
-#
-#      - uses: r0adkll/upload-google-play@v1
-#        name: Upload to Google play
-#        with:
-#          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-#          packageName: lt.getpet.getpet
-#          releaseFile: app-release.aab
-#          mappingFile: mapping.txt
-#          track: beta
-#
-#      - name: Create GitHub Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: ${{ github.ref }}
-#          release_name: ${{ github.ref }}
-#
-#      - name: Upload Android app bundle to GitHub releases
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: ./app-release.aab
-#          asset_name: app-release.aab
-#          asset_content_type: application/octet-stream
-#
-#      - name: Upload Android APK to GitHub releases
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: ./app-release.apk
-#          asset_name: app-release.apk
-#          asset_content_type: application/octet-stream
-#
-#      - name: Upload Proguard mapping file
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: ./mapping.txt
-#          asset_name: mapping.txt
-#          asset_content_type: text/plain
+  publish_android:
+    name: Publish Android app bundle to Play Store
+    runs-on: macos-latest
+    needs: build_android
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/download-artifact@v2
+        name: Download Android app bundle
+        with:
+          name: app-release.aab
+
+      - uses: actions/download-artifact@v2
+        name: Download Android APK
+        with:
+          name: app-release.apk
+
+      - uses: actions/download-artifact@v2
+        name: Download Proguard mapping
+        with:
+          name: mapping.txt
+
+      - uses: r0adkll/upload-google-play@v1
+        name: Upload to Google play
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: lt.getpet.getpet
+          releaseFile: app-release.aab
+          mappingFile: mapping.txt
+          track: beta
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - name: Upload Android app bundle to GitHub releases
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release.aab
+          asset_name: app-release.aab
+          asset_content_type: application/octet-stream
+
+      - name: Upload Android APK to GitHub releases
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/octet-stream
+
+      - name: Upload Proguard mapping file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./mapping.txt
+          asset_name: mapping.txt
+          asset_content_type: text/plain
