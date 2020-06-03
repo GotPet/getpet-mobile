@@ -1,0 +1,71 @@
+name: Build GetPet mobile application
+#on: [push, pull_request]
+on:
+  push:
+    tags:
+      - v.*
+
+jobs:
+  build_android:
+    name: Build GetPet Android version
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.x'
+
+      - run: echo $SIGNING_KEY_BASE64 | base64 -d > android/app/key.jks
+        env:
+          SIGNING_KEY_BASE64: ${{ secrets.SIGNING_KEY_BASE64 }}
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: dart --version
+      - run: flutter --version
+
+      - run: flutter pub get
+
+      - run: flutter analyze
+
+      - run: flutter build apk -v
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PATH: key.jks
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Android APK
+        with:
+          name: app-release.apk
+          path: build/app/outputs/apk/release/app-release.apk
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Proguard mapping.txt
+        with:
+          name: mapping.txt
+          path: build/app/outputs/mapping/release/mapping.txt
+
+      - uses: actions/upload-artifact@v2
+        name: Upload pubspec.lock
+        with:
+          name: pubspec.lock
+          path: pubspec.lock
+
+  build_ios:
+    name: Build GetPet iOS version
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: flutter build ios --release --no-codesign -v

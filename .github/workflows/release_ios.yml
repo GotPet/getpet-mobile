@@ -1,0 +1,28 @@
+name: Release iOS version of GetPet to AppStore
+on: [push, pull_request]
+
+#on:
+#  push:
+#    tags:
+#      - v.*
+
+jobs:
+  release_ios:
+    name: Release iOS to AppStore
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: fregante/setup-git-token@v1
+        name: Setup Git Token for Match
+        with:
+          token: ${{ secrets.GIT_APPLICATION_SPECIFIC_TOKEN }}
+
+
+      - name: Install provision certificates
+        run: (cd ios && fastlane ios certificates)
+        env:
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

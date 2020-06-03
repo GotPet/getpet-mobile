@@ -1,4 +1,4 @@
-name: Release GetPet Android to Google Play
+name: Release Android version of GetPet to Google Play
 on:
   push:
     tags:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   release_android:
-    name: Publish Android app bundle to Play Store
+    name: Release Android to Play Store
     runs-on: macos-latest
 
     steps:
