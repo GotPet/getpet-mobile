@@ -37,7 +37,7 @@ class OnboardingStepComponent extends StatelessWidget {
                     title,
                     style: Theme.of(context)
                         .textTheme
-                        .display1
+                        .headline4
                         .copyWith(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
@@ -46,7 +46,7 @@ class OnboardingStepComponent extends StatelessWidget {
                   description,
                   style: Theme.of(context)
                       .textTheme
-                      .body2
+                      .bodyText1
                       .copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 )

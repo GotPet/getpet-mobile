@@ -31,7 +31,7 @@ class _AppComponentState extends State<AppComponent> {
         primaryColorDark: Color.fromARGB(0xFF, 0x93, 0x1F, 0x33),
         accentColor: Colors.white,
         textTheme: TextTheme(
-          body1: TextStyle(
+          bodyText2: TextStyle(
               fontSize: 14.0, color: Color.fromARGB(0xFF, 0x66, 0x66, 0x66)),
         ),
       ),

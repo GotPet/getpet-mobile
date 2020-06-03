@@ -11,10 +11,12 @@ Future<Null> main() async {
 
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  runZoned<Future<Null>>(() async {
+  runZonedGuarded<Future<void>>(() async {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     await PetsDBRepository().initDb();
 
     runApp(new AppComponent());
-  }, onError: Crashlytics.instance.recordError);
+  }, (Object error, StackTrace stack) {
+    Crashlytics.instance.recordError(error, stack);
+  });
 }
