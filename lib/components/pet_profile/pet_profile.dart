@@ -2,12 +2,11 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
-import 'package:getpet/components/shelter_pet/shelter_pet_component.dart';
 import 'package:getpet/components/swipe/pet_card.dart';
-import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/routes.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/utils/screen_utils.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
@@ -28,19 +27,18 @@ class PetProfileComponent extends StatelessWidget {
   final _authenticationManager = AuthenticationManager();
 
   Future launchShelterPetComponent(BuildContext context) async {
-    return await Navigator.push(
+    return await Navigator.pushNamed(
       context,
-      MaterialPageRoute(builder: (_) => ShelterPetComponent(pet: pet)),
+      Routes.ROUTE_SHELTER_PET,
+      arguments: pet,
     );
   }
 
   Future launchUserLoginComponent(BuildContext context) async {
-    final isLoggedIn = await Navigator.push(
+    final isLoggedIn = await Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-          builder: (_) => UserLoginFullscreenComponent(
-                popOnLoginIn: true,
-              )),
+      Routes.ROUTE_SHELTER_PET,
+      arguments: pet,
     );
 
     if (isLoggedIn == true) {
@@ -182,13 +180,10 @@ class PetPhotosCarousel extends StatelessWidget {
   }
 
   Future openPhotoFullscreen(BuildContext context, String url) async {
-    await Navigator.push(
+    return await Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-          builder: (_) => FullScreenImagePage(
-                name: pet.name,
-                url: url,
-              )),
+      Routes.ROUTE_FULL_SCREEN_IMAGE,
+      arguments: FullScreenImageScreenArguments(pet.name, url),
     );
   }
 }
@@ -256,6 +251,13 @@ class DislikePetActionWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class FullScreenImageScreenArguments {
+  final String name;
+  final String url;
+
+  const FullScreenImageScreenArguments(this.name, this.url);
 }
 
 class FullScreenImagePage extends StatelessWidget {

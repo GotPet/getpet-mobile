@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/routes.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
@@ -146,9 +146,6 @@ class _PetListCell extends StatelessWidget {
   }
 
   void _onTapItem(BuildContext context, Pet pet) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => PetProfileComponent(pet: pet)),
-    );
+    Navigator.pushNamed(context, Routes.ROUTE_PET_PROFILE, arguments: pet);
   }
 }

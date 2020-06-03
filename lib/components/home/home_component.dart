@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:getpet/components/onboarding/onboarding_component.dart';
 import 'package:getpet/components/pet_favorites/favorites_component.dart';
 import 'package:getpet/components/swipe/pet_swipe_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/preferences/app_preferences.dart';
+import 'package:getpet/routes.dart';
 import 'package:getpet/widgets/getpet_app_bar_image.dart';
 
 class HomeComponent extends StatelessWidget {
@@ -21,9 +21,9 @@ class HomeComponent extends StatelessWidget {
               icon: Icon(Icons.help_outline),
               tooltip: AppLocalizations.of(context).userGuide,
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(builder: (_) => OnboardingComponent()),
+                  Routes.ROUTE_ONBOARDING,
                 );
               },
             ),
@@ -60,9 +60,9 @@ class HomeComponent extends StatelessWidget {
 
       if (!isOnboardingPassed) {
         await AppPreferences().setOnboardingPassed();
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(builder: (_) => OnboardingComponent()),
+          Routes.ROUTE_ONBOARDING,
         );
       }
     });

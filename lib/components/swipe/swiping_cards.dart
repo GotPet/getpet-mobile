@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:getpet/components/pet_profile/pet_profile.dart';
 import 'package:getpet/components/swipe/pet_engine.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/routes.dart';
 import 'package:getpet/widgets/empty_state.dart';
 
 import 'draggable_card.dart';
@@ -95,14 +95,11 @@ class _SwipingCardsState extends State<SwipingCards>
             });
           },
           notifier: widget.engine.notifier,
-          onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => PetProfileComponent(
-                        pet: widget.engine.currentPet,
-                      ),
-                ),
-              ),
+          onTap: () => Navigator.pushNamed(
+            context,
+            Routes.ROUTE_PET_PROFILE,
+            arguments: widget.engine.currentPet,
+          ),
           child: PetCard(
             pet: widget.engine.currentPet,
           ),
