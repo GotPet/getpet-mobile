@@ -79,11 +79,19 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - uses: apple-actions/import-codesign-certs@v1
-        name: Create Apple Code-signing Certificates
+      - name: Create App Store Connect private key
+        run: echo $IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 | base64 -d > AuthKey.p8
+
+      - name: Create Apple Code-signing Certificates
+        uses: ngeri/prepare-signing@v1.0.2
         with:
-          p12-file-base64: ${{ secrets.IOS_P12_CERTIFICATE_BASE64 }}
-          p12-password: ${{ secrets.IOS_P12_CERTIFICATE_PASSWORD }}
+          appStoreConnectPrivateKey: AuthKey.p8
+          keyID: ${{ env.IOS_APP_STORE_CONNECT_KEY_ID }}
+          issuerID: ${{ env.IOS_APP_STORE_CONNECT_ISSUER_ID }}
+          base64P12File: ${{ secrets.IOS_P12_CERTIFICATE_BASE64 }}
+          p12Password: ${{ secrets.IOS_P12_CERTIFICATE_PASSWORD }}
+          bundleIdentifier: lt.getpet.getpet
+          signType: IOS_APP_STORE
 
       - uses: subosito/flutter-action@v1
         with:
