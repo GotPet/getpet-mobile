@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Install provision certificates
-        run: (cd ios && fastlane ios cert)
+        run: (cd ios && fastlane ios certificates)
         env:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
 
