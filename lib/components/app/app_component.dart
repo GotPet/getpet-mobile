@@ -1,6 +1,5 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/localization/firebase_localization.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
@@ -13,8 +12,6 @@ class AppComponent extends StatefulWidget {
 }
 
 class _AppComponentState extends State<AppComponent> {
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
-
   @override
   Future deactivate() async {
     await PetsDBRepository().dispose();
@@ -28,9 +25,7 @@ class _AppComponentState extends State<AppComponent> {
           AppLocalizations.of(context).appTitle,
       initialRoute: Routes.ROUTE_HOME,
       onGenerateRoute: Routes.onGenerateRoute,
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
+      navigatorObservers: [Analytics.firebaseObserver],
       theme: ThemeData(
         primaryColor: Color.fromARGB(0xFF, 0xDD, 0x61, 0x72),
         primaryColorDark: Color.fromARGB(0xFF, 0x93, 0x1F, 0x33),
