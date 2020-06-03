@@ -81,8 +81,8 @@ jobs:
 
       - name: Create App Store Connect private key
         run: |
-          echo $IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 | base64 -d > AuthKey.p8
-          echo $IOS_P12_CERTIFICATE_BASE64 > CertificateBase64.p12
+          echo "$IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64" | base64 -d > AuthKey.p8
+          echo "$IOS_P12_CERTIFICATE_BASE64" > CertificateBase64.p12
           ls -la
         env:
           IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64: ${{ secrets.IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 }}
