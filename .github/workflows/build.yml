@@ -1,9 +1,5 @@
-name: Build GetPet mobile application
-#on: [push, pull_request]
-on:
-  push:
-    tags:
-      - v.*
+name: Build GetPet Mobile Application
+on: [push, pull_request]
 
 jobs:
   build_android:
