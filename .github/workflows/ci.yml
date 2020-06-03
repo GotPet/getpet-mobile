@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Create App Store Connect private key
-        run: \
+        run: |
           echo $IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 | base64 -d > AuthKey.p8
           ls -la
 
