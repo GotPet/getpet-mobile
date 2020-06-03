@@ -82,9 +82,11 @@ jobs:
       - name: Create App Store Connect private key
         run: |
           echo $IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 | base64 -d > AuthKey.p8
+          echo $IOS_P12_CERTIFICATE_BASE64 > CertificateBase64.p12
           ls -la
         env:
           IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64: ${{ secrets.IOS_APP_STORE_CONNECT_PRIVATE_KEY_BASE_64 }}
+          IOS_P12_CERTIFICATE_BASE64: ${{ secrets.IOS_P12_CERTIFICATE_BASE64 }}
 
       - name: Create Apple Code-signing Certificates
         uses: ngeri/prepare-signing@v1.0.2
@@ -92,7 +94,7 @@ jobs:
           appStoreConnectPrivateKey: AuthKey.p8
           keyID: ${{ env.IOS_APP_STORE_CONNECT_KEY_ID }}
           issuerID: ${{ env.IOS_APP_STORE_CONNECT_ISSUER_ID }}
-          base64P12File: ${{ secrets.IOS_P12_CERTIFICATE_BASE64 }}
+          base64P12File: CertificateBase64.p12
           p12Password: ${{ secrets.IOS_P12_CERTIFICATE_PASSWORD }}
           bundleIdentifier: lt.getpet.getpet
           signType: IOS_APP_STORE
