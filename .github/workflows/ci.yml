@@ -72,6 +72,29 @@ jobs:
 
       - run: flutter build ios --release --no-codesign -v
 
+  publish_ios:
+    name: Publish to AppStore
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: apple-actions/import-codesign-certs@v1
+        name: Create Apple Code-signing Certificates
+        with:
+          p12-file-base64: ${{ secrets.IOS_P12_CERTIFICATE_BASE64 }}
+          p12-password: ${{ secrets.IOS_P12_CERTIFICATE_PASSWORD }}
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: flutter build ios --release --no-codesign -v
+
+      - name: Publish to AppStore using Fastlane
+        run: |
+          cd ios
+          fastlane ios release
 
   publish_android:
     name: Publish Android app bundle to Play Store
