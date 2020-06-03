@@ -9,6 +9,9 @@ class Analytics {
 
   static const EVENT_CALL_SHELTER = "call_shelter";
   static const EVENT_EMAIL_SHELTER = "email_shelter";
+  static const EVENT_PET_LIKED = "pet_liked";
+  static const EVENT_PET_DISLIKED = "pet_disliked";
+  static const EVENT_PET_GETPET = "pet_getpet";
 
   static final Analytics _singleton = new Analytics._internal();
 
@@ -19,23 +22,17 @@ class Analytics {
   Analytics._internal();
 
   Future logShelterCall(Pet pet) async {
-    return await analytics
-        .logEvent(name: EVENT_CALL_SHELTER, parameters: <String, dynamic>{
-      'pet_id': pet.id,
-      'pet_name': pet.name,
-      'shelter_id': pet.shelter.id,
-      'shelter_name': pet.shelter.name,
-    });
+    return await analytics.logEvent(
+      name: EVENT_CALL_SHELTER,
+      parameters: _getPetParameters(pet),
+    );
   }
 
   Future logShelterEmail(Pet pet) async {
-    return await analytics
-        .logEvent(name: EVENT_EMAIL_SHELTER, parameters: <String, dynamic>{
-      'pet_id': pet.id,
-      'pet_name': pet.name,
-      'shelter_id': pet.shelter.id,
-      'shelter_name': pet.shelter.name,
-    });
+    return await analytics.logEvent(
+      name: EVENT_EMAIL_SHELTER,
+      parameters: _getPetParameters(pet),
+    );
   }
 
   Future logOnboardingBegin() async {
@@ -44,5 +41,34 @@ class Analytics {
 
   Future logOnboardingComplete() async {
     return await analytics.logTutorialComplete();
+  }
+
+  Future logPetLiked(Pet pet) async {
+    return await analytics.logEvent(
+      name: EVENT_PET_LIKED,
+      parameters: _getPetParameters(pet),
+    );
+  }
+
+  Future logPetDisliked(Pet pet) async {
+    return await analytics.logEvent(
+      name: EVENT_PET_DISLIKED,
+      parameters: _getPetParameters(pet),
+    );
+  }
+  Future logPetGetPet(Pet pet) async {
+    return await analytics.logEvent(
+      name: EVENT_PET_GETPET,
+      parameters: _getPetParameters(pet),
+    );
+  }
+
+  Map<String, dynamic> _getPetParameters(Pet pet) {
+    return {
+      'pet_id': pet.id,
+      'pet_name': pet.name,
+      'shelter_id': pet.shelter.id,
+      'shelter_name': pet.shelter.name,
+    };
   }
 }

@@ -1,4 +1,4 @@
-
+import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/api/pets_api_service.dart';
 import 'package:getpet/pets.dart';
@@ -17,6 +17,7 @@ class PetsService {
   final _petsDBRepository = PetsDBRepository();
   final _petsApiService = PetsApiService();
   final _authenticationManager = AuthenticationManager();
+  final _analytics = Analytics();
 
   Stream<List<Pet>> getFavoritePets() {
     return _petsDBRepository.getPetsFavorites();
@@ -45,6 +46,7 @@ class PetsService {
 
   Future likePet(Pet pet) async {
     await _petsDBRepository.insertPetChoice(pet, PetDecision.like);
+    await _analytics.logPetLiked(pet);
 
     if (await _authenticationManager.isLoggedIn()) {
       await _petsApiService.likePet(pet);
@@ -53,6 +55,7 @@ class PetsService {
 
   Future dislikePet(Pet pet) async {
     await _petsDBRepository.insertPetChoice(pet, PetDecision.dislike);
+    await _analytics.logPetDisliked(pet);
 
     if (await _authenticationManager.isLoggedIn()) {
       await _petsApiService.dislikePet(pet);
@@ -61,6 +64,7 @@ class PetsService {
 
   Future shelterPet(Pet pet) async {
     await _petsDBRepository.insertPetChoice(pet, PetDecision.getPet);
+    await _analytics.logPetGetPet(pet);
 
     if (await _authenticationManager.isLoggedIn()) {
       await _petsApiService.shelterPet(pet);
