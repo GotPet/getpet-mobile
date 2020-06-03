@@ -75,7 +75,9 @@ jobs:
       - uses: fregante/setup-git-token@v1
         name: Setup Git Token for Match
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_APPLICATION_SPECIFIC_TOKEN }}
+
+      - run: git clone https://github.com/GotPet/certificates.git
 
       - name: Install provision certificates
         run: (cd ios && fastlane ios certificates)
