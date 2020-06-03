@@ -1,0 +1,72 @@
+name: Release GetPet Android to Google Play
+on:
+  push:
+    tags:
+      - v.*
+
+jobs:
+  release_android:
+    name: Publish Android app bundle to Play Store
+    runs-on: macos-latest
+
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.x'
+
+      - run: echo $SIGNING_KEY_BASE64 | base64 -d > android/app/key.jks
+        env:
+          SIGNING_KEY_BASE64: ${{ secrets.SIGNING_KEY_BASE64 }}
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: dart --version
+      - run: flutter --version
+
+      - run: flutter build appbundle -v
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PATH: key.jks
+
+      - uses: r0adkll/upload-google-play@v1
+        name: Upload to Google play
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: lt.getpet.getpet
+          releaseFile: build/app/outputs/bundle/release/app-release.aab
+          mappingFile: build/app/outputs/mapping/release/mapping.txt
+          track: beta
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - name: Upload Android app bundle to GitHub releases
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/app/outputs/bundle/release/app-release.aab
+          asset_name: app-release.aab
+          asset_content_type: application/octet-stream
+
+      - name: Upload Proguard mapping file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/app/outputs/mapping/release/mapping.txt
+          asset_name: mapping.txt
+          asset_content_type: text/plain
