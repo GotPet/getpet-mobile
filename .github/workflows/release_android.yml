@@ -2,7 +2,7 @@ name: Release Android version of GetPet to Google Play
 on:
   push:
     tags:
-      - v.*
+      - v*
 
 jobs:
   release_android:

@@ -2,7 +2,7 @@ name: Release iOS version of GetPet to AppStore
 on:
   push:
     tags:
-      - v.*
+      - v*
 
 jobs:
   release_ios:
