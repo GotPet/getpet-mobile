@@ -83,7 +83,7 @@ jobs:
         run: (cd ios && fastlane ios certificates)
         env:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
 
       - uses: subosito/flutter-action@v1
         with:
