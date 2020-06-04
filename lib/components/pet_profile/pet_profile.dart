@@ -160,7 +160,11 @@ class PetPhotosCarousel extends StatelessWidget {
       overlayShadow: true,
       dotBgColor: Colors.transparent,
       autoplay: false,
-      onImageTap: (i) => openPhotoFullscreen(context, pet.allPhotos()[i]),
+      onImageTap: (i) => openPhotoFullscreen(
+        context,
+        pet.allPhotos(),
+        i,
+      ),
     );
   }
 
@@ -179,11 +183,12 @@ class PetPhotosCarousel extends StatelessWidget {
     return image;
   }
 
-  Future openPhotoFullscreen(BuildContext context, String url) async {
+  Future openPhotoFullscreen(
+      BuildContext context, List<String> photos, int index) async {
     return await Navigator.pushNamed(
       context,
       Routes.ROUTE_FULL_SCREEN_IMAGE,
-      arguments: FullScreenImageScreenArguments(pet.name, url),
+      arguments: FullScreenImageScreenArguments(pet.name, photos, index),
     );
   }
 }
@@ -255,38 +260,84 @@ class DislikePetActionWidget extends StatelessWidget {
 
 class FullScreenImageScreenArguments {
   final String name;
-  final String url;
+  final List<String> photos;
+  final int initialIndex;
 
-  const FullScreenImageScreenArguments(this.name, this.url);
+  const FullScreenImageScreenArguments(
+      this.name, this.photos, this.initialIndex);
 }
 
-class FullScreenImagePage extends StatelessWidget {
+class FullScreenImagePage extends StatefulWidget {
   final String name;
-  final String url;
+  final List<String> photos;
+  final int initialIndex;
 
   const FullScreenImagePage({
     Key key,
     @required this.name,
-    @required this.url,
-  })  : assert(url != null),
+    @required this.photos,
+    @required this.initialIndex,
+  })  : assert(photos != null),
         assert(name != null),
+        assert(initialIndex != null),
         super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _FullScreenImagePageState(
+        name: name,
+        photos: photos,
+        index: initialIndex,
+      );
+}
+
+class _FullScreenImagePageState extends State<FullScreenImagePage> {
+  String name;
+  List<String> photos;
+  int index;
+  double zoom = 1.0;
+
+  _FullScreenImagePageState({
+    @required this.name,
+    @required this.photos,
+    @required this.index,
+  })  : assert(photos != null),
+        assert(name != null),
+        assert(index != null);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text("$name ${index + 1}/${photos.length}"),
       ),
-      body: ZoomableWidget(
-        minScale: 1,
-        maxScale: 3,
-        zoomSteps: 1,
-        child: Container(
-          child: GetPetNetworkImage(
-            url: url,
-          ),
+      body: PageView.builder(
+        itemCount: photos.length,
+        controller: PageController(
+          initialPage: index,
+          // It's a hack to, but used to load images next image
+          viewportFraction: 0.9999999,
         ),
+        onPageChanged: (index) => setState(() {
+          this.index = index;
+        }),
+        physics: zoom == 1.0
+            ? AlwaysScrollableScrollPhysics()
+            : NeverScrollableScrollPhysics(),
+        itemBuilder: (context, position) {
+          return ZoomableWidget(
+            minScale: 1,
+            maxScale: 3,
+            zoomSteps: 1,
+            onZoomChanged: (zoom) => setState(() {
+              this.zoom = zoom;
+            }),
+            child: Container(
+              child: GetPetNetworkImage(
+                url: photos[position],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

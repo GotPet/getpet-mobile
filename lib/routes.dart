@@ -43,7 +43,11 @@ class Routes {
         final FullScreenImageScreenArguments arguments = settings.arguments;
 
         return MaterialPageRoute(builder: (context) {
-          return FullScreenImagePage(name: arguments.name, url: arguments.url);
+          return FullScreenImagePage(
+            name: arguments.name,
+            photos: arguments.photos,
+            initialIndex: arguments.initialIndex,
+          );
         });
       case ROUTE_SHELTER_PET:
         final Pet pet = settings.arguments;
