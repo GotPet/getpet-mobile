@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.GIT_APPLICATION_SPECIFIC_TOKEN }}
 
       - name: Force xcode 11
-        run: xcode-select -switch /Applications/Xcode_11.3.app
+        run: sudo xcode-select -switch /Applications/Xcode_11.3.app
 
 
       - uses: maierj/fastlane-action@v1.4.0
