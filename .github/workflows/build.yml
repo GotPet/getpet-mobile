@@ -28,6 +28,8 @@ jobs:
 
       - run: flutter analyze
 
+      - run: flutter test
+
       - run: flutter build apk -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
