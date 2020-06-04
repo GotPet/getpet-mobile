@@ -102,9 +102,7 @@ class PetProfileComponent extends StatelessWidget {
         child: IntrinsicHeight(
           child: Column(
             children: <Widget>[
-              TooltipWithArrow(
-                message: AppLocalizations.of(context).readyForDate,
-              ),
+              if (!pet.isStatusGetPet()) ToolTipWithArrowForGetPetButton(),
               FloatingActionButton.extended(
                 icon: Image.asset(
                   "assets/ic_home.png",
@@ -338,6 +336,24 @@ class _FullScreenImagePageState extends State<FullScreenImagePage> {
           );
         },
       ),
+    );
+  }
+}
+
+class ToolTipWithArrowForGetPetButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 5)),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return AnimatedOpacity(
+          opacity: snapshot.connectionState == ConnectionState.done ? 1.0 : 0.0,
+          duration: Duration(seconds: 2),
+          child: TooltipWithArrow(
+            message: AppLocalizations.of(context).readyForDate,
+          ),
+        );
+      },
     );
   }
 }

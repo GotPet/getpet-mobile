@@ -114,6 +114,10 @@ class Pet extends Equatable {
     }
     return true;
   }
+
+  bool isStatusGetPet() {
+    return decision == PetDecision.getPet;
+  }
 }
 
 enum PetDecision {
