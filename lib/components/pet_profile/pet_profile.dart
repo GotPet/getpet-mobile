@@ -157,7 +157,6 @@ class PetPhotosCarousel extends StatelessWidget {
       images: photos,
       dotPosition: DotPosition.topCenter,
       indicatorBgPadding: 45,
-      overlayShadow: true,
       dotBgColor: Colors.transparent,
       autoplay: false,
       onImageTap: (i) => openPhotoFullscreen(
