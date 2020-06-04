@@ -46,10 +46,12 @@ jobs:
 
       - run: flutter build ios --release --no-codesign
 
+      - run: security find-identity -v -p codesigning
+
       - name: Publish to AppStore using Fastlane
         uses: maierj/fastlane-action@v1.4.0
         with:
-          lane: 'ios release'
+          lane: 'ios release --verbose'
           subdirectory: 'ios'
         env:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
