@@ -1,16 +1,11 @@
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
+import 'package:getpet/components/pet_profile/pet_photos_carousel.dart';
 import 'package:getpet/components/swipe/pet_card.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/routes.dart';
-import 'package:getpet/utils/image_utils.dart';
-import 'package:getpet/utils/screen_utils.dart';
-import 'package:getpet/widgets/getpet_network_image.dart';
-import 'package:getpet/utils/container_utils.dart';
 import 'package:getpet/widgets/tooptip_with_arrow.dart';
 
 class PetProfileComponent extends StatelessWidget {
@@ -130,65 +125,6 @@ class PetProfileComponent extends StatelessWidget {
   }
 }
 
-class PetPhotosCarousel extends StatelessWidget {
-  final Pet pet;
-
-  PetPhotosCarousel({this.pet});
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = getScreenWidth(context);
-
-    final photos = pet
-        .allPhotos()
-        .map(
-          (photo) => getSizedImageUrl(
-            photo,
-            screenWidth,
-            ceilToHundreds: true,
-          ),
-        )
-        .mapIndexed(_createImageWidget)
-        .toList(growable: false);
-
-    return new Carousel(
-      images: photos,
-      dotPosition: DotPosition.topCenter,
-      indicatorBgPadding: 45,
-      dotBgColor: Colors.transparent,
-      autoplay: false,
-      onImageTap: (i) => openPhotoFullscreen(
-        context,
-        pet.allPhotos(),
-        i,
-      ),
-    );
-  }
-
-  Widget _createImageWidget(String url, int index) {
-    final image = GetPetNetworkImage(
-      url: url,
-    );
-
-    if (index == 0) {
-      return Hero(
-        tag: "pet-${pet.id}-photo-image-cover",
-        child: image,
-      );
-    }
-
-    return image;
-  }
-
-  Future openPhotoFullscreen(
-      BuildContext context, List<String> photos, int index) async {
-    return await Navigator.pushNamed(
-      context,
-      Routes.ROUTE_FULL_SCREEN_IMAGE,
-      arguments: FullScreenImageScreenArguments(pet.name, photos, index),
-    );
-  }
-}
 
 class DislikePetActionWidget extends StatelessWidget {
   final Pet pet;
@@ -248,91 +184,6 @@ class DislikePetActionWidget extends StatelessWidget {
                 ],
               );
             },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class FullScreenImageScreenArguments {
-  final String name;
-  final List<String> photos;
-  final int initialIndex;
-
-  const FullScreenImageScreenArguments(
-      this.name, this.photos, this.initialIndex);
-}
-
-class FullScreenImagePage extends StatefulWidget {
-  final String name;
-  final List<String> photos;
-  final int initialIndex;
-
-  const FullScreenImagePage({
-    Key key,
-    @required this.name,
-    @required this.photos,
-    @required this.initialIndex,
-  })  : assert(photos != null),
-        assert(name != null),
-        assert(initialIndex != null),
-        super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _FullScreenImagePageState(
-        name: name,
-        photos: photos,
-        index: initialIndex,
-      );
-}
-
-class _FullScreenImagePageState extends State<FullScreenImagePage> {
-  String name;
-  List<String> photos;
-  int index;
-  double zoom = 1.0;
-
-  _FullScreenImagePageState({
-    @required this.name,
-    @required this.photos,
-    @required this.index,
-  })  : assert(photos != null),
-        assert(name != null),
-        assert(index != null);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("$name ${index + 1}/${photos.length}"),
-      ),
-      body: PageView.builder(
-        itemCount: photos.length,
-        controller: PageController(
-          initialPage: index,
-          // It's a hack to, but used to load images next image
-          viewportFraction: 0.9999999,
-        ),
-        onPageChanged: (index) => setState(() {
-          this.index = index;
-        }),
-        physics: zoom == 1.0
-            ? AlwaysScrollableScrollPhysics()
-            : NeverScrollableScrollPhysics(),
-        itemBuilder: (context, position) {
-          return ZoomableWidget(
-            minScale: 1,
-            maxScale: 3,
-            zoomSteps: 1,
-            onZoomChanged: (zoom) => setState(() {
-              this.zoom = zoom;
-            }),
-            child: Container(
-              child: GetPetNetworkImage(
-                url: photos[position],
-              ),
-            ),
           );
         },
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'components/home/home_component.dart';
 import 'components/onboarding/onboarding_component.dart';
+import 'components/pet_profile/full_screen_images_component.dart';
 import 'components/pet_profile/pet_profile.dart';
 import 'components/shelter_pet/shelter_pet_component.dart';
 import 'components/user_profile/user_login_component.dart';
@@ -43,7 +44,7 @@ class Routes {
         final FullScreenImageScreenArguments arguments = settings.arguments;
 
         return MaterialPageRoute(builder: (context) {
-          return FullScreenImagePage(
+          return FullScreenImageScreen(
             name: arguments.name,
             photos: arguments.photos,
             initialIndex: arguments.initialIndex,
