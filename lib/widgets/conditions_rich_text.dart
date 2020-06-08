@@ -5,9 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ConditionsRichText extends StatelessWidget {
   static const _FAIR_USE_RULES_URL =
-      "https://www.getpet.lt/static/pdf/saziningo-naudojimosi-taisykles-vartotojams.pdf";
+      "https://www.getpet.lt/saziningo-naudojimosi-taisykles/";
   static const _PRIVACY_POLICY_URL =
-      'https://www.getpet.lt/static/pdf/privatumo-politika.pdf';
+      'https://www.getpet.lt/privatumo-politika/';
 
   @override
   Widget build(BuildContext context) {
