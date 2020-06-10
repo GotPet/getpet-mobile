@@ -52,7 +52,7 @@ class PetProfileComponent extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
-                  PetPhotosCarousel(
+                  PetPhotosCarouselWithIndicator(
                     pet: pet,
                   ),
                   PetCardInformation(

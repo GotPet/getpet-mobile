@@ -1,46 +1,75 @@
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/routes.dart';
 import 'package:getpet/utils/image_utils.dart';
 import 'package:getpet/utils/screen_utils.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
-import 'package:getpet/utils/container_utils.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'full_screen_images_component.dart';
 
-class PetPhotosCarousel extends StatelessWidget {
+class PetPhotosCarouselWithIndicator extends StatelessWidget {
   final Pet pet;
 
-  PetPhotosCarousel({this.pet});
+  PetPhotosCarouselWithIndicator({this.pet});
+
+  final _pageController = PageController(
+    initialPage: 0,
+    // It's a hack to, but used to load images next image
+    viewportFraction: 0.9999999,
+  );
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = getScreenWidth(context);
+    final allPhotos = pet.allPhotos();
 
-    final photos = pet
-        .allPhotos()
-        .map(
-          (photo) => getSizedImageUrl(
-            photo,
-            screenWidth,
-            ceilToHundreds: true,
+    return Stack(
+      children: <Widget>[
+        PageView.builder(
+          controller: _pageController,
+          itemCount: allPhotos.length,
+          itemBuilder: (BuildContext context, int index) {
+            final photo = allPhotos[index];
+            final imageUrl = getSizedImageUrl(
+              photo,
+              screenWidth,
+              ceilToHundreds: true,
+            );
+
+            return GestureDetector(
+              onTap: () => openPhotoFullscreen(context, allPhotos, index),
+              child: _createImageWidget(imageUrl, index),
+            );
+          },
+        ),
+        SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: SmoothPageIndicator(
+                  controller: _pageController,
+                  count: allPhotos.length,
+                  effect: ScrollingDotsEffect(
+                    spacing: 8.0,
+                    radius: 4.0,
+                    dotWidth: 20,
+                    dotHeight: 5,
+                    strokeWidth: 2,
+
+                    dotColor: Colors.white,
+                    activeDotColor: Theme.of(context).primaryColor,
+                    activeDotScale: 1,
+                    activeStrokeWidth: 1,
+                  ),
+                ),
+              ),
+            ],
           ),
-        )
-        .mapIndexed(_createImageWidget)
-        .toList(growable: false);
-
-    return new Carousel(
-      images: photos,
-      dotPosition: DotPosition.topCenter,
-      indicatorBgPadding: 45,
-      dotBgColor: Colors.transparent,
-      autoplay: false,
-      onImageTap: (i) => openPhotoFullscreen(
-        context,
-        pet.allPhotos(),
-        i,
-      ),
+        ),
+      ],
     );
   }
 
