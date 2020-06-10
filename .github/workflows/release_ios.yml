@@ -1,11 +1,8 @@
 name: Release iOS version of GetPet to AppStore
-on: [push, pull_request]
-
-
-#on:
-#  push:
-#    branches-ignore:
-#      - '**'
+on:
+  push:
+    branches-ignore:
+      - '**'
 
 #on:
 #  push:
