@@ -57,13 +57,17 @@ class ListViewFavoritePets extends StatelessWidget {
 
     var shelterPets =
         pets.where((pet) => pet.decision == PetDecision.getPet).toList();
+    var favoritePets =
+        pets.where((pet) => pet.decision == PetDecision.like).toList();
     if (shelterPets.isNotEmpty) {
       cells.add(LabelItem(AppLocalizations.of(context).myGetPetRequests));
       cells.addAll(shelterPets);
     }
 
-    cells.add(LabelItem(AppLocalizations.of(context).myFavoritePets));
-    cells.addAll(pets);
+    if (favoritePets.isNotEmpty) {
+      cells.add(LabelItem(AppLocalizations.of(context).myFavoritePets));
+      cells.addAll(favoritePets);
+    }
 
     return ListView.builder(
       itemCount: cells.length,
