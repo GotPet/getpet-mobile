@@ -3,7 +3,7 @@ import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/components/onboarding/onboarding_step_component.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/preferences/app_preferences.dart';
-import 'package:getpet/widgets/dots_indicator.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingComponent extends StatefulWidget {
   @override
@@ -100,16 +100,17 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
                   children: <Widget>[
                     new Padding(
                       padding: const EdgeInsets.all(8),
-                      child: new DotsIndicator(
+                      child: SmoothPageIndicator(
                         controller: _controller,
-                        itemCount: pages.length,
-                        onPageSelected: (int page) {
-                          _controller.animateToPage(
-                            page,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.ease,
-                          );
-                        },
+                        count: pages.length,
+                        effect: ScaleEffect(
+                          dotColor: Colors.white,
+                          activeDotColor: Colors.white,
+                          scale: 2,
+                          dotWidth: 8,
+                          dotHeight: 8,
+                          radius: 8
+                        ),
                       ),
                     ),
                     Padding(
