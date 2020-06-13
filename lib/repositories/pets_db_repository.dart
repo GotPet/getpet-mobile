@@ -188,7 +188,7 @@ WHERE $_columnPetId IN (
     return m;
   }
 
-  Future insertPets(List<Pet> pets, {onConflictReplace: true}) async {
+  Future insertPets(List<Pet> pets) async {
     if (pets.isEmpty) {
       return [];
     }
@@ -202,9 +202,7 @@ WHERE $_columnPetId IN (
       (pet) => batch.insert(
         _tablePets,
         _getPetMap(pet, true),
-        conflictAlgorithm: onConflictReplace
-            ? ConflictAlgorithm.replace
-            : ConflictAlgorithm.ignore,
+        conflictAlgorithm: ConflictAlgorithm.ignore,
       ),
     );
     await batch.commit(noResult: true);

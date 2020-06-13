@@ -49,10 +49,7 @@ class PetsService {
     );
 
     await _petsDBRepository.removePetsWithoutChoice();
-    await _petsDBRepository.insertPets(
-      pets,
-      onConflictReplace: true,
-    );
+    await _petsDBRepository.insertPets(pets);
 
     return pets;
   }
