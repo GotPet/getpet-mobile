@@ -43,19 +43,16 @@ class PetsService {
     final favoritePetIds = await _petsDBRepository.getFavoritePetIds();
     final dislikedPetIds = await _petsDBRepository.getDislikedPetIds();
 
-    final dislikedPets =
-        await _petsDBRepository.getDislikedPetsOrderedByRandom();
-
     var pets = await _petsApiService.generatePetsToSwipe(
-        favoritePetIds, dislikedPetIds);
+      favoritePetIds,
+      dislikedPetIds,
+    );
 
     await _petsDBRepository.removePetsWithoutChoice();
     await _petsDBRepository.insertPets(
       pets,
       onConflictReplace: true,
     );
-
-    pets.addAll(dislikedPets);
 
     return pets;
   }

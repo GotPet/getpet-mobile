@@ -328,23 +328,6 @@ ORDER BY
     """).asyncMap((query) => query()).map((rows) => _mapToPets(rows));
   }
 
-  Future<List<Pet>> getDislikedPetsOrderedByRandom() async {
-    var petsMap = await _db.rawQuery(""" 
-SELECT 
-  $_tablePets.*,
-  $_tableShelters.*,
-  $_tablePetChoices.*
-FROM 
-  $_tablePets 
-  INNER JOIN $_tableShelters ON $_tablePets.$_columnPetShelterId = $_tableShelters.$_columnShelterId 
-  INNER JOIN $_tablePetChoices ON $_tablePets.$_columnPetId = $_tablePetChoices.$_columnPetChoicesPetId 
-  AND $_tablePetChoices.$_columnPetChoicesChoice = $_petDecisionNumDislike
-WHERE $_tablePets.$_columnPetAvailable = 1 
-ORDER BY RANDOM();
-    """);
-    return _mapToPets(petsMap);
-  }
-
   Future<List<int>> getFavoritePetIds() async {
     var petsMap = await _db.rawQuery(""" 
 SELECT 
