@@ -122,30 +122,30 @@ class PetsApiService {
 
   Future<List<Pet>> getPets(
       List<int> petIds, String lastUpdateDateIso8601) async {
-    if (petIds.isNotEmpty) {
-      final queryParams = {
-        "pet_ids": petIds.join(','),
-        "last_update": lastUpdateDateIso8601,
-      };
-
-      var petsUrl = "/v1/pets/";
-
-      List<Pet> allPets = [];
-      while (petsUrl != null) {
-        final response = allPets.isEmpty
-            ? await dio.get(petsUrl, queryParameters: queryParams)
-            : await dio.get(petsUrl);
-
-        final pets =
-            response.data['results'].map<Pet>((model) => Pet.fromJson(model));
-
-        allPets.addAll(pets);
-
-        petsUrl = response.data['next'];
-      }
-
-      return allPets;
+    if (petIds.isEmpty) {
+      return [];
     }
-    return [];
+
+    var petsUrl = "/v1/pets/";
+    final queryParams = {
+      "pet_ids": petIds.join(','),
+      "last_update": lastUpdateDateIso8601,
+    };
+
+    List<Pet> allPets = [];
+    while (petsUrl != null) {
+      final response = allPets.isEmpty
+          ? await dio.get(petsUrl, queryParameters: queryParams)
+          : await dio.get(petsUrl);
+
+      final pets =
+          response.data['results'].map<Pet>((model) => Pet.fromJson(model));
+
+      allPets.addAll(pets);
+
+      petsUrl = response.data['next'];
+    }
+
+    return allPets;
   }
 }
