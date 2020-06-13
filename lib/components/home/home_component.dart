@@ -1,13 +1,17 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:getpet/components/pet_favorites/favorites_component.dart';
 import 'package:getpet/components/swipe/pet_swipe_component.dart';
 import 'package:getpet/components/user_profile/user_login_component.dart';
 import 'package:getpet/localization/app_localization.dart';
+import 'package:getpet/pets_service.dart';
 import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/routes.dart';
 import 'package:getpet/widgets/getpet_app_bar_image.dart';
 
 class HomeComponent extends StatelessWidget {
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
   @override
   Widget build(BuildContext context) {
     final controller = DefaultTabController(
@@ -44,12 +48,22 @@ class HomeComponent extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            UserLoginComponent(),
-            PetSwipeComponent(),
-            FavoritePetsComponent(),
+        body: Stack(
+          children: <Widget>[
+            FutureBuilder(
+              future: _updatePetProfiles(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return SizedBox();
+              },
+            ),
+            TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                UserLoginComponent(),
+                PetSwipeComponent(),
+                FavoritePetsComponent(),
+              ],
+            ),
           ],
         ),
       ),
@@ -68,5 +82,11 @@ class HomeComponent extends StatelessWidget {
     });
 
     return controller;
+  }
+
+  _updatePetProfiles() async {
+    return this._memoizer.runOnce(() async {
+      return await PetsService().updatePetProfiles();
+    });
   }
 }

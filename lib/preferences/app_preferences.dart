@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreferences {
   static const _KEY_API_TOKEN = "GETPET_API_TOKEN";
+  static const _KEY_LAST_PET_PROFILES_UPDATE_ISO_DATE =
+      "LAST_PET_PROFILES_UPDATE_ISO_DATE";
   static const _KEY_ONBOARDING_PASSED = "ONBOARDING_PASSED";
 
   static final AppPreferences _singleton = new AppPreferences._internal();
@@ -33,6 +35,19 @@ class AppPreferences {
     var prefs = await sharedPreferences;
 
     return prefs.getString(_KEY_API_TOKEN);
+  }
+
+  Future<String> getLastPetProfilesUpdateISODate() async {
+    var prefs = await sharedPreferences;
+
+    return prefs.getString(_KEY_LAST_PET_PROFILES_UPDATE_ISO_DATE);
+  }
+
+  Future setLastPetProfilesUpdateISODate(String isoDate) async {
+    var prefs = await sharedPreferences;
+
+    return await prefs.setString(
+        _KEY_LAST_PET_PROFILES_UPDATE_ISO_DATE, isoDate);
   }
 
   Future removeApiToken() async {

@@ -102,19 +102,54 @@ CREATE INDEX `$_indexPetChoicesChoice` ON `$_tablePetChoices` (`$_columnPetChoic
       """);
   }
 
-  Future insertShelters(List<Shelter> shelters) async {
+  Map<String, dynamic> _getShelterMap(Shelter shelter, bool includePetId) {
+    Map<String, dynamic> m = {
+      _columnShelterName: shelter.name,
+      _columnShelterEmail: shelter.email,
+      _columnShelterPhone: shelter.phone,
+    };
+
+    if (includePetId) {
+      m[_columnShelterId] = shelter.id;
+    }
+
+    return m;
+  }
+
+  Future insertOrUpdateShelters(List<Shelter> shelters) async {
+    if (shelters.isEmpty) {
+      return [];
+    }
+
     var batch = _db.batch();
 
     shelters.forEach(
       (shelter) => batch.insert(
-          _tableShelters,
-          {
-            _columnShelterId: shelter.id,
-            _columnShelterName: shelter.name,
-            _columnShelterEmail: shelter.email,
-            _columnShelterPhone: shelter.phone,
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace),
+        _tableShelters,
+        _getShelterMap(shelter, true),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      ),
+    );
+
+    await batch.commit(noResult: true);
+
+    return await updateShelters(shelters);
+  }
+
+  Future updateShelters(List<Shelter> shelters) async {
+    if (shelters.isEmpty) {
+      return [];
+    }
+
+    var batch = _db.batch();
+
+    shelters.forEach(
+      (shelter) => batch.update(
+        _tableShelters,
+        _getShelterMap(shelter, false),
+        where: '$_columnShelterId = ?',
+        whereArgs: [shelter.id],
+      ),
     );
 
     return await batch.commit(noResult: true);
@@ -133,35 +168,65 @@ WHERE $_columnPetId IN (
 """);
   }
 
+  Map<String, dynamic> _getPetMap(Pet pet, bool includePetId) {
+    Map<String, dynamic> m = {
+      _columnPetShelterId: pet.shelter.id,
+      _columnPetAvailable: pet.available ? 1 : 0,
+      _columnPetProfilePhoto: pet.profilePhoto,
+      _columnPetName: pet.name,
+      _columnPetShortDescription: pet.shortDescription,
+      _columnPetDescription: pet.description,
+      _columnPetPhotosJson: jsonEncode(
+        pet.photos.map((photo) => photo.photo).toList(),
+      ),
+    };
+
+    if (includePetId) {
+      m[_columnPetId] = pet.id;
+    }
+
+    return m;
+  }
+
   Future insertPets(List<Pet> pets, {onConflictReplace: true}) async {
     if (pets.isEmpty) {
       return [];
     }
 
     var shelters = pets.map((p) => p.shelter).toSet().toList(growable: false);
-    await this.insertShelters(shelters);
+    await this.insertOrUpdateShelters(shelters);
 
     var batch = _db.batch();
 
     pets.forEach(
       (pet) => batch.insert(
-            _tablePets,
-            {
-              _columnPetId: pet.id,
-              _columnPetShelterId: pet.shelter.id,
-              _columnPetAvailable: pet.available ? 1 : 0,
-              _columnPetProfilePhoto: pet.profilePhoto,
-              _columnPetName: pet.name,
-              _columnPetShortDescription: pet.shortDescription,
-              _columnPetDescription: pet.description,
-              _columnPetPhotosJson: jsonEncode(
-                pet.photos.map((photo) => photo.photo).toList(),
-              ),
-            },
-            conflictAlgorithm: onConflictReplace
-                ? ConflictAlgorithm.replace
-                : ConflictAlgorithm.ignore,
-          ),
+        _tablePets,
+        _getPetMap(pet, true),
+        conflictAlgorithm: onConflictReplace
+            ? ConflictAlgorithm.replace
+            : ConflictAlgorithm.ignore,
+      ),
+    );
+    await batch.commit(noResult: true);
+  }
+
+  Future updatePets(List<Pet> pets) async {
+    if (pets.isEmpty) {
+      return [];
+    }
+
+    var shelters = pets.map((p) => p.shelter).toSet().toList(growable: false);
+    await this.insertOrUpdateShelters(shelters);
+
+    var batch = _db.batch();
+
+    pets.forEach(
+      (pet) => batch.update(
+        _tablePets,
+        _getPetMap(pet, false),
+        where: '$_columnPetId = ?',
+        whereArgs: [pet.id],
+      ),
     );
     await batch.commit(noResult: true);
   }

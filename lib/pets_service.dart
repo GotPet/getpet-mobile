@@ -2,6 +2,7 @@ import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/api/pets_api_service.dart';
 import 'package:getpet/pets.dart';
+import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
 import 'dart:async';
 
@@ -17,10 +18,25 @@ class PetsService {
   final _petsDBRepository = PetsDBRepository();
   final _petsApiService = PetsApiService();
   final _authenticationManager = AuthenticationManager();
+  final _appPreferences = AppPreferences();
   final _analytics = Analytics();
 
   Stream<List<Pet>> getFavoritePets() {
     return _petsDBRepository.getPetsFavorites();
+  }
+
+  Future updatePetProfiles() async {
+    final favoritePetIds = await _petsDBRepository.getFavoritePetIds();
+    final lastUpdateDateISO =
+        await _appPreferences.getLastPetProfilesUpdateISODate();
+
+    final petsToUpdate =
+        await _petsApiService.getPets(favoritePetIds, lastUpdateDateISO);
+
+    await _petsDBRepository.updatePets(petsToUpdate);
+
+    final currentIsoUTC = DateTime.now().toUtc().toIso8601String();
+    await _appPreferences.setLastPetProfilesUpdateISODate(currentIsoUTC);
   }
 
   Future<List<Pet>> getPetsToSwipe() async {
