@@ -17,44 +17,35 @@ class OnboardingStepComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: new BoxDecoration(color: Theme.of(context).primaryColor),
-      child: Stack(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                  image: AssetImage(assetName),
-                  fit: BoxFit.fitHeight,
-                ),
-                new Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4
-                        .copyWith(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Text(
-                  description,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: Colors.white),
-                  textAlign: TextAlign.center,
-                )
-              ],
+          Image(
+            image: AssetImage(assetName),
+            fit: BoxFit.contain,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  .copyWith(color: Colors.white),
+              textAlign: TextAlign.center,
             ),
+          ),
+          Text(
+            description,
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+            textAlign: TextAlign.center,
           )
         ],
-        alignment: FractionalOffset.center,
       ),
     );
   }
