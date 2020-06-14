@@ -22,28 +22,32 @@ class OnboardingStepComponent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image(
-            image: AssetImage(assetName),
-            fit: BoxFit.contain,
+          Expanded(
+            child: Image.asset(
+              assetName,
+              fit: BoxFit.contain,
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
               title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.headline4.copyWith(
+                    color: Colors.white,
+                  ),
               textAlign: TextAlign.center,
             ),
           ),
-          Text(
-            description,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-            textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              description,
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+              textAlign: TextAlign.center,
+            ),
           )
         ],
       ),
