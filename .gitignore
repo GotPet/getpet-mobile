@@ -86,3 +86,5 @@ build/
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
+/ios/Runner.ipa
+/ios/Runner.app.dSYM.zip

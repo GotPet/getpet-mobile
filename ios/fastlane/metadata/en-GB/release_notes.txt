@@ -1,0 +1,1 @@
+GetPet komanda dirba labai sunkiai taisydama programėlės klaidas, gerindama programėlės darbą.

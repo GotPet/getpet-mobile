@@ -1,0 +1,3 @@
+GetPet is like a Tinder, but with dogs. It’s a mobile, easy to use app, where you can find dogs from local shelters. You can arrange a date with a dog, come to the shelter and take a walk together. Spend some time, run around. Come again. 
+
+GetPet mobile app is in Lithuanian language.
