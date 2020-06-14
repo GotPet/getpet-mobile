@@ -10,7 +10,6 @@ import 'package:getpet/widgets/tooptip_with_arrow.dart';
 
 class PetProfileComponent extends StatelessWidget {
   final petsService = PetsService();
-
   final Pet pet;
 
   PetProfileComponent({
@@ -18,28 +17,6 @@ class PetProfileComponent extends StatelessWidget {
     @required this.pet,
   })  : assert(pet != null),
         super(key: key);
-
-  final _authenticationManager = AuthenticationManager();
-
-  Future launchShelterPetComponent(BuildContext context) async {
-    return await Navigator.pushNamed(
-      context,
-      Routes.ROUTE_SHELTER_PET,
-      arguments: pet,
-    );
-  }
-
-  Future launchUserLoginComponent(BuildContext context) async {
-    final isLoggedIn = await Navigator.pushNamed(
-      context,
-      Routes.ROUTE_SHELTER_PET,
-      arguments: pet,
-    );
-
-    if (isLoggedIn == true) {
-      await launchShelterPetComponent(context);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,38 +70,100 @@ class PetProfileComponent extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: Visibility(
-        child: IntrinsicHeight(
-          child: Column(
-            children: <Widget>[
-              if (!pet.isStatusGetPet()) ToolTipWithArrowForGetPetButton(),
-              FloatingActionButton.extended(
-                icon: Image.asset(
-                  "assets/ic_home.png",
-                  color: Colors.white,
-                  width: 24,
-                ),
-                label: Text(AppLocalizations.of(context).appTitle),
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Colors.white,
-                onPressed: () async {
-                  if (await _authenticationManager.isLoggedIn()) {
-                    await launchShelterPetComponent(context);
-                  } else {
-                    await launchUserLoginComponent(context);
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-        visible: pet.isInFavorites(),
-      ),
+      floatingActionButton: PetProfileFabButtons(pet: pet),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
 
+class PetProfileFabButtons extends StatelessWidget {
+  final Pet pet;
+
+  const PetProfileFabButtons({
+    Key key,
+    @required this.pet,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (pet.isInFavorites()) {
+      return IntrinsicHeight(
+        child: Column(
+          children: <Widget>[
+            if (!pet.isStatusGetPet()) ToolTipWithArrowForGetPetButton(),
+            FloatingActionButton.extended(
+              icon: Image.asset(
+                "assets/ic_home.png",
+                color: Colors.white,
+                width: 24,
+              ),
+              label: Text(AppLocalizations.of(context).appTitle),
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
+              onPressed: () async {
+                final _authenticationManager = AuthenticationManager();
+
+                if (await _authenticationManager.isLoggedIn()) {
+                  await launchShelterPetComponent(context);
+                } else {
+                  await launchUserLoginComponent(context);
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: FloatingActionButton(
+            onPressed: () => Navigator.pop(context, PetDecision.dislike),
+            heroTag: "fab_dislike",
+            child: Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: FloatingActionButton(
+            onPressed: () => Navigator.pop(context, PetDecision.like),
+            child: Icon(
+              Icons.favorite,
+              color: Colors.green,
+            ),
+            heroTag: "fab_like",
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future launchShelterPetComponent(BuildContext context) async {
+    return await Navigator.pushNamed(
+      context,
+      Routes.ROUTE_SHELTER_PET,
+      arguments: pet,
+    );
+  }
+
+  Future launchUserLoginComponent(BuildContext context) async {
+    final isLoggedIn = await Navigator.pushNamed(
+      context,
+      Routes.ROUTE_SHELTER_PET,
+      arguments: pet,
+    );
+
+    if (isLoggedIn == true) {
+      await launchShelterPetComponent(context);
+    }
+  }
+}
 
 class DislikePetActionWidget extends StatelessWidget {
   final Pet pet;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getpet/components/swipe/pet_engine.dart';
 import 'package:getpet/localization/app_localization.dart';
+import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
 import 'package:getpet/routes.dart';
 import 'package:getpet/widgets/empty_state.dart';
@@ -95,11 +96,19 @@ class _SwipingCardsState extends State<SwipingCards>
             });
           },
           notifier: widget.engine.notifier,
-          onTap: () => Navigator.pushNamed(
-            context,
-            Routes.ROUTE_PET_PROFILE,
-            arguments: widget.engine.currentPet,
-          ),
+          onTap: () async {
+            final res = await Navigator.pushNamed(
+              context,
+              Routes.ROUTE_PET_PROFILE,
+              arguments: widget.engine.currentPet,
+            );
+
+            if (res == PetDecision.like) {
+              widget.engine.notifier.likeCurrent();
+            } else if (res == PetDecision.dislike) {
+              widget.engine.notifier.skipCurrent();
+            }
+          },
           child: PetCard(
             pet: widget.engine.currentPet,
           ),
