@@ -179,53 +179,57 @@ class DislikePetActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext buildContext) {
-              return AlertDialog(
-                title: Text(
-                  AppLocalizations.of(context).petRemoveDialogTitle,
-                ),
-                content: Text(
-                  AppLocalizations.of(context).petRemoveDialogMessage,
-                ),
-                actions: <Widget>[
-                  new FlatButton(
-                    child: new Text(
-                      AppLocalizations.of(context).petRemoveDialogCancel,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                      ),
+    return PopupMenuButton<int>(
+      onSelected: (index) {
+        showDialog(
+          context: context,
+          builder: (BuildContext buildContext) {
+            return AlertDialog(
+              title: Text(
+                AppLocalizations.of(context).petRemoveDialogTitle,
+              ),
+              content: Text(
+                AppLocalizations.of(context).petRemoveDialogMessage,
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text(
+                    AppLocalizations.of(context).petRemoveDialogCancel,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
-                  new FlatButton(
-                    child: new Text(
-                      AppLocalizations.of(context).petRemoveDialogOk,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                      ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                new FlatButton(
+                  child: new Text(
+                    AppLocalizations.of(context).petRemoveDialogOk,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                     ),
-                    onPressed: () async {
-                      await petsService.dislikePet(pet);
-                      final navigator = Navigator.of(context);
-                      navigator.pop();
-                      navigator.pop();
-                    },
                   ),
-                ],
-              );
-            },
-          );
-        },
-      ),
+                  onPressed: () async {
+                    await petsService.dislikePet(pet);
+                    final navigator = Navigator.of(context);
+                    navigator.pop();
+                    navigator.pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem<int>(
+            value: 1,
+            child: Text(AppLocalizations.of(context).petRemove),
+          )
+        ];
+      },
     );
   }
 }

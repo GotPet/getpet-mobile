@@ -81,7 +81,9 @@ class AppLocalizations {
   String get petRemoveDialogMessage =>
       "Ar nori pašalinti gyvūną iš mėgstamiausių sąrašo?";
 
-  String get petRemoveDialogTitle => "Ištrinti";
+  String get petRemove => "Pašalinti";
+
+  String get petRemoveDialogTitle => "Pašalinti";
 
   String get petRemoveDialogCancel => "Atšaukti";
 
