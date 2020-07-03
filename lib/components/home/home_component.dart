@@ -20,6 +20,7 @@ class HomeComponent extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const GetPetAppBarTitleImage(),
+          centerTitle: true,
           actions: [
             IconButton(
               icon: Icon(Icons.help_outline),
