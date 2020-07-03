@@ -11,7 +11,7 @@ void main() {
 
       expect(
         url,
-        "https://www.getpet.lt/w-500/media/img/web/pet/nida/nida-photo.jpg",
+        "https://www.getpet.lt/cdn-cgi/image/width=500,quality=85,fit=cover,f=auto,metadata=none/media/img/web/pet/nida/nida-photo.jpg",
       );
     });
 
@@ -20,7 +20,7 @@ void main() {
 
       expect(
         url,
-        "https://www.getpet.lt/500x300/media/img/web/pet/nida/nida-photo.jpg",
+        "https://www.getpet.lt/cdn-cgi/image/width=500,quality=85,fit=cover,f=auto,metadata=none,height=300/media/img/web/pet/nida/nida-photo.jpg",
       );
     });
 
@@ -29,35 +29,9 @@ void main() {
 
       expect(
         url,
-        "https://www.getpet.lt/w-600/media/img/web/pet/nida/nida-photo.jpg",
+        "https://www.getpet.lt/cdn-cgi/image/width=600,quality=85,fit=cover,f=auto,metadata=none/media/img/web/pet/nida/nida-photo.jpg",
       );
     });
 
-    test('width higher than maximum', () {
-      final url = getSizedImageUrl(IMAGE_URL, 2500);
-
-      expect(
-        url,
-        "https://www.getpet.lt/w-2000/media/img/web/pet/nida/nida-photo.jpg",
-      );
-    });
-
-    test('width equal to maximum and ceil to hundreds', () {
-      final url = getSizedImageUrl(IMAGE_URL, 2000, ceilToHundreds: true);
-
-      expect(
-        url,
-        "https://www.getpet.lt/w-2000/media/img/web/pet/nida/nida-photo.jpg",
-      );
-    });
-
-    test('height higher than maximum', () {
-      final url = getSizedImageUrl(IMAGE_URL, 1000, height: 2500);
-
-      expect(
-        url,
-        "https://www.getpet.lt/w-1000/media/img/web/pet/nida/nida-photo.jpg",
-      );
-    });
   });
 }

@@ -1,7 +1,4 @@
-import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
 
 int _ceilToHundreds(int size) {
   if (size % 100 != 0) {
@@ -19,29 +16,12 @@ String getSizedImageUrl(String url, int width,
   if (ceilToHundreds) {
     width = _ceilToHundreds(width);
   }
-  width = min(width, 2000);
 
-  if (height == null || height > 2000) {
-    return url.replaceFirst('/media/', '/w-$width/media/');
+  var options = 'width=$width,quality=85,fit=cover,f=auto,metadata=none';
+
+  if (height != null) {
+    options += ',height=$height';
   }
 
-  return url.replaceFirst('/media/', '/${width}x$height/media/');
-}
-
-String getSizedImageUrlFromConstraints(String url, BoxConstraints constraints,
-    {bool includeWidth: true, bool includeHeight: true}) {
-  if (includeWidth && constraints.maxWidth.isInfinite) {
-    developer.log("Unable to get width (${constraints.maxWidth})");
-    return url;
-  }
-
-  if (includeHeight && constraints.maxHeight.isInfinite) {
-    developer.log("Unable to get height (${constraints.maxHeight})");
-    return url;
-  }
-
-  final width = includeWidth ? constraints.maxWidth.ceil() : null;
-  final height = includeHeight ? constraints.maxHeight.ceil() : null;
-
-  return getSizedImageUrl(url, width, height: height);
+  return url.replaceFirst('/media/', '/cdn-cgi/image/$options/media/');
 }
