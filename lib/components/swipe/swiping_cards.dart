@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/components/swipe/pet_engine.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
@@ -97,10 +98,14 @@ class _SwipingCardsState extends State<SwipingCards>
           },
           notifier: widget.engine.notifier,
           onTap: () async {
+            final pet = widget.engine.currentPet;
+
+            Analytics().logPetProfileOpenedWhileSwiping(pet);
+
             final res = await Navigator.pushNamed(
               context,
               Routes.ROUTE_PET_PROFILE,
-              arguments: widget.engine.currentPet,
+              arguments: pet,
             );
 
             if (res == PetDecision.like) {

@@ -12,6 +12,7 @@ class Analytics {
   static const EVENT_PET_LIKED = "pet_liked";
   static const EVENT_PET_DISLIKED = "pet_disliked";
   static const EVENT_PET_GETPET = "pet_getpet";
+  static const EVENT_PET_PROFILE_OPENED_WHILE_SWIPING = "pet_open_profile_while_swiping";
 
   static final Analytics _singleton = new Analytics._internal();
 
@@ -59,6 +60,13 @@ class Analytics {
   Future logPetGetPet(Pet pet) async {
     return await analytics.logEvent(
       name: EVENT_PET_GETPET,
+      parameters: _getPetParameters(pet),
+    );
+  }
+
+  Future logPetProfileOpenedWhileSwiping(Pet pet) async {
+    return await analytics.logEvent(
+      name: EVENT_PET_PROFILE_OPENED_WHILE_SWIPING,
       parameters: _getPetParameters(pet),
     );
   }
