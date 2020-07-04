@@ -5,40 +5,47 @@ import 'package:getpet/widgets/progress_indicator.dart';
 
 class GetPetNetworkImage extends StatelessWidget {
   final String url;
+  final String fallbackAssetImage;
   final bool useDiskCache;
-  final Widget placeholder;
-  final Widget loadingIndicator;
+  final bool showLoadingIndicator;
+  final Color color;
 
   const GetPetNetworkImage({
     Key key,
     @required this.url,
-    this.placeholder,
-    this.loadingIndicator: const AppProgressIndicator(),
+    this.color,
+    this.fallbackAssetImage,
     this.useDiskCache: false,
+    this.showLoadingIndicator = true,
   })  : assert(url != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var placeholder = this.placeholder;
-    if (placeholder == null) {
-      placeholder = Placeholder(color: Theme.of(context).primaryColor);
-    }
-
     return TransitionToImage(
       image: AdvancedNetworkImage(
         url,
-        useDiskCache: useDiskCache,
+        useDiskCache: this.useDiskCache,
+        fallbackAssetImage: this.fallbackAssetImage,
         header: {
-          'accept': 'image/webp,image/*;q=0.8',
+          'accept': 'image/webp,image/*;q=0.85',
           'sec-fetch-dest': 'image',
         },
       ),
       printError: true,
       fit: BoxFit.cover,
-      placeholder: placeholder,
+      placeholder: Icon(
+        Icons.error_outline,
+        color: this.color,
+      ),
       enableRefresh: true,
-      loadingWidget: Center(child: loadingIndicator),
+      loadingWidget: this.showLoadingIndicator
+          ? Center(
+              child: AppProgressIndicator(
+                color: this.color,
+              ),
+            )
+          : SizedBox(),
     );
   }
 }

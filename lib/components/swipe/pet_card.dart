@@ -28,11 +28,14 @@ class PetCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            Hero(
-              tag: "pet-${pet.id}-photo-image-cover",
-              child: GetPetNetworkImage(
-                url: imageUrl,
-                loadingIndicator: const CircularProgressIndicator(),
+            ColoredBox(
+              color: Theme.of(context).primaryColor,
+              child: Hero(
+                tag: "pet-${pet.id}-photo-image-cover",
+                child: GetPetNetworkImage(
+                  url: imageUrl,
+                  color: Colors.white,
+                ),
               ),
             ),
             PetCardInformation(

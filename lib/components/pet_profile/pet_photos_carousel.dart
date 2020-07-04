@@ -76,6 +76,7 @@ class PetPhotosCarouselWithIndicator extends StatelessWidget {
   Widget _createImageWidget(String url, int index) {
     final image = GetPetNetworkImage(
       url: url,
+      color: Colors.white,
     );
 
     if (index == 0) {

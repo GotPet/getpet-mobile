@@ -117,7 +117,7 @@ class _PetListCell extends StatelessWidget {
                       imageSize,
                       height: imageSize,
                     ),
-                    loadingIndicator: const CircularProgressIndicator(),
+                    showLoadingIndicator: false,
                     useDiskCache: true,
                   ),
                 ),

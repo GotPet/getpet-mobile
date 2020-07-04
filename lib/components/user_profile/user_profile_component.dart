@@ -66,7 +66,7 @@ class UserProfileComponent extends StatelessWidget {
       );
 
   Widget getUserProfilePhotoProvider() {
-    final anonymousImage = Image.asset("assets/anonymous_avatar.jpg");
+    final anonymousAssetImagePath = "assets/anonymous_avatar.jpg";
 
     if (user.photoUrl != null) {
       var photoUrl = user.photoUrl.replaceFirst("/s96-c/", "/s300-c/");
@@ -75,12 +75,12 @@ class UserProfileComponent extends StatelessWidget {
       return GetPetNetworkImage(
         url: photoUrl,
         useDiskCache: true,
-        loadingIndicator: const CircularProgressIndicator(),
-        placeholder: anonymousImage,
+        color: Colors.white,
+        fallbackAssetImage: anonymousAssetImagePath,
       );
     }
 
-    return anonymousImage;
+    return Image.asset(anonymousAssetImagePath);
   }
 
   _logout() async {
