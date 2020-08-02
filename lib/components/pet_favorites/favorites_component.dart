@@ -135,7 +135,7 @@ class _PetListCell extends StatelessWidget {
                         pet.name,
                         style: TextStyle(
                           fontSize: 22.0,
-                          color: Colors.deepOrangeAccent,
+                          color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
