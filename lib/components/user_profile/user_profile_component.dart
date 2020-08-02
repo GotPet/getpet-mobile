@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/localization/app_localization.dart';
-import 'package:getpet/widgets/conditions_rich_text.dart';
 import 'package:getpet/widgets/getpet_network_image.dart';
 
 class UserProfileComponent extends StatelessWidget {
@@ -11,59 +11,56 @@ class UserProfileComponent extends StatelessWidget {
   UserProfileComponent({this.user});
 
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: new BoxDecoration(color: Theme.of(context).primaryColor),
-        child: new Column(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 24, bottom: 16),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      width: 128,
-                      height: 128,
-                      child: getUserProfilePhotoProvider(),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    user.displayName ?? user.email,
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 24, bottom: 16),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              width: 128,
+              height: 128,
+              child: getUserProfilePhotoProvider(),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: FractionallySizedBox(
-                  widthFactor: 0.4,
-                  child: Image.asset("assets/two_logos.png"),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 32),
-              child: ConditionsRichText(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 24),
-              child: FloatingActionButton.extended(
-                  icon: Icon(Icons.power_settings_new),
-                  onPressed: _logout,
-                  label: Text(AppLocalizations.of(context).logout)),
-            ),
-          ],
+          ),
         ),
-      );
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            user.displayName ?? user.email,
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.bold,
+                ),
+                text: AppLocalizations.of(context).logout,
+                recognizer: TapGestureRecognizer()..onTap = _logout),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: FractionallySizedBox(
+              widthFactor: 0.4,
+              child: Image.asset("assets/two_logos.png"),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget getUserProfilePhotoProvider() {
     final anonymousAssetImagePath = "assets/anonymous_avatar.jpg";

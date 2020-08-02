@@ -105,6 +105,15 @@ class AppLocalizations {
 
   String get userGuide => "Instrukcija";
 
+  // Preferences
+  String get preferences => "Nustatymai";
+
+  String get iAmInterested => "Mane domina";
+
+  String get cats => "Katės";
+
+  String get dogs => "Šunys";
+
   // General
   String get retryOnError => "Bandyti dar kartą";
 }

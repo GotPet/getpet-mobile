@@ -7,6 +7,7 @@ import 'package:firebase_ui/flutter_firebase_ui.dart';
 import 'package:getpet/authentication/authentication_manager.dart';
 import 'package:getpet/components/user_profile/user_profile_component.dart';
 import 'package:getpet/localization/app_localization.dart';
+import 'package:getpet/routes.dart';
 import 'package:getpet/widgets/conditions_rich_text.dart';
 
 class UserLoginFullscreenComponent extends StatelessWidget {
@@ -18,7 +19,7 @@ class UserLoginFullscreenComponent extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).loginTitle),
       ),
-      body: UserLoginComponent(
+      body: UserLoginOrProfileComponent(
         popOnLoginIn: this.popOnLoginIn,
       ),
     );
@@ -27,16 +28,18 @@ class UserLoginFullscreenComponent extends StatelessWidget {
   UserLoginFullscreenComponent({this.popOnLoginIn = false});
 }
 
-class UserLoginComponent extends StatefulWidget {
+class UserLoginOrProfileComponent extends StatefulWidget {
   final bool popOnLoginIn;
 
   @override
-  _UserLoginComponentState createState() => new _UserLoginComponentState();
+  _UserLoginOrProfileComponentState createState() =>
+      new _UserLoginOrProfileComponentState();
 
-  UserLoginComponent({this.popOnLoginIn = false});
+  UserLoginOrProfileComponent({this.popOnLoginIn = false});
 }
 
-class _UserLoginComponentState extends State<UserLoginComponent> {
+class _UserLoginOrProfileComponentState
+    extends State<UserLoginOrProfileComponent> {
   final _authenticationManager = AuthenticationManager();
 
   StreamSubscription<FirebaseUser> _listener;
@@ -58,41 +61,39 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) {
-      return Container(
-          decoration: new BoxDecoration(color: Theme.of(context).primaryColor),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: FractionallySizedBox(
-                  widthFactor: 0.4,
-                  child: Image.asset("assets/two_logos.png"),
-                ),
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: _currentUser == null
+                ? UserLoginComponent()
+                : UserProfileComponent(user: _currentUser),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+            child: ConditionsRichText(),
+          ),
+          Visibility(
+            visible: !this.widget.popOnLoginIn,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 24),
+              child: FloatingActionButton.extended(
+                icon: Icon(Icons.settings),
+                label: Text(AppLocalizations.of(context).preferences),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.ROUTE_PREFERENCES,
+                  );
+                },
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
-                  child: LoginView(
-                    providers: [
-                      ProvidersTypes.google,
-                      ProvidersTypes.facebook,
-                    ],
-                    passwordCheck: false,
-                    bottomPadding: 12,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 32),
-                child: ConditionsRichText(),
-              ),
-            ],
-          ));
-    } else {
-      return UserProfileComponent(user: _currentUser);
-    }
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _checkCurrentUser() async {
@@ -116,5 +117,36 @@ class _UserLoginComponentState extends State<UserLoginComponent> {
         ),
       );
     });
+  }
+}
+
+class UserLoginComponent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: FractionallySizedBox(
+            widthFactor: 0.4,
+            child: Image.asset("assets/two_logos.png"),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
+            child: LoginView(
+              providers: [
+                ProvidersTypes.google,
+                ProvidersTypes.facebook,
+              ],
+              passwordCheck: false,
+              bottomPadding: 12,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
