@@ -22,6 +22,7 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        leading: CloseButton(),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
