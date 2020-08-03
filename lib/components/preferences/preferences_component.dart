@@ -21,15 +21,17 @@ class PreferencesComponent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                    child: _PetTypeSelectionButton(
-                  title: AppLocalizations.of(context).dogs,
-                  assetName: "assets/dog.png",
-                )),
+                  child: _PetTypeSelectionButton(
+                    title: AppLocalizations.of(context).dogs,
+                    assetName: "assets/dog.png",
+                  ),
+                ),
                 Expanded(
-                    child: _PetTypeSelectionButton(
-                  title: AppLocalizations.of(context).cats,
-                  assetName: "assets/cat.png",
-                )),
+                  child: _PetTypeSelectionButton(
+                    title: AppLocalizations.of(context).cats,
+                    assetName: "assets/cat.png",
+                  ),
+                ),
               ],
             ),
           ),
