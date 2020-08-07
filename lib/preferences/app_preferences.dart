@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:getpet/pets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreferences {
@@ -5,6 +8,7 @@ class AppPreferences {
   static const _KEY_LAST_PET_PROFILES_UPDATE_ISO_DATE =
       "LAST_PET_PROFILES_UPDATE_ISO_DATE";
   static const _KEY_ONBOARDING_PASSED = "ONBOARDING_PASSED";
+  static const _KEY_SELECTED_PET_TYPE = "SELECTED_PET_TYPE";
 
   static final AppPreferences _singleton = new AppPreferences._internal();
 
@@ -24,6 +28,10 @@ class AppPreferences {
 
     return _sharedPreferences;
   }
+
+  final _petTypeController = StreamController<PetType>.broadcast();
+
+  Stream<PetType> get petPreferenceChangeStream => _petTypeController.stream;
 
   Future setApiToken(String apiToken) async {
     var prefs = await sharedPreferences;
@@ -69,5 +77,30 @@ class AppPreferences {
       return prefs.getBool(_KEY_ONBOARDING_PASSED);
     }
     return false;
+  }
+
+  Future setSelectedPetType(PetType petType) async {
+    var prefs = await sharedPreferences;
+
+    final res = await prefs.setInt(_KEY_SELECTED_PET_TYPE, petType.index);
+
+    _petTypeController.add(petType);
+    return res;
+  }
+
+  Future<PetType> getSelectedPetType() async {
+    var prefs = await sharedPreferences;
+
+    if (!prefs.containsKey(_KEY_ONBOARDING_PASSED)) {
+      return null;
+    }
+
+    final petTypeIndex = prefs.getInt(_KEY_SELECTED_PET_TYPE);
+
+    return PetType.values[petTypeIndex];
+  }
+
+  dispose() {
+    _petTypeController.close();
   }
 }

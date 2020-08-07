@@ -125,3 +125,8 @@ enum PetDecision {
   like,
   getPet,
 }
+
+enum PetType {
+  dog,
+  cat,
+}

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:getpet/localization/app_localization.dart';
+import 'package:getpet/pets.dart';
+import 'package:getpet/preferences/app_preferences.dart';
 
 class PreferencesComponent extends StatelessWidget {
+  final _appPreferences = AppPreferences();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,12 +28,14 @@ class PreferencesComponent extends StatelessWidget {
                   child: _PetTypeSelectionButton(
                     title: AppLocalizations.of(context).dogs,
                     assetName: "assets/dog.png",
+                    onPressed: () => changePetPreference(context, PetType.dog),
                   ),
                 ),
                 Expanded(
                   child: _PetTypeSelectionButton(
                     title: AppLocalizations.of(context).cats,
                     assetName: "assets/cat.png",
+                    onPressed: () => changePetPreference(context, PetType.cat),
                   ),
                 ),
               ],
@@ -39,16 +45,23 @@ class PreferencesComponent extends StatelessWidget {
       ),
     );
   }
+
+  changePetPreference(BuildContext context, PetType petType) async {
+    await _appPreferences.setSelectedPetType(petType);
+    Navigator.pop(context);
+  }
 }
 
 class _PetTypeSelectionButton extends StatelessWidget {
   final String title;
   final String assetName;
+  final VoidCallback onPressed;
 
   const _PetTypeSelectionButton({
     Key key,
     @required this.title,
     @required this.assetName,
+    @required this.onPressed,
   })  : assert(title != null),
         assert(assetName != null),
         super(key: key);
@@ -71,7 +84,7 @@ class _PetTypeSelectionButton extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: 1,
               child: MaterialButton(
-                onPressed: () => {},
+                onPressed: onPressed,
                 highlightColor: Colors.white30,
                 splashColor: Colors.white30,
                 child: Padding(
@@ -88,14 +101,12 @@ class _PetTypeSelectionButton extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // icon
                       Text(
                         this.title.toUpperCase(),
                         style: Theme.of(context).textTheme.headline4.copyWith(
                               color: Colors.white,
                             ),
                       ),
-                      // text
                     ],
                   ),
                 ),
