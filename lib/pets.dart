@@ -66,6 +66,9 @@ class Pet extends Equatable {
 
   final Shelter shelter;
 
+  @JsonKey(name: 'pet_type')
+  final PetType petType;
+
   @JsonKey(ignore: true)
   final PetDecision decision;
 
@@ -78,6 +81,7 @@ class Pet extends Equatable {
     @required this.profilePhoto,
     @required this.shelter,
     @required this.available,
+    @required this.petType,
     this.decision,
   })  : assert(id != null),
         assert(name != null),
@@ -87,6 +91,7 @@ class Pet extends Equatable {
         assert(profilePhoto != null),
         assert(shelter != null),
         assert(available != null),
+        assert(petType != null),
         super([
           id,
           name,
@@ -96,6 +101,7 @@ class Pet extends Equatable {
           profilePhoto,
           shelter,
           decision,
+          petType,
         ]);
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
@@ -127,6 +133,32 @@ enum PetDecision {
 }
 
 enum PetType {
+  @JsonValue("DOG")
   dog,
+  @JsonValue("CAT")
   cat,
+}
+
+extension PetTypeExtension on PetType {
+  String get apiRepresentation {
+    switch (this) {
+      case PetType.cat:
+        return 'CAT';
+      case PetType.dog:
+        return 'DOG';
+      default:
+        throw ArgumentError("Unable to map $this to API representation");
+    }
+  }
+
+  int get dbRepresentation {
+    switch (this) {
+      case PetType.dog:
+        return 1;
+      case PetType.cat:
+        return 2;
+      default:
+        throw ArgumentError("Unable to map $this to DB representation");
+    }
+  }
 }

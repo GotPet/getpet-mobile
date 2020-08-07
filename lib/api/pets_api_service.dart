@@ -86,7 +86,7 @@ class PetsApiService {
       data: {
         "liked_pets": favoritePetIds,
         "disliked_pets": dislikedPetIds,
-        "pet_type": petType.index,
+        "pet_type": petType.apiRepresentation,
       },
     );
 
