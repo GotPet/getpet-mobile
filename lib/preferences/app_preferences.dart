@@ -91,7 +91,7 @@ class AppPreferences {
   Future<PetType> getSelectedPetType() async {
     var prefs = await sharedPreferences;
 
-    if (!prefs.containsKey(_KEY_ONBOARDING_PASSED)) {
+    if (!prefs.containsKey(_KEY_SELECTED_PET_TYPE)) {
       return null;
     }
 
