@@ -22,6 +22,7 @@ class PetsDBRepository {
   static const _columnPetId = "pet_id";
   static const _columnPetShelterId = "pet_shelter_id";
   static const _columnPetAvailable = "pet_available";
+  static const _columnPetType = "pet_type";
   static const _columnPetProfilePhoto = "pet_profile_photo";
   static const _columnPetName = "pet_name";
   static const _columnPetShortDescription = "pet_short_description";
@@ -51,8 +52,9 @@ class PetsDBRepository {
 
     var db = await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
     _db = StreamDatabase(db);
   }
@@ -74,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `$_tablePets` (
   `$_columnPetShelterId` INTEGER NOT NULL,
   `$_columnPetName` TEXT NOT NULL,
   `$_columnPetAvailable` INTEGER NOT NULL,
+  `$_columnPetType` INTEGER NOT NULL,
   `$_columnPetProfilePhoto` TEXT NOT NULL,
   `$_columnPetShortDescription` TEXT NOT NULL,
   `$_columnPetDescription` TEXT NOT NULL,
@@ -100,6 +103,14 @@ CREATE UNIQUE INDEX `$_indexPetChoicesPetId` ON `$_tablePetChoices` (`$_columnPe
     await db.execute("""
 CREATE INDEX `$_indexPetChoicesChoice` ON `$_tablePetChoices` (`$_columnPetChoicesChoice`);
       """);
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2 && newVersion == 2) {
+      await db.execute("""
+      ALTER TABLE `$_tablePets` ADD COLUMN `$_columnPetType` INTEGER NOT NULL DEFAULT ${PetType.dog.dbRepresentation};
+""");
+    }
   }
 
   Map<String, dynamic> _getShelterMap(Shelter shelter, bool includePetId) {
@@ -174,6 +185,7 @@ WHERE $_columnPetId IN (
       _columnPetAvailable: pet.available ? 1 : 0,
       _columnPetProfilePhoto: pet.profilePhoto,
       _columnPetName: pet.name,
+      _columnPetType: pet.petType.dbRepresentation,
       _columnPetShortDescription: pet.shortDescription,
       _columnPetDescription: pet.description,
       _columnPetPhotosJson: jsonEncode(
@@ -297,10 +309,22 @@ WHERE $_columnPetId IN (
       description: map[_columnPetDescription],
       photos: photos,
       profilePhoto: map[_columnPetProfilePhoto],
+      petType: _mapDBRepresentationToPetType(map[_columnPetType]),
       shelter: _mapToShelter(map),
       decision: decision,
       available: map[_columnPetAvailable] == 1 ? true : false,
     );
+  }
+
+  static PetType _mapDBRepresentationToPetType(int r) {
+    switch (r) {
+      case 1:
+        return PetType.dog;
+      case 2:
+        return PetType.cat;
+      default:
+        throw ArgumentError("Unable to map $r to Pet representation");
+    }
   }
 
   List<Pet> _mapToPets(List<Map> listOfMaps) {

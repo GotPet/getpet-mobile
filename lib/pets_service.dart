@@ -42,10 +42,12 @@ class PetsService {
   Future<List<Pet>> getPetsToSwipe() async {
     final favoritePetIds = await _petsDBRepository.getFavoritePetIds();
     final dislikedPetIds = await _petsDBRepository.getDislikedPetIds();
+    final petType = await _appPreferences.getSelectedPetType() ?? PetType.dog;
 
     var pets = await _petsApiService.generatePetsToSwipe(
       favoritePetIds,
       dislikedPetIds,
+      petType,
     );
 
     await _petsDBRepository.removePetsWithoutChoice();

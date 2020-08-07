@@ -74,6 +74,8 @@ flutter:
   assets:
     - assets/ic_home.png
     - assets/no_pets.png
+    - assets/cat.png
+    - assets/dog.png
     - assets/two_logos.png
     - assets/anonymous_avatar.jpg
     - assets/get_pet_logo.png

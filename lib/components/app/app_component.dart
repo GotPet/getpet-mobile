@@ -5,6 +5,7 @@ import 'package:getpet/localization/firebase_localization.dart';
 import 'package:getpet/repositories/pets_db_repository.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:getpet/routes.dart';
+import 'package:getpet/preferences/app_preferences.dart';
 
 class AppComponent extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _AppComponentState extends State<AppComponent> {
   @override
   Future deactivate() async {
     await PetsDBRepository().dispose();
+    await AppPreferences().dispose();
     super.deactivate();
   }
 

@@ -79,12 +79,14 @@ class PetsApiService {
   Future<List<Pet>> generatePetsToSwipe(
     List<int> favoritePetIds,
     List<int> dislikedPetIds,
+    PetType petType,
   ) async {
     final response = await dio.post(
       '/v1/pets/generate/',
       data: {
         "liked_pets": favoritePetIds,
         "disliked_pets": dislikedPetIds,
+        "pet_type": petType.apiRepresentation,
       },
     );
 

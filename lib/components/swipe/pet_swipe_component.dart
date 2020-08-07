@@ -5,6 +5,7 @@ import 'package:getpet/components/swipe/swiping_cards.dart';
 import 'package:getpet/localization/app_localization.dart';
 import 'package:getpet/pets.dart';
 import 'package:getpet/pets_service.dart';
+import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/widgets/empty_state.dart';
 import 'package:getpet/widgets/error_state.dart';
 import 'package:getpet/widgets/progress_indicator.dart';
@@ -18,6 +19,7 @@ class PetSwipeComponent extends StatefulWidget {
 class _PetSwipeComponentState extends State<PetSwipeComponent>
     with AutomaticKeepAliveClientMixin {
   AsyncMemoizer _memoizer = AsyncMemoizer();
+  AppPreferences _appPreferences = AppPreferences();
 
   PetEngine engine;
 
@@ -28,49 +30,57 @@ class _PetSwipeComponentState extends State<PetSwipeComponent>
     return new Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(16.0),
-      child: new FutureBuilder(
-        future: _fetchPetsToSwipe(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: AppProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            developer.log("Error loading pets", error: snapshot.error);
-
-            return ErrorStateWidget(
-              errorText: AppLocalizations.of(context).errorLoadingPets,
-              retryCallback: () => setState(() {
-                _memoizer = AsyncMemoizer();
-              }),
-            );
-          }
-
-          if (snapshot.hasData) {
-            List<Pet> pets = snapshot.data;
-            if (pets.isNotEmpty) {
-              engine = PetEngine(pets);
-              return Column(
-                children: [
-                  Expanded(
-                    child: SwipingCards(
-                      key: ValueKey("SwipingCards: ${engine.hashCode}"),
-                      engine: engine,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  _buildButtonRow(),
-                ],
-              );
+      child: StreamBuilder(
+          stream: _appPreferences.petPreferenceChangeStream,
+          builder: (BuildContext context, AsyncSnapshot<PetType> snapshot) {
+            if (snapshot.hasData) {
+              _memoizer = AsyncMemoizer();
             }
-          }
 
-          return EmptyStateWidget(
-            assetImage: "assets/no_pets.png",
-            emptyText: AppLocalizations.of(context).noMorePetsToSwipe,
-          );
-        },
-      ),
+            return FutureBuilder(
+              future: _fetchPetsToSwipe(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return Center(child: AppProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  developer.log("Error loading pets", error: snapshot.error);
+
+                  return ErrorStateWidget(
+                    errorText: AppLocalizations.of(context).errorLoadingPets,
+                    retryCallback: () => setState(() {
+                      _memoizer = AsyncMemoizer();
+                    }),
+                  );
+                }
+
+                if (snapshot.hasData) {
+                  List<Pet> pets = snapshot.data;
+                  if (pets.isNotEmpty) {
+                    engine = PetEngine(pets);
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: SwipingCards(
+                            key: ValueKey("SwipingCards: ${engine.hashCode}"),
+                            engine: engine,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        _buildButtonRow(),
+                      ],
+                    );
+                  }
+                }
+
+                return EmptyStateWidget(
+                  assetImage: "assets/no_pets.png",
+                  emptyText: AppLocalizations.of(context).noMorePetsToSwipe,
+                );
+              },
+            );
+          }),
     );
   }
 

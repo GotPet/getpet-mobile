@@ -32,6 +32,16 @@ class HomeComponent extends StatelessWidget {
                 );
               },
             ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              tooltip: AppLocalizations.of(context).preferences,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.ROUTE_PREFERENCES,
+                );
+              },
+            ),
           ],
           bottom: TabBar(
             tabs: [
@@ -60,7 +70,7 @@ class HomeComponent extends StatelessWidget {
             TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-                UserLoginComponent(),
+                UserLoginOrProfileComponent(),
                 PetSwipeComponent(),
                 FavoritePetsComponent(),
               ],

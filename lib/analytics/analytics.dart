@@ -12,7 +12,9 @@ class Analytics {
   static const EVENT_PET_LIKED = "pet_liked";
   static const EVENT_PET_DISLIKED = "pet_disliked";
   static const EVENT_PET_GETPET = "pet_getpet";
-  static const EVENT_PET_PROFILE_OPENED_WHILE_SWIPING = "pet_open_profile_while_swiping";
+  static const EVENT_PET_PROFILE_OPENED_WHILE_SWIPING =
+      "pet_open_profile_while_swiping";
+  static const EVENT_ONBOARDING_SKIPPED = "tutorial_skipped";
 
   static final Analytics _singleton = new Analytics._internal();
 
@@ -44,6 +46,12 @@ class Analytics {
     return await analytics.logTutorialComplete();
   }
 
+  Future logOnboardingSkipped() async {
+    return await analytics.logEvent(
+      name: EVENT_ONBOARDING_SKIPPED,
+    );
+  }
+
   Future logPetLiked(Pet pet) async {
     return await analytics.logEvent(
       name: EVENT_PET_LIKED,
@@ -57,6 +65,7 @@ class Analytics {
       parameters: _getPetParameters(pet),
     );
   }
+
   Future logPetGetPet(Pet pet) async {
     return await analytics.logEvent(
       name: EVENT_PET_GETPET,

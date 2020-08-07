@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:getpet/components/preferences/preferences_component.dart';
 import 'components/home/home_component.dart';
 import 'components/onboarding/onboarding_component.dart';
 import 'components/pet_profile/full_screen_images_component.dart';
@@ -17,6 +18,8 @@ class Routes {
 
   static const ROUTE_SHELTER_PET = "shelter_pet_screen";
   static const ROUTE_USER_LOGIN_FULLSCREEN = "user_login_fullscreen_screen";
+
+  static const ROUTE_PREFERENCES = "preferences_screen";
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -55,6 +58,10 @@ class Routes {
 
         return MaterialPageRoute(builder: (context) {
           return ShelterPetComponent(pet: pet);
+        });
+      case ROUTE_PREFERENCES:
+        return MaterialPageRoute(builder: (context) {
+          return PreferencesComponent();
         });
       default:
         throw Exception("Unable to find route ${settings.name} in routes");
