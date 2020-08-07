@@ -159,9 +159,10 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
 
       final selectedPetType = await AppPreferences().getSelectedPetType();
 
-      Navigator.pop(context);
-      if (selectedPetType == null) {
-        Navigator.pushNamed(
+      if (selectedPetType != null) {
+        Navigator.pop(context);
+      } else {
+        Navigator.pushReplacementNamed(
           context,
           Routes.ROUTE_PREFERENCES,
         );
