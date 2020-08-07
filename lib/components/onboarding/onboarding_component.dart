@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/components/onboarding/onboarding_step_component.dart';
 import 'package:getpet/localization/app_localization.dart';
-import 'package:getpet/pets.dart';
 import 'package:getpet/preferences/app_preferences.dart';
 import 'package:getpet/routes.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
