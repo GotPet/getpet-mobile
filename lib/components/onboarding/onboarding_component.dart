@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:getpet/analytics/analytics.dart';
 import 'package:getpet/components/onboarding/onboarding_step_component.dart';
 import 'package:getpet/localization/app_localization.dart';
+import 'package:getpet/pets.dart';
 import 'package:getpet/preferences/app_preferences.dart';
+import 'package:getpet/routes.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingComponent extends StatefulWidget {
@@ -22,7 +24,9 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        leading: CloseButton(),
+        leading: CloseButton(
+          onPressed: () => {advancePageOrFinish(true, skippedOnboarding: true)},
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
@@ -143,11 +147,25 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
     );
   }
 
-  advancePageOrFinish(bool isDone) async {
+  advancePageOrFinish(bool isDone, {skippedOnboarding: false}) async {
     if (isDone) {
-      await Analytics().logOnboardingComplete();
       await AppPreferences().setOnboardingPassed();
+
+      if (skippedOnboarding) {
+        await Analytics().logOnboardingSkipped();
+      } else {
+        await Analytics().logOnboardingComplete();
+      }
+
+      final selectedPetType = await AppPreferences().getSelectedPetType();
+
       Navigator.pop(context);
+      if (selectedPetType == null) {
+        Navigator.pushNamed(
+          context,
+          Routes.ROUTE_PREFERENCES,
+        );
+      }
     } else {
       _controller.animateToPage(page + 1,
           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
