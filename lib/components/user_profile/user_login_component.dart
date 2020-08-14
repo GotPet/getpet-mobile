@@ -126,29 +126,26 @@ class UserLoginComponent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Container(
-            constraints: BoxConstraints(maxHeight: 300),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
             child: FractionallySizedBox(
-              widthFactor: 0.3,
+              heightFactor: 0.65,
               child: Image.asset("assets/two_logos.png"),
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
-            child: LoginView(
-              providers: [
-                ProvidersTypes.google,
-                ProvidersTypes.facebook,
-                ProvidersTypes.apple,
-              ],
-              passwordCheck: false,
-              bottomPadding: 12,
-              appleSignIn: true,
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: LoginView(
+            providers: [
+              ProvidersTypes.google,
+              ProvidersTypes.facebook,
+              ProvidersTypes.apple,
+            ],
+            passwordCheck: false,
+            bottomPadding: 16,
+            appleSignIn: true,
           ),
         ),
       ],
