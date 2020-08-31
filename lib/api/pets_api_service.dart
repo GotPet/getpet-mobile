@@ -128,26 +128,17 @@ class PetsApiService {
       return [];
     }
 
-    var petsUrl = "/v1/pets/";
-    final queryParams = {
-      "pet_ids": petIds.join(','),
-      "last_update": lastUpdateDateIso8601,
-    };
+    final response = await dio.get(
+      "/v2/pets/",
+      queryParameters: {
+        "pet_ids": petIds.join(','),
+        "last_update": lastUpdateDateIso8601,
+      },
+    );
 
-    List<Pet> allPets = [];
-    while (petsUrl != null) {
-      final response = allPets.isEmpty
-          ? await dio.get(petsUrl, queryParameters: queryParams)
-          : await dio.get(petsUrl);
+    final dogs = response.data['dogs'].map<Pet>((model) => Pet.fromJson(model));
+    final cats = response.data['cats'].map<Pet>((model) => Pet.fromJson(model));
 
-      final pets =
-          response.data['results'].map<Pet>((model) => Pet.fromJson(model));
-
-      allPets.addAll(pets);
-
-      petsUrl = response.data['next'];
-    }
-
-    return allPets;
+    return [...dogs, ...cats];
   }
 }

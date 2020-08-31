@@ -64,6 +64,9 @@ class HomeComponent extends StatelessWidget {
             FutureBuilder(
               future: _updatePetProfiles(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  print("Error updating pet profiles: ${snapshot.error}");
+                }
                 return SizedBox();
               },
             ),
